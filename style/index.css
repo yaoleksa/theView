@@ -1,0 +1,10 @@
+#navigation {
+    display: flex;
+}
+.topic {
+    margin: 1rem;
+    text-decoration: none;
+}
+.topic:hover {
+    text-decoration: underline;
+}
