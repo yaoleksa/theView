@@ -3,7 +3,7 @@
 }
 #side_bar {
     position: fixed;
-    left: 0;
+    right: 2%;
 }
 .topic {
     margin: 1rem;

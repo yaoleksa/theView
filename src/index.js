@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { getNews } from './apis';
+import { getNews, getWeather } from './apis';
 
 class NavigationPanel extends React.Component {
     render() {
-        getNews();
         return (<>
         <span id="navigation">
             <a href="#" className="topic">Головна</a>
@@ -20,9 +19,28 @@ class NavigationPanel extends React.Component {
 }
 
 class SideBarContainer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            articlesList: []
+        }
+    }
+    componentDidUpdate(prevProps, prevState) {}
     render() {
-        // implement logic here
-        return (<p id="side_bar">Side bar container</p>);
+        const arr = [];
+        getNews().then(list => {
+            for(let article of list) {
+                let p = document.createElement('p');
+                p.innerText = article.summary;
+                arr.push(p);
+            }
+        }).catch((error) => {
+            if(error) {
+                console.error(error.message);
+            }
+        });
+        getWeather();
+        return (arr);
     }
 }
 
