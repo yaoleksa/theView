@@ -1,6 +1,10 @@
 #navigation {
     display: flex;
 }
+#side_bar {
+    position: fixed;
+    left: 0;
+}
 .topic {
     margin: 1rem;
     text-decoration: none;
