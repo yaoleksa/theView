@@ -9,7 +9,7 @@ const getNews = () => {
 }
 
 const getWeather = () => {
-    return axios.get('http://api.weatherapi.com/v1/forecast.json?key=73ecd75942e440f28cd91909231310&q=Lviv');
+    return axios.get('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m');
 };
 
 export {
