@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { use } from 'react';
 import ReactDOM from 'react-dom/client';
 import { getNews, getWeather } from './apis';
 
@@ -17,30 +16,40 @@ function NavigationPanel() {
         </>);
 }
 
-function createArticle(articleKey, title, imageSource) {
+function createArticle(articleKey, title, imageSource, link) {
     return (<>
     <div key={articleKey} className='sideBarArticles'>
         <img src={`${imageSource}`} key={'_' + articleKey} className='sideBarImg'/>
-        <p key={articleKey + '_'}>{title}</p>
+        <a key={articleKey + '_'} href={link}>{title}</a>
     </div>
     </>);
 }
 
 function SideBarContainer() {
     const [articles, setArticles] = useState([]);
-    const [weatherInfo, setInfo] = useState([]);
+    const [weatherInfo, setInfo] = useState(null);
     const news = [];
     useEffect(() => {
         if(articles.length === 0) {
             getNews().then(response => {
                 console.log(response.data.articles);
                 setArticles(response.data.articles);
-            })
+            }).catch(err => {
+                console.error(err.message);
+            });
+        }
+        if(!weatherInfo) {
+            getWeather().then(response => {
+                console.log(response.data.current);
+                setInfo(response.data.current);
+            }).catch(err => {
+                console.error(err.message);
+            });
         }
     });
     if(articles.length > 0) {
         for(let article of articles) {
-            news.push(createArticle(article.id, article.title, article.media));
+            news.push(createArticle(article._id, article.title, article.media, article.link));
         }
         return news;
     } else {

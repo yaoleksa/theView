@@ -9,12 +9,7 @@ const getNews = () => {
 }
 
 const getWeather = () => {
-    return axios.get('http://api.weatherapi.com/v1/forecast.json?key=73ecd75942e440f28cd91909231310&q=Lviv')
-    .then(weatherData => {
-        return weatherData.data;
-    }).catch((err) => {
-        return err.message;
-    })
+    return axios.get('http://api.weatherapi.com/v1/forecast.json?key=73ecd75942e440f28cd91909231310&q=Lviv');
 };
 
 export {

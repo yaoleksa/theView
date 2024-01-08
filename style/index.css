@@ -15,8 +15,8 @@
 .sideBarArticles {
     height: 15rem;
     width: 15rem;
+    margin-left: 75%;
 }
 .sideBarImg {
-    height: 3rem;
-    width: 3rem;
+    height: 10rem;
 }
