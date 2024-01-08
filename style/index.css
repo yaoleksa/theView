@@ -12,3 +12,11 @@
 .topic:hover {
     text-decoration: underline;
 }
+.sideBarArticles {
+    height: 15rem;
+    width: 15rem;
+}
+.sideBarImg {
+    height: 3rem;
+    width: 3rem;
+}

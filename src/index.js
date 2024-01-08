@@ -1,56 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { use } from 'react';
 import ReactDOM from 'react-dom/client';
 import { getNews, getWeather } from './apis';
 
-class NavigationPanel extends React.Component {
-    render() {
-        return (<>
-        <span id="navigation">
-            <a href="#" className="topic">Головна</a>
-            <a href="#" className="topic">Новини з фронту</a>
-            <a href="#" className="topic">Здоров'я</a>
-            <a href="#" className="topic">Суспільство</a>
-            <a href="#" className="topic">Політика</a>
-            <a href="#" className="topic">Економіка</a>
-            <a href="#" className="topic">Технології</a>
-        </span>
+function NavigationPanel() {
+    return (<>
+                <span id="navigation">
+                    <a href="#" className="topic">Головна</a>
+                    <a href="#" className="topic">Новини з фронту</a>
+                    <a href="#" className="topic">Здоров'я</a>
+                    <a href="#" className="topic">Суспільство</a>
+                    <a href="#" className="topic">Політика</a>
+                    <a href="#" className="topic">Економіка</a>
+                    <a href="#" className="topic">Технології</a>
+                </span>
         </>);
-    }
 }
 
-class SideBarContainer extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            articlesList: []
+function createArticle(articleKey, title, imageSource) {
+    return (<>
+    <div key={articleKey} className='sideBarArticles'>
+        <img src={`${imageSource}`} key={'_' + articleKey} className='sideBarImg'/>
+        <p key={articleKey + '_'}>{title}</p>
+    </div>
+    </>);
+}
+
+function SideBarContainer() {
+    const [articles, setArticles] = useState([]);
+    const [weatherInfo, setInfo] = useState([]);
+    const news = [];
+    useEffect(() => {
+        if(articles.length === 0) {
+            getNews().then(response => {
+                console.log(response.data.articles);
+                setArticles(response.data.articles);
+            })
         }
-    }
-    componentDidUpdate(prevProps, prevState) {}
-    render() {
-        const arr = [];
-        getNews().then(list => {
-            for(let article of list) {
-                let p = document.createElement('p');
-                p.innerText = article.summary;
-                arr.push(p);
-            }
-        }).catch((error) => {
-            if(error) {
-                console.error(error.message);
-            }
-        });
-        getWeather();
-        return (arr);
+    });
+    if(articles.length > 0) {
+        for(let article of articles) {
+            news.push(createArticle(article.id, article.title, article.media));
+        }
+        return news;
+    } else {
+        return (<div></div>);
     }
 }
 
-class Page extends React.Component {
-    render() {
-        return (<>
+function Page() {
+    return (<>
         <NavigationPanel/>
         <SideBarContainer/>
         </>);
-    }
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<Page/>);
