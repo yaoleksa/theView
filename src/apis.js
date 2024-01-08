@@ -1,11 +1,7 @@
 import axios from 'axios';
 
 const getNews = () => {
-    return axios.get('https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk', {
-        headers: {
-            'X-RapidAPI-Key': 'dc40d2b288msh88ced99c0191b37p144f83jsne853bb67a11f'
-        }
-    });
+    return axios.get('https://newsdata.io/api/1/news?country=ua&apikey=pub_8576a5096c78cacae47c5c74fd5c34419a6d');
 }
 
 const getWeather = () => {

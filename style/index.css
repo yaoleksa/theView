@@ -5,8 +5,12 @@
     position: fixed;
     right: 2%;
 }
+#main {
+    margin: 1% 3% 0 1%;
+    font-size: 2rem;
+}
 .topic {
-    margin: 1rem;
+    margin: 2rem;
     text-decoration: none;
 }
 .topic:hover {

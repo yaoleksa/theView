@@ -5,7 +5,7 @@ import { getNews, getWeather } from './apis';
 function NavigationPanel() {
     return (<>
                 <span id="navigation">
-                    <a href="./index.html" className="topic">Головна</a>
+                    <a href="./index.html" className="topic" id="main">Головна</a>
                     <a href="./pages/war_in_Ukraine.html" className="topic">Новини з фронту</a>
                     <a href="./pages/health.html" className="topic">Здоров'я</a>
                     <a href="./pages/society.html" className="topic">Суспільство</a>
@@ -25,6 +25,17 @@ function createArticle(articleKey, title, imageSource, link) {
     </>);
 }
 
+function MainArticle() {
+    const [mainNew, setNew] = useState(null);
+    useEffect(() => {
+        if(!mainNew) {
+            getNews().then(response => {}).catch(error => {});
+        }
+    });
+    console.log(mainNew);
+    return (<></>);
+}
+
 function SideBarContainer() {
     const [articles, setArticles] = useState([]);
     const [weatherInfo, setInfo] = useState(null);
@@ -32,8 +43,9 @@ function SideBarContainer() {
     useEffect(() => {
         if(articles.length === 0) {
             getNews().then(response => {
-                console.log(response.data.articles);
-                setArticles(response.data.articles);
+                console.log(response.data.results);
+                response.data.results.shift();
+                setArticles(response.data.results);
             }).catch(err => {
                 console.error(err.message);
             });
@@ -49,7 +61,9 @@ function SideBarContainer() {
     });
     if(articles.length > 0) {
         for(let article of articles) {
-            news.push(createArticle(article._id, article.title, article.media, article.link));
+            if(article.image_url) {
+                news.push(createArticle(article.article_id, article.title, article.image_url, article.link));
+            }
         }
         return news;
     } else {
