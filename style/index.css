@@ -16,6 +16,9 @@
 #main_article {
     margin: 2%;
 }
+#main_image {
+    width: 80%;
+}
 .topic {
     margin: 2rem;
     text-decoration: none;

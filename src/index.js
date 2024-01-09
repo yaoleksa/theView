@@ -29,18 +29,18 @@ function MainArticle() {
     const [mainNew, setNew] = useState(null);
     useEffect(() => {
         if(!mainNew) {
-            // getNews().then(response => {
-            //     setNew(response.data.results.filter(article => article.language !== "russian")[0]);
-            // }).catch(error => {
-            //     console.error(error.message);
-            // });
+            getNews().then(response => {
+                setNew(response.data.articles[0]);
+            }).catch(error => {
+                console.error(error.message);
+            });
         }
     });
     console.log(mainNew);
     if(mainNew) {
         return (<>
         <div id="main_article">
-            <img src={mainNew.image_url}/>
+            <img id="main_image" src={mainNew.image}/>
             <h1>{mainNew.title}</h1>
             <p>{mainNew.content}</p>
         </div>
@@ -57,7 +57,8 @@ function SideBarContainer() {
     useEffect(() => {
         if(articles.length === 0) {
             getNews().then(response => {
-                console.log(response.data.articles);
+                console.log(response.data.articles.shift());
+                response.data.articles.shift();
                 setArticles(response.data.articles);
             }).catch(err => {
                 console.error(err.message);
