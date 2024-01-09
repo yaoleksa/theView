@@ -29,11 +29,11 @@ function MainArticle() {
     const [mainNew, setNew] = useState(null);
     useEffect(() => {
         if(!mainNew) {
-            getNews().then(response => {
-                setNew(response.data.results.filter(article => article.language !== "russian")[0]);
-            }).catch(error => {
-                console.error(error.message);
-            });
+            // getNews().then(response => {
+            //     setNew(response.data.results.filter(article => article.language !== "russian")[0]);
+            // }).catch(error => {
+            //     console.error(error.message);
+            // });
         }
     });
     console.log(mainNew);
@@ -57,9 +57,8 @@ function SideBarContainer() {
     useEffect(() => {
         if(articles.length === 0) {
             getNews().then(response => {
-                console.log(response.data.results);
-                response.data.results.filter(article => article.language !== "russian").shift();
-                setArticles(response.data.results);
+                console.log(response.data.articles);
+                setArticles(response.data.articles);
             }).catch(err => {
                 console.error(err.message);
             });
@@ -74,11 +73,12 @@ function SideBarContainer() {
         }
     });
     if(articles.length > 0) {
+        let key = 0;
         for(let article of articles) {
-            if(article.image_url) {
-                news.push(createArticle(article.article_id, article.title, article.image_url, article.link));
-            }
+            news.push(createArticle(key, article.title, article.image, article.url));
+            key++;
         }
+        console.log(`news: ${news}`);
         return news;
     } else {
         return (<div></div>);
