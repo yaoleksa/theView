@@ -5,7 +5,8 @@ const getNews = () => {
         params: {
             country: 'ua',
             category: 'general',
-            apikey: '985901b98d070eed7d957eda27580896'
+            apikey: '985901b98d070eed7d957eda27580896',
+            lang: 'ua'
         }
     });
 }
