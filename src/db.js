@@ -20,4 +20,34 @@ const insertArticle = (article) => {
     // });
 }
 
-export { signIn, insertArticle }
+export default class DB {
+    token;
+    refreshToken;
+    constructor() {
+        supabase.auth.signInWithPassword({
+            email: 'ekt_1@ukr.net',
+            password: 'notveryeasy4473'
+        }).then(databaseResponse => {
+            this.token = databaseResponse.data.session.access_token;
+            this.refreshToken = databaseResponse.data.session.refresh_token;
+        }).catch(err => {
+            console.log(err.message);
+        })
+    }
+    insertArticle(Article) {
+        supabase.from('main_article').select('id').then(DBresponse => {
+            if(DBresponse.data.length === 0 && Article != null) {
+                supabase.from('main_article').insert({
+                    id: Article.article_id,
+                    title: Article.title,
+                    link: Article.link,
+                    content: Article.content
+                }).then(resp => {
+                    console.log(resp);
+                })
+            }
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+}

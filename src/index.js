@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import Apis from './apis';
+import DB from './db';
 
 function NavigationPanel() {
     return (<>
@@ -29,8 +30,8 @@ function MainArticle() {
     const [mainNew, setNew] = useState(null);
     useEffect(() => {
         if(!mainNew) {
-            Apis.getNews().then(response => {
-                setNew(response.data.articles[0]);
+            Apis.getMain().then(response => {
+                setNew(response.data.results.filter(article => article.language === 'ukrainian').shift());
             }).catch(error => {
                 console.error(error.message);
             });
@@ -38,9 +39,12 @@ function MainArticle() {
     });
     console.log(mainNew);
     if(mainNew) {
+        const supabaseClient = new DB();
+        console.log(`article_id: ${mainNew.article_id}`);
+        supabaseClient.insertArticle(mainNew);
         return (<>
         <div id="main_article">
-            <img id="main_image" src={mainNew.image}/>
+            <img id="main_image" src={mainNew.image_url}/>
             <h1>{mainNew.title}</h1>
             <p>{mainNew.content}</p>
         </div>
