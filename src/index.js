@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import { getNews, getWeather } from './apis';
+import Apis from './apis';
 
 function NavigationPanel() {
     return (<>
@@ -29,7 +29,7 @@ function MainArticle() {
     const [mainNew, setNew] = useState(null);
     useEffect(() => {
         if(!mainNew) {
-            getNews().then(response => {
+            Apis.getNews().then(response => {
                 setNew(response.data.articles[0]);
             }).catch(error => {
                 console.error(error.message);
@@ -56,7 +56,7 @@ function SideBarContainer() {
     const news = [];
     useEffect(() => {
         if(articles.length === 0) {
-            getNews().then(response => {
+            Apis.getNews().then(response => {
                 console.log(response.data.articles.shift());
                 response.data.articles.shift();
                 setArticles(response.data.articles);
@@ -65,7 +65,7 @@ function SideBarContainer() {
             });
         }
         if(!weatherInfo) {
-            getWeather().then(response => {
+            Apis.getWeather().then(response => {
                 console.log(response.data.current);
                 setInfo(response.data.current);
             }).catch(err => {
@@ -79,7 +79,7 @@ function SideBarContainer() {
             news.push(createArticle(key, article.title, article.image, article.url));
             key++;
         }
-        console.log(`news: ${news}`);
+        console.log(articles);
         return news;
     } else {
         return (<div></div>);

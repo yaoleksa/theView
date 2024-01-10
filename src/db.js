@@ -9,10 +9,15 @@ const signIn = () => {
     });
 }
 
-const insertArticle = () => {
-    supabase.from('name of my table').insert({
-        // all field
-    });
+const insertArticle = (article) => {
+    const requestResponse = supabase.from('main_article').select('id');
+    console.log(requestResponse);
+    // supabase.from('main_article').insert({
+    //     id: article.atrile_id,
+    //     title: article.title,
+    //     link: article.link,
+    //     content: article.content
+    // });
 }
 
 export { signIn, insertArticle }
