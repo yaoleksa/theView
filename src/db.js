@@ -36,7 +36,7 @@ export default class DB {
     }
     insertArticle(Article) {
         supabase.from('main_article').select('id').then(DBresponse => {
-            if(DBresponse.data.length === 0 && Article != null) {
+            if(DBresponse.data.length === 0 && Article) {
                 supabase.from('main_article').insert({
                     id: Article.article_id,
                     title: Article.title,
@@ -44,6 +44,19 @@ export default class DB {
                     content: Article.content
                 }).then(resp => {
                     console.log(resp);
+                }).catch(err => {
+                    console.log(err.message);
+                })
+            } else if(DBresponse.data.length !== 0 && Article) {
+                console.log(`id: ${DBresponse.data[0].id}`);
+                supabase.from('main_article').update({
+                    title: Article.title,
+                    link: Article.link,
+                    content: Article.content
+                }).match({
+                    id: DBresponse.data[0].id
+                }).then(result => {
+                    console.log(result);
                 })
             }
         }).catch(error => {
