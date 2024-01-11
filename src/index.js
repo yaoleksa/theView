@@ -32,16 +32,10 @@ function MainArticle() {
         if(!mainNew) {
             Apis.getMain().then(response => {
                 console.log(`Response status: ${response.status}`);
-                if(response.status !== 429) {
-                    console.log('from new');
+                if(response.data.results) {
                     setNew(response.data.results.filter(article => article.language === 'ukrainian').shift());
                 } else {
-                    DB.getSavedArticle().then(retrieved => {
-                        console.log('from saved');
-                        setNew(retrieved.data[0]);
-                    }).catch(err => {
-                        console.log(err.message);
-                    });
+                    setNew(response.data[0]);
                 }
             }).catch(error => {
                 console.error(error.message);
@@ -72,9 +66,13 @@ function SideBarContainer() {
     useEffect(() => {
         if(articles.length === 0) {
             Apis.getNews().then(response => {
-                console.log(response.data.articles.shift());
-                response.data.articles.shift();
-                setArticles(response.data.articles);
+                if(response.data.articles) {
+                    console.log(response.data.articles.shift());
+                    response.data.articles.shift();
+                    setArticles(response.data.articles);
+                } else {
+                    setArticles(response.data);
+                }
             }).catch(err => {
                 console.error(err.message);
             });

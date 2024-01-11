@@ -1,4 +1,5 @@
 import axios from 'axios';
+import DB from './db';
 
 export default class Apis {
     static getNews() {
@@ -9,6 +10,9 @@ export default class Apis {
                 apikey: '985901b98d070eed7d957eda27580896',
                 lang: 'ua'
             }
+        }).catch(err => {
+            console.log(err.message);
+            return DB.getSavedArticle();
         });
     }
     static getMain() {
@@ -17,6 +21,9 @@ export default class Apis {
                 country: 'ua',
                 apikey: 'pub_8576a5096c78cacae47c5c74fd5c34419a6d'
             }
+        }).catch(err => {
+            console.log(`and this one: ${err.message}`);
+            return DB.getSavedArticle();
         })
     }
     static getWeather() {
