@@ -23,18 +23,19 @@ export default class DB {
                     article_id: Article.article_id,
                     title: Article.title,
                     link: Article.link,
-                    content: Article.content
+                    content: Article.content,
+                    image_url: Article.image_url
                 }).then(resp => {
                     console.log(resp);
                 }).catch(err => {
                     console.log(err.message);
                 })
             } else if(DBresponse.data.length !== 0 && Article) {
-                console.log(`id: ${DBresponse.data[0].id}`);
                 supabase.from('main_article').update({
                     title: Article.title,
                     link: Article.link,
-                    content: Article.content
+                    content: Article.content,
+                    image_url: Article.image_url
                 }).match({
                     article_id: DBresponse.data[0].article_id
                 }).then(result => {
@@ -45,5 +46,7 @@ export default class DB {
             console.log(error.message);
         })
     }
-    getSavedArticle
+    static getSavedArticle() {
+        return supabase.from('main_article').select('*');
+    }
 }

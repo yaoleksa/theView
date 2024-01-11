@@ -31,7 +31,18 @@ function MainArticle() {
     useEffect(() => {
         if(!mainNew) {
             Apis.getMain().then(response => {
-                setNew(response.data.results.filter(article => article.language === 'ukrainian').shift());
+                console.log(`Response status: ${response.status}`);
+                if(response.status !== 429) {
+                    console.log('from new');
+                    setNew(response.data.results.filter(article => article.language === 'ukrainian').shift());
+                } else {
+                    DB.getSavedArticle().then(retrieved => {
+                        console.log('from saved');
+                        setNew(retrieved.data[0]);
+                    }).catch(err => {
+                        console.log(err.message);
+                    });
+                }
             }).catch(error => {
                 console.error(error.message);
             });
