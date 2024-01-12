@@ -30,7 +30,7 @@ function MainArticle() {
     const [mainNew, setNew] = useState(null);
     useEffect(() => {
         if(!mainNew) {
-            Apis.getMain().then(response => {
+            Apis.getNews().then(response => {
                 console.log(`Response status: ${response.status}`);
                 if(response.data.results) {
                     setNew(response.data.results.filter(article => article.language === 'ukrainian').shift());
@@ -44,9 +44,6 @@ function MainArticle() {
     });
     console.log(mainNew);
     if(mainNew) {
-        const supabaseClient = new DB();
-        console.log(`article_id: ${mainNew.article_id}`);
-        supabaseClient.insertArticle(mainNew);
         return (<>
         <div id="main_article">
             <img id="main_image" src={mainNew.image_url}/>
@@ -66,10 +63,10 @@ function SideBarContainer() {
     useEffect(() => {
         if(articles.length === 0) {
             Apis.getNews().then(response => {
-                if(response.data.articles) {
-                    console.log(response.data.articles.shift());
-                    response.data.articles.shift();
-                    setArticles(response.data.articles);
+                if(response.data.results) {
+                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian');
+                    allArticles.shift();
+                    setArticles(allArticles);
                 } else {
                     setArticles(response.data);
                 }
@@ -87,12 +84,11 @@ function SideBarContainer() {
         }
     });
     if(articles.length > 0) {
-        let key = 0;
+        const DBclient = new DB();
         for(let article of articles) {
-            news.push(createArticle(key, article.title, article.image, article.url));
-            key++;
+            news.push(createArticle(article.article_id, article.title, article.image_url, article.link));
         }
-        console.log(articles);
+        DBclient.insertArticles(articles);
         return news;
     } else {
         return (<div></div>);

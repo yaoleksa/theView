@@ -3,19 +3,6 @@ import DB from './db';
 
 export default class Apis {
     static getNews() {
-        return axios.get('https://gnews.io/api/v4/top-headlines', {
-            params: {
-                country: 'ua',
-                category: 'general',
-                apikey: '985901b98d070eed7d957eda27580896',
-                lang: 'ua'
-            }
-        }).catch(err => {
-            console.log(err.message);
-            return DB.getSavedArticle();
-        });
-    }
-    static getMain() {
         return axios.get('https://newsdata.io/api/1/news', {
             params: {
                 country: 'ua',
@@ -23,7 +10,7 @@ export default class Apis {
             }
         }).catch(err => {
             console.log(`and this one: ${err.message}`);
-            return DB.getSavedArticle();
+            return DB.getSavedArticles();
         })
     }
     static getWeather() {

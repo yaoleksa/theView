@@ -16,37 +16,40 @@ export default class DB {
             console.log(err.message);
         })
     }
-    insertArticle(Article) {
+    async insertArticles(Articles) {
         supabase.from('main_article').select('article_id').then(DBresponse => {
-            if(DBresponse.data.length === 0 && Article) {
-                supabase.from('main_article').insert({
-                    article_id: Article.article_id,
-                    title: Article.title,
-                    link: Article.link,
-                    content: Article.content,
-                    image_url: Article.image_url
-                }).then(resp => {
-                    console.log(resp);
-                }).catch(err => {
-                    console.log(err.message);
-                })
-            } else if(DBresponse.data.length !== 0 && Article) {
-                supabase.from('main_article').update({
-                    title: Article.title,
-                    link: Article.link,
-                    content: Article.content,
-                    image_url: Article.image_url
-                }).match({
-                    article_id: DBresponse.data[0].article_id
-                }).then(result => {
-                    console.log(result);
-                })
+            if(DBresponse.data.length === 0 && Articles) {
+                Articles.forEach(article => {
+                    supabase.from('main_article').insert({
+                        article_id: article.article_id,
+                        title: article.title,
+                        link: article.link,
+                        content: article.content,
+                        image_url: article.image_url
+                    });
+                });
+            } else if(DBresponse.data.length !== 0 && Articles) {
+                let index = 0;
+                for(let article of DBresponse.data) {
+                    supabase.from('main_article').update({
+                        title: Articles[index].title,
+                        link: Articles[index].link,
+                        content: Articles[index].content,
+                        image_url: Articles[index].image_url
+                    }).match({
+                        article_id: article.article_id
+                    });
+                    index++;
+                    if(index === Articles.length - 1) {
+                        break;
+                    }
+                }
             }
         }).catch(error => {
             console.log(error.message);
         })
     }
-    static getSavedArticle() {
+    static getSavedArticles() {
         return supabase.from('main_article').select('*');
     }
 }
