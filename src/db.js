@@ -26,7 +26,9 @@ export default class DB {
                         link: article.link,
                         content: article.content,
                         image_url: article.image_url
-                    });
+                    }).then(resp => {
+                        console.log(resp);
+                    })
                 });
             } else if(DBresponse.data.length !== 0 && Articles) {
                 let index = 0;
@@ -38,6 +40,8 @@ export default class DB {
                         image_url: Articles[index].image_url
                     }).match({
                         article_id: article.article_id
+                    }).then(res => {
+                        console.log(res);
                     });
                     index++;
                     if(index === Articles.length - 1) {
