@@ -18,36 +18,44 @@ export default class DB {
     }
     async insertArticles(Articles) {
         supabase.from('main_article').select('article_id').then(DBresponse => {
-            if(DBresponse.data.length === 0 && Articles) {
+            const ids = new Set();
+            if(DBresponse.data.length < 20 && Articles) {
                 Articles.forEach(article => {
-                    supabase.from('main_article').insert({
-                        article_id: article.article_id,
-                        title: article.title,
-                        link: article.link,
-                        content: article.content,
-                        image_url: article.image_url
-                    }).then(resp => {
-                        console.log(resp);
-                    })
-                });
-            } else if(DBresponse.data.length !== 0 && Articles) {
-                let index = 0;
-                for(let article of DBresponse.data) {
-                    supabase.from('main_article').update({
-                        title: Articles[index].title,
-                        link: Articles[index].link,
-                        content: Articles[index].content,
-                        image_url: Articles[index].image_url
-                    }).match({
-                        article_id: article.article_id
-                    }).then(res => {
-                        console.log(res);
-                    });
-                    index++;
-                    if(index === Articles.length - 1) {
-                        break;
+                    if(!ids.has(article.article_id)) {
+                        supabase.from('main_article').insert({
+                            article_id: article.article_id,
+                            title: article.title,
+                            link: article.link,
+                            content: article.content,
+                            image_url: article.image_url
+                        }).then(resp => {
+                            console.log(resp);
+                        }).catch(err => {
+                            console.log(err.message);
+                        });
+                        ids.add(article.article_id);
                     }
+                });
+            } else if(DBresponse.data.length >= 20 && Articles) {
+                for(let i = 0; i < 20; i++) {
+                    supabase.from('main_article').delete().eq('article_id', DBresponse.data[i].article_id);
                 }
+                Articles.forEach(article => {
+                    if(!ids.has(article.article_id)) {
+                        supabase.from('main_article').insert({
+                            article_id: article.article_id,
+                            title: article.title,
+                            link: article.link,
+                            content: article.content,
+                            image_url: article.image_url
+                        }).then(resp => {
+                            console.log(resp);
+                        }).catch(err => {
+                            console.log(err.message);
+                        });
+                        ids.add(article.article_id);
+                    }
+                });
             }
         }).catch(error => {
             console.log(error.message);
