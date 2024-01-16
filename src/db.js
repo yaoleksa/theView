@@ -37,30 +37,38 @@ export default class DB {
                     }
                 });
             } else if(DBresponse.data.length >= 20 && Articles) {
-                for(let i = 0; i < 20; i++) {
-                    supabase.from('main_article').delete().match({
-                        article_id: DBresponse.data[i].article_id
-                    }).then(res => {
-                        console.log(res);
-                    }).catch(err => {
-                        console.log(err.message);
-                    })
-                }
-                Articles.forEach(article => {
-                    if(!ids.has(article.title)) {
-                        supabase.from('main_article').insert({
-                            article_id: article.article_id,
-                            title: article.title,
-                            link: article.link,
-                            content: article.content,
-                            image_url: article.image_url
+                supabase.auth.signInWithPassword({
+                    email: 'ekt_1@ukr.net',
+                    password: 'notveryeasy4473'
+                }).then(res => {
+                    console.log(res);
+                    for(let i = 0; i < 20; i++) {
+                        supabase.from('main_article').delete().match({
+                            article_id: DBresponse.data[0].article_id
                         }).then(resp => {
                             console.log(resp);
                         }).catch(err => {
                             console.log(err.message);
                         });
-                        ids.add(article.title);
+                        Articles.forEach(article => {
+                            if(!ids.has(article.title)) {
+                                supabase.from('main_article').insert({
+                                    article_id: article.article_id,
+                                    title: article.title,
+                                    link: article.link,
+                                    content: article.content,
+                                    image_url: article.image_url
+                                }).then(resp => {
+                                    console.log(resp);
+                                }).catch(err => {
+                                    console.log(err.message);
+                                });
+                                ids.add(article.title);
+                            }
+                        });
                     }
+                }).catch(err => {
+                    console.log(err.message);
                 });
             }
         }).catch(error => {
