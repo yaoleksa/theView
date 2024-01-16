@@ -4,7 +4,7 @@ import Apis from './apis';
 import DB from './db';
 
 function NavigationPanel() {
-    if(document.location.href.includes('index')) {
+    if(document.location.href.includes('index') && document.location.href.includes('theView')) {
         return (<>
                     <span id="navigation">
                         <a href="./index.html" className="topic" id="main">Головна</a>
@@ -47,9 +47,12 @@ function MainArticle() {
             Apis.getNews().then(response => {
                 console.log(`Response status: ${response.status}`);
                 if(response.data.results) {
-                    setNew(response.data.results.filter(article => article.language === 'ukrainian').shift());
+                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian');
+                    setNew(allArticles.shift());
+                    DBclient.insertArticles(allArticles);
                 } else {
-                    setNew(response.data[0]);
+                    setNew(response.data.shift());
+                    DBclient.insertArticles(response.data);
                 }
             }).catch(error => {
                 console.error(error.message);
