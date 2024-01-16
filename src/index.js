@@ -4,6 +4,8 @@ import Apis from './apis';
 import DB from './db';
 
 function NavigationPanel() {
+    const currentUrl = document.location.href.includes('/index.html') ? document.location.href.replace('/index.html', '') : document.location.href;
+    alert(currentUrl);
     return (<>
         <span id="navigation">
             <a href="./index.html" className="topic" id="main">Головна</a>
@@ -33,7 +35,7 @@ function MainArticle() {
             Apis.getNews().then(response => {
                 console.log(`Response status: ${response.status}`);
                 if(response.data.results) {
-                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian');
+                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian' && article.image_url);
                     setNew(allArticles.shift());
                     DBclient.insertArticles(allArticles);
                 } else {
@@ -67,7 +69,7 @@ function SideBarContainer() {
         if(articles.length === 0) {
             Apis.getNews().then(response => {
                 if(response.data.results) {
-                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian');
+                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian' && article.image_url);
                     allArticles.shift();
                     setArticles(allArticles);
                 } else {
