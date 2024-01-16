@@ -21,7 +21,7 @@ export default class DB {
             const ids = new Set();
             if(DBresponse.data.length < 20 && Articles) {
                 Articles.forEach(article => {
-                    if(!ids.has(article.article_id)) {
+                    if(!ids.has(article.title)) {
                         supabase.from('main_article').insert({
                             article_id: article.article_id,
                             title: article.title,
@@ -33,7 +33,7 @@ export default class DB {
                         }).catch(err => {
                             console.log(err.message);
                         });
-                        ids.add(article.article_id);
+                        ids.add(article.title);
                     }
                 });
             } else if(DBresponse.data.length >= 20 && Articles) {
@@ -41,7 +41,7 @@ export default class DB {
                     supabase.from('main_article').delete().eq('article_id', DBresponse.data[i].article_id);
                 }
                 Articles.forEach(article => {
-                    if(!ids.has(article.article_id)) {
+                    if(!ids.has(article.title)) {
                         supabase.from('main_article').insert({
                             article_id: article.article_id,
                             title: article.title,
@@ -53,7 +53,7 @@ export default class DB {
                         }).catch(err => {
                             console.log(err.message);
                         });
-                        ids.add(article.article_id);
+                        ids.add(article.title);
                     }
                 });
             }
