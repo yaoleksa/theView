@@ -38,7 +38,13 @@ export default class DB {
                 });
             } else if(DBresponse.data.length >= 20 && Articles) {
                 for(let i = 0; i < 20; i++) {
-                    supabase.from('main_article').delete().eq('article_id', DBresponse.data[i].article_id);
+                    supabase.from('main_article').delete().match({
+                        article_id: DBresponse.data[i].article_id
+                    }).then(res => {
+                        console.log(res);
+                    }).catch(err => {
+                        console.log(err.message);
+                    })
                 }
                 Articles.forEach(article => {
                     if(!ids.has(article.title)) {
