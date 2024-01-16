@@ -4,31 +4,17 @@ import Apis from './apis';
 import DB from './db';
 
 function NavigationPanel() {
-    if(document.location.href.includes('index') && document.location.href.includes('theView')) {
-        return (<>
-                    <span id="navigation">
-                        <a href="./index.html" className="topic" id="main">Головна</a>
-                        <a href="./pages/war_in_Ukraine.html" className="topic">Новини з фронту</a>
-                        <a href="./pages/health.html" className="topic">Здоров'я</a>
-                        <a href="./pages/society.html" className="topic">Суспільство</a>
-                        <a href="./pages/politic.html" className="topic">Політика</a>
-                        <a href="./pages/economy.html" className="topic">Економіка</a>
-                        <a href="./pages/tech.html" className="topic">Технології</a>
-                    </span>
-            </>);
-    } else {
-        return (<>
-            <span id="navigation">
-                <a href="../index.html" className="topic" id="main">Головна</a>
-                <a href="../pages/war_in_Ukraine.html" className="topic">Новини з фронту</a>
-                <a href="../pages/health.html" className="topic">Здоров'я</a>
-                <a href="../pages/society.html" className="topic">Суспільство</a>
-                <a href="../pages/politic.html" className="topic">Політика</a>
-                <a href="../pages/economy.html" className="topic">Економіка</a>
-                <a href="../pages/tech.html" className="topic">Технології</a>
-            </span>
+    return (<>
+        <span id="navigation">
+            <a href="./index.html" className="topic" id="main">Головна</a>
+            <a href="./war_in_Ukraine.html" className="topic">Новини з фронту</a>
+            <a href="./health.html" className="topic">Здоров'я</a>
+            <a href="./society.html" className="topic">Суспільство</a>
+            <a href="./politic.html" className="topic">Політика</a>
+            <a href="./economy.html" className="topic">Економіка</a>
+            <a href="./tech.html" className="topic">Технології</a>
+        </span>
     </>);
-    }
 }
 
 function createArticle(articleKey, title, imageSource, link) {
