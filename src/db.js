@@ -19,7 +19,7 @@ export default class DB {
     async insertArticles(Articles) {
         supabase.from('main_article').select('article_id').then(DBresponse => {
             const ids = new Set();
-            if(DBresponse.data.length < 20 && Articles) {
+            if(DBresponse.data.length < 10 && Articles) {
                 Articles.forEach(article => {
                     if(!ids.has(article.title)) {
                         supabase.from('main_article').insert({
@@ -36,13 +36,13 @@ export default class DB {
                         ids.add(article.title);
                     }
                 });
-            } else if(DBresponse.data.length >= 20 && Articles) {
+            } else if(DBresponse.data.length >= 10 && Articles) {
                 supabase.auth.signInWithPassword({
                     email: 'ekt_1@ukr.net',
                     password: 'notveryeasy4473'
                 }).then(res => {
                     console.log(res);
-                    for(let i = 0; i < 20; i++) {
+                    for(let i = 0; i < 10; i++) {
                         supabase.from('main_article').delete().match({
                             article_id: DBresponse.data[0].article_id
                         }).then(resp => {
