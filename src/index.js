@@ -4,8 +4,19 @@ import Apis from './apis';
 import DB from './db';
 
 function NavigationPanel() {
-    const currentUrl = document.location.href.includes('/index.html') ? document.location.href.replace('/index.html', '') : document.location.href;
-    alert(currentUrl);
+    if(document.location.href.includes('https://yaoleksa.github.io/theView/')) {
+        return (<>
+            <span id="navigation">
+                <a href="https://yaoleksa.github.io/theView/index.html" className="topic" id="main">Головна</a>
+                <a href="https://yaoleksa.github.io/theView/war_in_Ukraine.html" className="topic">Новини з фронту</a>
+                <a href="https://yaoleksa.github.io/theView/health.html" className="topic">Здоров'я</a>
+                <a href="https://yaoleksa.github.io/theView/society.html" className="topic">Суспільство</a>
+                <a href="https://yaoleksa.github.io/theView/politic.html" className="topic">Політика</a>
+                <a href="https://yaoleksa.github.io/theView/economy.html" className="topic">Економіка</a>
+                <a href="https://yaoleksa.github.io/theView/tech.html" className="topic">Технології</a>
+            </span>
+        </>);
+    }
     return (<>
         <span id="navigation">
             <a href="./index.html" className="topic" id="main">Головна</a>
