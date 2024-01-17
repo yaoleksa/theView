@@ -4,28 +4,15 @@ import Apis from './apis';
 import DB from './db';
 
 function NavigationPanel() {
-    if(document.location.href.includes('https://yaoleksa.github.io/theView/')) {
-        return (<>
-            <span id="navigation">
-                <a href="https://yaoleksa.github.io/theView/index.html" className="topic" id="main">Головна</a>
-                <a href="https://yaoleksa.github.io/theView/war_in_Ukraine.html" className="topic">Новини з фронту</a>
-                <a href="https://yaoleksa.github.io/theView/health.html" className="topic">Здоров'я</a>
-                <a href="https://yaoleksa.github.io/theView/society.html" className="topic">Суспільство</a>
-                <a href="https://yaoleksa.github.io/theView/politic.html" className="topic">Політика</a>
-                <a href="https://yaoleksa.github.io/theView/economy.html" className="topic">Економіка</a>
-                <a href="https://yaoleksa.github.io/theView/tech.html" className="topic">Технології</a>
-            </span>
-        </>);
-    }
     return (<>
         <span id="navigation">
-            <a href="./index.html" className="topic" id="main">Головна</a>
-            <a href="./war_in_Ukraine.html" className="topic">Новини з фронту</a>
-            <a href="./health.html" className="topic">Здоров'я</a>
-            <a href="./society.html" className="topic">Суспільство</a>
-            <a href="./politic.html" className="topic">Політика</a>
-            <a href="./economy.html" className="topic">Економіка</a>
-            <a href="./tech.html" className="topic">Технології</a>
+            <a href='#' className="topic" id="main">Головна</a>
+            <a href='#' className="topic" onClick={RerenderWithWar}>Новини з фронту</a>
+            <a href='#' className="topic">Здоров'я</a>
+            <a href='#' className="topic">Суспільство</a>
+            <a href='#' className="topic">Політика</a>
+            <a href='#' className="topic">Економіка</a>
+            <a href='#' className="topic">Технології</a>
         </span>
     </>);
 }
@@ -46,7 +33,7 @@ function MainArticle() {
             Apis.getNews().then(response => {
                 console.log(`Response status: ${response.status}`);
                 if(response.data.results) {
-                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian' && article.image_url);
+                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian' && article.image_url && article.image_url.length > 10);
                     setNew(allArticles.shift());
                     DBclient.insertArticles(allArticles);
                 } else {
@@ -80,7 +67,7 @@ function SideBarContainer() {
         if(articles.length === 0) {
             Apis.getNews().then(response => {
                 if(response.data.results) {
-                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian' && article.image_url);
+                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian' && article.image_url && article.image_url.length > 10);
                     allArticles.shift();
                     setArticles(allArticles);
                 } else {
@@ -121,6 +108,17 @@ function Page() {
             </div>
         </div>
         </>);
+}
+
+function RerenderWithWar() {
+    function AboutWar() {
+        return (<>
+            <NavigationPanel/>
+            <p>There will be article about war.</p>
+            <SideBarContainer/>
+        </>)
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<AboutWar/>);
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<Page/>);

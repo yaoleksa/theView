@@ -19,9 +19,9 @@ export default class DB {
     async insertArticles(Articles) {
         supabase.from('main_article').select('article_id').then(DBresponse => {
             const ids = new Set();
-            if(DBresponse.data.length === 0 && Articles) {
+            if(DBresponse.data.length < 10 && Articles) {
                 Articles.forEach(article => {
-                    if(!ids.has(article.title)) {
+                    if(!ids.has(article.title) && article.image_url) {
                         supabase.from('main_article').insert({
                             article_id: article.article_id,
                             title: article.title,
@@ -36,7 +36,7 @@ export default class DB {
                         ids.add(article.title);
                     }
                 });
-            } else if(DBresponse.data.length > 0 && Articles) {
+            } else if(DBresponse.data.length >= 10 && Articles) {
                 supabase.auth.signInWithPassword({
                     email: 'ekt_1@ukr.net',
                     password: 'notveryeasy4473'
@@ -50,23 +50,23 @@ export default class DB {
                         }).catch(err => {
                             console.log(err.message);
                         });
-                        Articles.forEach(article => {
-                            if(!ids.has(article.title)) {
-                                supabase.from('main_article').insert({
-                                    article_id: article.article_id,
-                                    title: article.title,
-                                    link: article.link,
-                                    content: article.content,
-                                    image_url: article.image_url
-                                }).then(resp => {
-                                    console.log(resp);
-                                }).catch(err => {
-                                    console.log(err.message);
-                                });
-                                ids.add(article.title);
-                            }
-                        });
                     }
+                    Articles.forEach(article => {
+                        if(!ids.has(article.title) && article.image_url) {
+                            supabase.from('main_article').insert({
+                                article_id: article.article_id,
+                                title: article.title,
+                                link: article.link,
+                                content: article.content,
+                                image_url: article.image_url
+                            }).then(resp => {
+                                console.log(resp);
+                            }).catch(err => {
+                                console.log(err.message);
+                            });
+                            ids.add(article.title);
+                        }
+                    });
                 }).catch(err => {
                     console.log(err.message);
                 });
