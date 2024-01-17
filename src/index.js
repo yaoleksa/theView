@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import path from 'path';
 import Apis from './apis';
 import DB from './db';
 
@@ -20,13 +19,13 @@ function NavigationPanel() {
     }
     return (<>
         <span id="navigation">
-            <a href={path.resolve(__dirname, 'index.html')} className="topic" id="main">Головна</a>
-            <a href={path.resolve(__dirname, 'pages/war_in_Ukraine.html')} className="topic">Новини з фронту</a>
-            <a href={path.resolve(__dirname, 'pages/health.html')} className="topic">Здоров'я</a>
-            <a href={path.resolve(__dirname, 'pages/society.html')} className="topic">Суспільство</a>
-            <a href={path.resolve(__dirname, 'pages/politic.html')} className="topic">Політика</a>
-            <a href={path.resolve(__dirname, 'pages/economy.html')} className="topic">Економіка</a>
-            <a href={path.resolve(__dirname, 'pages/tech.html')} className="topic">Технології</a>
+            <a href="./index.html" className="topic" id="main">Головна</a>
+            <a href="./war_in_Ukraine.html" className="topic">Новини з фронту</a>
+            <a href="./health.html" className="topic">Здоров'я</a>
+            <a href="./society.html" className="topic">Суспільство</a>
+            <a href="./politic.html" className="topic">Політика</a>
+            <a href="./economy.html" className="topic">Економіка</a>
+            <a href="./tech.html" className="topic">Технології</a>
         </span>
     </>);
 }
