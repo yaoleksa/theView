@@ -29,17 +29,4 @@ export default class Apis {
     static getExchangeRateNoCache() {
         return axios.get('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11');
     }
-    // static defineLanguage(txt) {
-    //     return axios.request({
-    //         method: 'POST',
-    //         url: 'https://api.edenai.run/v2/translation/language_detection',
-    //         headers: {
-    //             authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNGFjNDRmMmYtMGEyNS00ZGRlLWFmMWMtNmM1OTk3ZWJkN2U0IiwidHlwZSI6ImFwaV90b2tlbiJ9.c4w7Zyxd9EactKPLaOGVmKwoZ8Z_JPn8UHTlwOMBRrE'
-    //         },
-    //         data: {
-    //             providers: 'google',
-    //             text: txt
-    //         }
-    //     });
-    // }
 }
