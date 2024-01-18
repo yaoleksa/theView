@@ -71,7 +71,6 @@ function MainArticle() {
 
 function SideBarContainer() {
     const [articles, setArticles] = useState([]);
-    const [weatherInfo, setInfo] = useState(null);
     const news = [];
     useEffect(() => {
         if(articles.length === 0) {
@@ -83,15 +82,6 @@ function SideBarContainer() {
                 } else {
                     setArticles(response.data);
                 }
-            }).catch(err => {
-                console.error(err.message);
-            });
-        }
-        if(!weatherInfo) {
-            Apis.getWeather().then(response => {
-                console.log('CURRENT WEATHER ===');
-                console.log(response.data);
-                setInfo(response.data.current);
             }).catch(err => {
                 console.error(err.message);
             });
@@ -109,9 +99,46 @@ function SideBarContainer() {
     }
 }
 
+function WeatherForecast() {
+    const [weatherInfo, setWeather] = useState(null);
+    useEffect(() => {
+        if(!weatherInfo) {
+            Apis.getWeather().then(response => {
+                setWeather(response.data);
+            }).catch(error => {
+                console.log(error.message);
+            });
+        }
+    });
+    if(weatherInfo) {
+        console.log(weatherInfo);
+        const currentHour = new Date().getHours();
+        return (<>
+        <span>
+            <span className='weather'>Прогноз погоди:</span>
+            <span className='weather'>{`${weatherInfo.hourly.time[24 + currentHour].split('T')[0]}:`}</span>
+            <span>{weatherInfo.hourly.temperature_2m[24 + currentHour]}{'C' + String.fromCharCode(176)}</span>
+            <span className='weather'>{`${weatherInfo.hourly.time[48 + currentHour].split('T')[0]}:`}</span>
+            <span>{weatherInfo.hourly.temperature_2m[48 + currentHour]}{'C' + String.fromCharCode(176)}</span>
+            <span className='weather'>{`${weatherInfo.hourly.time[64 + currentHour].split('T')[0]}:`}</span>
+            <span>{weatherInfo.hourly.temperature_2m[64 + currentHour]}{'C' + String.fromCharCode(176)}</span>
+            <span className='weather'>{`${weatherInfo.hourly.time[88 + currentHour].split('T')[0]}:`}</span>
+            <span>{weatherInfo.hourly.temperature_2m[88 + currentHour]}{'C' + String.fromCharCode(176)}</span>
+            <span className='weather'>{`${weatherInfo.hourly.time[112 + currentHour].split('T')[0]}:`}</span>
+            <span>{weatherInfo.hourly.temperature_2m[112 + currentHour]}{'C' + String.fromCharCode(176)}</span>
+            <span className='weather'>{`${weatherInfo.hourly.time[136 + currentHour].split('T')[0]}:`}</span>
+            <span>{weatherInfo.hourly.temperature_2m[136 + currentHour]}{'C' + String.fromCharCode(176)}</span>
+        </span>
+        </>);
+    } else {
+        return (<span></span>);
+    }
+}
+
 function Page() {
     return (<>
         <NavigationPanel/>
+        <WeatherForecast/>
         <div id='content'>
             <MainArticle />
             <div>
