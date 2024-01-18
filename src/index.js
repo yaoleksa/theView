@@ -45,7 +45,7 @@ function MainArticle() {
                         .replace(/Getty Images/g, ''),
                         image_url: zeroArticle.media
                     });
-                    setNew(allArticles.shift());
+                    setNew(allArticles[0]);
                     DBclient.insertArticles(allArticles);
                 } else {
                     setNew(response.data.shift());
