@@ -30,15 +30,25 @@ function MainArticle() {
     const [mainNew, setNew] = useState(null);
     useEffect(() => {
         if(!mainNew) {
-            Apis.getNews().then(response => {
+            Apis.getMainNew().then(response => {
                 console.log(`Response status: ${response.status}`);
-                if(response.data.results) {
-                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian' && article.image_url && article.image_url.length > 10);
+                const allArticles = [];
+                if(response.data.articles) {
+                    const zeroArticle = response.data.articles.shift();
+                    allArticles.push({
+                        article_id: zeroArticle._id,
+                        title: zeroArticle.title,
+                        link: zeroArticle.link,
+                        content: zeroArticle.summary
+                        .replace(/Автор фото, /g, '')
+                        .replace(/Підпис до фото/g, '')
+                        .replace(/Getty Images/g, ''),
+                        image_url: zeroArticle.media
+                    });
                     setNew(allArticles.shift());
                     DBclient.insertArticles(allArticles);
                 } else {
                     setNew(response.data.shift());
-                    DBclient.insertArticles(response.data);
                 }
             }).catch(error => {
                 console.error(error.message);
@@ -79,7 +89,8 @@ function SideBarContainer() {
         }
         if(!weatherInfo) {
             Apis.getWeather().then(response => {
-                console.log(response.data.current);
+                console.log('CURRENT WEATHER ===');
+                console.log(response.data);
                 setInfo(response.data.current);
             }).catch(err => {
                 console.error(err.message);
