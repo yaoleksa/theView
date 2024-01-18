@@ -6,13 +6,13 @@ import DB from './db';
 function NavigationPanel() {
     return (<>
         <span id="navigation">
-            <a href='#' className="topic" id="main">Головна</a>
+            <a href='#' className="topic" id="main" onClick={RenderDefault}>Головна</a>
             <a href='#' className="topic" onClick={RerenderWithWar}>Новини з фронту</a>
-            <a href='#' className="topic">Здоров'я</a>
-            <a href='#' className="topic">Суспільство</a>
-            <a href='#' className="topic">Політика</a>
-            <a href='#' className="topic">Економіка</a>
-            <a href='#' className="topic">Технології</a>
+            <a href='#' className="topic" onClick={RenderWithHealth}>Здоров'я</a>
+            <a href='#' className="topic" onClick={RenderWithSociety}>Суспільство</a>
+            <a href='#' className="topic" onClick={RenderWithPolitic}>Політика</a>
+            <a href='#' className="topic" onClick={RenderWithEconomy}>Економіка</a>
+            <a href='#' className="topic" onClick={RenderWithTech}>Технології</a>
         </span>
     </>);
 }
@@ -110,15 +110,109 @@ function Page() {
         </>);
 }
 
+function RenderDefault() {
+    function DefaultPage() {
+        return (<>
+            <NavigationPanel/>
+            <div id='content'>
+                <MainArticle />
+                <div>
+                    <SideBarContainer/>
+                </div>
+            </div>
+            </>);
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<DefaultPage/>);
+}
+
 function RerenderWithWar() {
     function AboutWar() {
         return (<>
             <NavigationPanel/>
-            <p>There will be article about war.</p>
-            <SideBarContainer/>
-        </>)
+            <div id='content'>
+                <p>There will be article about war</p>
+                <div>
+                    <SideBarContainer/>
+                </div>
+            </div>
+            </>);
     }
     ReactDOM.createRoot(document.getElementById('root')).render(<AboutWar/>);
+}
+
+function RenderWithHealth() {
+    function AboutHealth() {
+        return (<>
+            <NavigationPanel/>
+            <div id='content'>
+                <p>There will be article about health</p>
+                <div>
+                    <SideBarContainer/>
+                </div>
+            </div>
+            </>);
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<AboutHealth/>);
+}
+
+function RenderWithSociety() {
+    function AboutSociety() {
+        return (<>
+            <NavigationPanel/>
+            <div id='content'>
+                <p>There will be article about society</p>
+                <div>
+                    <SideBarContainer/>
+                </div>
+            </div>
+            </>);
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<AboutSociety/>);
+}
+
+function RenderWithPolitic() {
+    function AboutPolitic() {
+        return (<>
+            <NavigationPanel/>
+            <div id='content'>
+                <p>There will be article about politic</p>
+                <div>
+                    <SideBarContainer/>
+                </div>
+            </div>
+            </>);
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<AboutPolitic/>);
+}
+
+function RenderWithEconomy() {
+    function AboutEconomy() {
+        return (<>
+            <NavigationPanel/>
+            <div id='content'>
+                <p>There will be article about economy</p>
+                <div>
+                    <SideBarContainer/>
+                </div>
+            </div>
+            </>);
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<AboutEconomy/>);
+}
+
+function RenderWithTech() {
+    function AboutTech() {
+        return (<>
+            <NavigationPanel/>
+            <div id='content'>
+                <p>There will be article about tech</p>
+                <div>
+                    <SideBarContainer/>
+                </div>
+            </div>
+            </>);
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<AboutTech/>);
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<Page/>);
