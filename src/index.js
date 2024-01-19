@@ -42,7 +42,7 @@ function MainArticle() {
                         content: zeroArticle.summary
                         .replace(/Автор фото, /g, '')
                         .replace(/Підпис до фото/g, '')
-                        .replace(/^[A-Za-z\s]/g, ''),
+                        .replace(/^[A-Za-z\s\,]+/, ''),
                         image_url: zeroArticle.media
                     });
                     setNew(allArticles[0]);
