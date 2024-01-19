@@ -42,7 +42,7 @@ function MainArticle() {
                         content: zeroArticle.summary
                         .replace(/Автор фото, /g, '')
                         .replace(/Підпис до фото/g, '')
-                        .replace(/Getty Images/g, ''),
+                        .replace(/^[A-Za-z\s]/g, ''),
                         image_url: zeroArticle.media
                     });
                     setNew(allArticles[0]);
@@ -163,6 +163,9 @@ function ExchangeRate() {
                 console.log('ABOUT CURRENCY');
                 console.log(response);
                 setRate(response.data.rates);
+                DB.insertRate({
+                    rates: response.data.rates
+                });
             }).catch(err => {
                 console.log(err.message);
             });

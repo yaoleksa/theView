@@ -18,58 +18,57 @@ export default class DB {
     }
     async insertArticles(Articles) {
         supabase.from('main_article').select('article_id').then(DBresponse => {
-            const ids = new Set();
-            if(DBresponse.data.length < 10 && Articles) {
+            if(DBresponse.data.length === 0 && Articles) {
                 Articles.forEach(article => {
-                    if(!ids.has(article.title) && article.image_url) {
-                        supabase.from('main_article').insert({
-                            article_id: article.article_id,
-                            title: article.title,
-                            link: article.link,
-                            content: article.content,
-                            image_url: article.image_url
-                        }).then(resp => {
-                            console.log(resp);
-                        }).catch(err => {
-                            console.log(err.message);
-                        });
-                        ids.add(article.title);
-                    }
-                });
-            } else if(DBresponse.data.length >= 10 && Articles) {
-                supabase.auth.signInWithPassword({
-                    email: 'ekt_1@ukr.net',
-                    password: 'notveryeasy4473'
-                }).then(res => {
-                    console.log(res);
-                    for(let i = 0; i < 10; i++) {
-                        supabase.from('main_article').delete().match({
-                            article_id: DBresponse.data[0].article_id
-                        }).then(resp => {
-                            console.log(resp);
-                        }).catch(err => {
-                            console.log(err.message);
-                        });
-                    }
-                    Articles.forEach(article => {
-                        if(!ids.has(article.title) && article.image_url) {
-                            supabase.from('main_article').insert({
-                                article_id: article.article_id,
-                                title: article.title,
-                                link: article.link,
-                                content: article.content,
-                                image_url: article.image_url
-                            }).then(resp => {
-                                console.log(resp);
-                            }).catch(err => {
-                                console.log(err.message);
-                            });
-                            ids.add(article.title);
-                        }
+                    supabase.from('main_article').insert({
+                        article_id: article.article_id,
+                        title: article.title,
+                        link: article.link,
+                        content: article.content,
+                        image_url: article.image_url
                     });
-                }).catch(err => {
-                    console.log(err.message);
                 });
+            } else if(DBresponse.data.length !== 0 && Articles) {
+                let index = 0;
+                for(let article of DBresponse.data) {
+                    supabase.from('main_article').update({
+                        title: Articles[index].title,
+                        link: Articles[index].link,
+                        content: Articles[index].content,
+                        image_url: Articles[index].image_url
+                    }).match({
+                        article_id: article.article_id
+                    });
+                    index++;
+                    if(index === Articles.length - 1) {
+                        break;
+                    }
+                }
+            }
+        }).catch(error => {
+            console.log(error.message);
+        })
+    }
+    static insertRate(obj) {
+        supabase.from('currency_info').insert({
+            id: Date.now(),
+            resp_body: obj
+        }).then(response => {
+            console.log(response);
+        }).catch(errora => {
+            console.log(errora.message);
+        });
+        supabase.from('currency_info').select('id').then(databaseResponse => {
+            if(databaseResponse.data.length > 3) {
+                for(let i = 0; i < 3; i++) {
+                    supabase.from('currency_info').delete().match({
+                        id: databaseResponse.data[i].id
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(err => {
+                        console.log(err.message);
+                    });
+                }
             }
         }).catch(error => {
             console.log(error.message);
@@ -77,5 +76,8 @@ export default class DB {
     }
     static getSavedArticles() {
         return supabase.from('main_article').select('*');
+    }
+    static getSavedRates() {
+        return supabase.from('currency_info').select('*').limit(1);
     }
 }

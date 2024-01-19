@@ -34,6 +34,9 @@ export default class Apis {
                 'X-RapidAPI-Key': 'dc40d2b288msh88ced99c0191b37p144f83jsne853bb67a11f',
                 'X-RapidAPI-Host': 'exchange-rate-api1.p.rapidapi.com'
               }
+        }).catch(error => {
+            console.log(error.message);
+            return DB.getSavedRates();
         });
     }
 }
