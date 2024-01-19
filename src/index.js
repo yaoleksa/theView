@@ -155,10 +155,42 @@ function WeatherForecast() {
     }
 }
 
+function ExchangeRate() {
+    const [currencyRate, setRate] = useState(null);
+    useEffect(() => {
+        if(!currencyRate) {
+            Apis.getExchangeRateCache().then(response => {
+                console.log('ABOUT CURRENCY');
+                console.log(response);
+                setRate(response.data.rates);
+            }).catch(err => {
+                console.log(err.message);
+            });
+        }
+    });
+    if(currencyRate) {
+        return (<>
+        <br/>
+        <span>
+            <span>{'Курси валют: '}</span>
+            <span>{'USD: '}</span>
+            <span>{`${currencyRate.USD < 1 ? (1/currencyRate.USD).toFixed(2) : currencyRate.USD.toFixed(2)}  `}</span>
+            <span>{'EUR: '}</span>
+            <span>{`${currencyRate.EUR < 1 ? (1/currencyRate.EUR).toFixed(2) : currencyRate.EUR.toFixed(2)}  `}</span>
+            <span>{'PLN: '}</span>
+            <span>{currencyRate.PLN < 1 ? (1/currencyRate.PLN).toFixed(2) : currencyRate.PLN.toFixed(2)}</span>
+        </span>
+        </>);
+    } else {
+        return (<span></span>);
+    }
+}
+
 function Page() {
     return (<>
         <NavigationPanel/>
         <WeatherForecast/>
+        <ExchangeRate/>
         <div id='content'>
             <MainArticle />
             <div>

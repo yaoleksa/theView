@@ -24,9 +24,16 @@ export default class Apis {
         return axios.get('https://api.open-meteo.com/v1/forecast?latitude=49.84&longitude=24.02&hourly=temperature_2m');
     }
     static getExchangeRateCache() {
-        return axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
-    }
-    static getExchangeRateNoCache() {
-        return axios.get('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11');
+        return axios.request({
+            method: 'GET',
+            url: 'https://exchange-rate-api1.p.rapidapi.com/latest',
+            params: {
+                base: 'UAH'
+            },
+            headers: {
+                'X-RapidAPI-Key': 'dc40d2b288msh88ced99c0191b37p144f83jsne853bb67a11f',
+                'X-RapidAPI-Host': 'exchange-rate-api1.p.rapidapi.com'
+              }
+        });
     }
 }
