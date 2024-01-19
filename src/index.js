@@ -172,6 +172,7 @@ function RenderDefault() {
     function DefaultPage() {
         return (<>
             <NavigationPanel/>
+            <WeatherForecast/>
             <div id='content'>
                 <MainArticle />
                 <div>
@@ -187,6 +188,7 @@ function RerenderWithWar() {
     function AboutWar() {
         return (<>
             <NavigationPanel/>
+            <WeatherForecast/>
             <div id='content'>
                 <p>There will be article about war</p>
                 <div>
@@ -202,6 +204,7 @@ function RenderWithHealth() {
     function AboutHealth() {
         return (<>
             <NavigationPanel/>
+            <WeatherForecast/>
             <div id='content'>
                 <p>There will be article about health</p>
                 <div>
@@ -217,6 +220,7 @@ function RenderWithSociety() {
     function AboutSociety() {
         return (<>
             <NavigationPanel/>
+            <WeatherForecast/>
             <div id='content'>
                 <p>There will be article about society</p>
                 <div>
@@ -232,6 +236,7 @@ function RenderWithPolitic() {
     function AboutPolitic() {
         return (<>
             <NavigationPanel/>
+            <WeatherForecast/>
             <div id='content'>
                 <p>There will be article about politic</p>
                 <div>
@@ -247,6 +252,7 @@ function RenderWithEconomy() {
     function AboutEconomy() {
         return (<>
             <NavigationPanel/>
+            <WeatherForecast/>
             <div id='content'>
                 <p>There will be article about economy</p>
                 <div>
@@ -262,6 +268,7 @@ function RenderWithTech() {
     function AboutTech() {
         return (<>
             <NavigationPanel/>
+            <WeatherForecast/>
             <div id='content'>
                 <p>There will be article about tech</p>
                 <div>
