@@ -21,7 +21,7 @@ export default class Apis {
         })
     }
     static getWeather() {
-        return axios.get('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m');
+        return axios.get('https://api.open-meteo.com/v1/forecast?latitude=49.84&longitude=24.02&hourly=temperature_2m');
     }
     static getExchangeRateCache() {
         return axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');

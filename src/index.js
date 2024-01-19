@@ -112,9 +112,21 @@ function WeatherForecast() {
     });
     if(weatherInfo) {
         console.log(weatherInfo);
-        const currentHour = new Date().getHours();
+        const currentDate = new Date();
+        const currentHour = currentDate.getHours();
+        const currentMonth = currentDate.getMonth();
+        let nameOfClass;
+        if(currentMonth > 10 || currentMonth < 2) {
+            nameOfClass = 'winter';
+        } else if(currentMonth > 1 && currentMonth < 5) {
+            nameOfClass = 'spring';
+        } else if(currentMonth > 4 && currentMonth < 8) {
+            nameOfClass = 'summer';
+        } else {
+            nameOfClass = 'autumn';
+        }
         return (<>
-        <span>
+        <span className={nameOfClass}>
             <span className='weather'>Прогноз погоди:</span>
             <span className='weather'>{`${weatherInfo.hourly.time[24 + currentHour].split('T')[0]}:`}</span>
             <span>{weatherInfo.hourly.temperature_2m[24 + currentHour]}{'C' + String.fromCharCode(176)}</span>

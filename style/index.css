@@ -37,3 +37,15 @@
 .weather {
     padding: 1%;
 }
+.winter {
+    background-color:lightcyan;
+}
+.spring {
+    background-color: lightgreen;
+}
+.summer {
+    background-color:lightyellow;
+}
+.autumn {
+    background-color: lightsalmon;
+}
