@@ -112,10 +112,18 @@ function WeatherForecast() {
     });
     if(weatherInfo) {
         console.log(weatherInfo);
+        const week = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота', 'Неділя'];
         const currentDate = new Date();
         const currentHour = currentDate.getHours();
         const currentMonth = currentDate.getMonth();
+        let currentDay = currentDate.getDay() - 1;
         let nameOfClass;
+        const tommorow = currentDay + 1 < 7 ? currentDay + 1 : (currentDay + 1)%7;
+        const tommorowOne = currentDay + 2 < 7 ? currentDay + 2 : (currentDay + 2)%7;
+        const tommorowTwo = currentDay + 3 < 7 ? currentDay + 3 : (currentDay + 3)%7;
+        const tommorowThree = currentDay + 4 < 7 ? currentDay + 4 : (currentDay + 4)%7;
+        const tommorowFour = currentDay + 5 < 7 ? currentDay + 5 : (currentDay + 5)%7;
+        const tommorowFive = currentDay + 6 < 7 ? currentDay + 6 : (currentDay + 6)%7;
         if(currentMonth > 10 || currentMonth < 2) {
             nameOfClass = 'winter';
         } else if(currentMonth > 1 && currentMonth < 5) {
@@ -128,17 +136,17 @@ function WeatherForecast() {
         return (<>
         <span className={nameOfClass}>
             <span className='weather'>Прогноз погоди:</span>
-            <span className='weather'>{`${weatherInfo.hourly.time[24 + currentHour].split('T')[0]}:`}</span>
+            <span className='weather'>{week[tommorow]}:</span>
             <span>{weatherInfo.hourly.temperature_2m[24 + currentHour]}{'C' + String.fromCharCode(176)}</span>
-            <span className='weather'>{`${weatherInfo.hourly.time[48 + currentHour].split('T')[0]}:`}</span>
+            <span className='weather'>{week[tommorowOne]}:</span>
             <span>{weatherInfo.hourly.temperature_2m[48 + currentHour]}{'C' + String.fromCharCode(176)}</span>
-            <span className='weather'>{`${weatherInfo.hourly.time[64 + currentHour].split('T')[0]}:`}</span>
+            <span className='weather'>{week[tommorowTwo]}:</span>
             <span>{weatherInfo.hourly.temperature_2m[64 + currentHour]}{'C' + String.fromCharCode(176)}</span>
-            <span className='weather'>{`${weatherInfo.hourly.time[88 + currentHour].split('T')[0]}:`}</span>
+            <span className='weather'>{week[tommorowThree]}:</span>
             <span>{weatherInfo.hourly.temperature_2m[88 + currentHour]}{'C' + String.fromCharCode(176)}</span>
-            <span className='weather'>{`${weatherInfo.hourly.time[112 + currentHour].split('T')[0]}:`}</span>
+            <span className='weather'>{week[tommorowFour]}:</span>
             <span>{weatherInfo.hourly.temperature_2m[112 + currentHour]}{'C' + String.fromCharCode(176)}</span>
-            <span className='weather'>{`${weatherInfo.hourly.time[136 + currentHour].split('T')[0]}:`}</span>
+            <span className='weather'>{week[tommorowFive]}:</span>
             <span>{weatherInfo.hourly.temperature_2m[136 + currentHour]}{'C' + String.fromCharCode(176)}</span>
         </span>
         </>);
