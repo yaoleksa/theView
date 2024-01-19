@@ -46,6 +46,7 @@ function MainArticle() {
                         image_url: zeroArticle.media
                     });
                     setNew(allArticles[0]);
+                    const DBclient = new DB();
                     DBclient.insertArticles(allArticles);
                 } else {
                     setNew(response.data.shift());
