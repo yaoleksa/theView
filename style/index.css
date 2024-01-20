@@ -19,6 +19,9 @@
 #main_image {
     width: 80%;
 }
+#ex_rate {
+    margin-left: 1%;
+}
 .topic {
     margin: 2rem;
     text-decoration: none;
@@ -48,4 +51,7 @@
 }
 .autumn {
     background-color: lightsalmon;
+}
+.cu_name {
+    margin-left: 3%;
 }

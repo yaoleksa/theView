@@ -175,13 +175,13 @@ function ExchangeRate() {
     if(currencyRate) {
         return (<>
         <br/>
-        <span>
+        <span id="ex_rate">
             <span>{'Курси валют: '}</span>
-            <span>{'USD: '}</span>
+            <span className='cu_name'>{'USD:'}</span>
             <span>{`${currencyRate.USD < 1 ? (1/currencyRate.USD).toFixed(2) : currencyRate.USD.toFixed(2)}  `}</span>
-            <span>{'EUR: '}</span>
+            <span className='cu_name'>{'EUR:'}</span>
             <span>{`${currencyRate.EUR < 1 ? (1/currencyRate.EUR).toFixed(2) : currencyRate.EUR.toFixed(2)}  `}</span>
-            <span>{'PLN: '}</span>
+            <span className='cu_name'>{'PLN:'}</span>
             <span>{currencyRate.PLN < 1 ? (1/currencyRate.PLN).toFixed(2) : currencyRate.PLN.toFixed(2)}</span>
         </span>
         </>);
@@ -209,6 +209,7 @@ function RenderDefault() {
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
+            <ExchangeRate/>
             <div id='content'>
                 <MainArticle />
                 <div>
@@ -225,6 +226,7 @@ function RerenderWithWar() {
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
+            <ExchangeRate/>
             <div id='content'>
                 <p>There will be article about war</p>
                 <div>
@@ -241,6 +243,7 @@ function RenderWithHealth() {
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
+            <ExchangeRate/>
             <div id='content'>
                 <p>There will be article about health</p>
                 <div>
@@ -257,6 +260,7 @@ function RenderWithSociety() {
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
+            <ExchangeRate/>
             <div id='content'>
                 <p>There will be article about society</p>
                 <div>
@@ -273,6 +277,7 @@ function RenderWithPolitic() {
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
+            <ExchangeRate/>
             <div id='content'>
                 <p>There will be article about politic</p>
                 <div>
@@ -289,6 +294,7 @@ function RenderWithEconomy() {
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
+            <ExchangeRate/>
             <div id='content'>
                 <p>There will be article about economy</p>
                 <div>
@@ -305,6 +311,7 @@ function RenderWithTech() {
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
+            <ExchangeRate/>
             <div id='content'>
                 <p>There will be article about tech</p>
                 <div>
