@@ -39,4 +39,17 @@ export default class Apis {
             return DB.getSavedRates();
         });
     }
+    static getNewsByTopic(topic) {
+        return axios.request({
+            method: 'GET',
+            url: 'https://gnews.io/api/v4/search',
+            params: {
+                q: topic,
+                lang: 'ua',
+                country:'ua',
+                max: 1,
+                apikey: '985901b98d070eed7d957eda27580896'
+            }
+        })
+    }
 }

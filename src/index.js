@@ -59,8 +59,8 @@ function MainArticle() {
     console.log(mainNew);
     if(mainNew) {
         return (<>
-        <div id="main_article">
-            <img id="main_image" src={mainNew.image_url}/>
+        <div className="main_article">
+            <img className="main_image" src={mainNew.image_url}/>
             <h1>{mainNew.title}</h1>
             <p>{mainNew.content}</p>
         </div>
@@ -195,7 +195,7 @@ function Page() {
         <NavigationPanel/>
         <WeatherForecast/>
         <ExchangeRate/>
-        <div id='content'>
+        <div className='content'>
             <MainArticle />
             <div>
                 <SideBarContainer/>
@@ -210,7 +210,7 @@ function RenderDefault() {
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
-            <div id='content'>
+            <div className='content'>
                 <MainArticle />
                 <div>
                     <SideBarContainer/>
@@ -223,11 +223,45 @@ function RenderDefault() {
 
 function RerenderWithWar() {
     function AboutWar() {
+        const [warNew, setNew] = useState(null);
+        useEffect(() => {
+            Apis.getNewsByTopic('війна').then(response => {
+                const article = response.data.articles[0];
+                setNew(article);
+                const client = new DB();
+                client.insertArticles([{
+                    article_id: Date.now(),
+                    title: article.title,
+                    link: article.url,
+                    content: article.description,
+                    image_url: article.image
+                }]);
+            }).catch(error => {
+                console.log(error.message);
+            });
+        });
+        if(warNew) {
+            return (<>
+                <NavigationPanel/>
+                <WeatherForecast/>
+                <ExchangeRate/>
+                <div className='content'>
+                <div className="main_article">
+                    <img className="main_image" src={warNew.image}/>
+                    <h1>{warNew.title}</h1>
+                    <p>{warNew.description}</p>
+                </div>
+                    <div>
+                        <SideBarContainer/>
+                    </div>
+                </div>
+                </>);
+        }
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
-            <div id='content'>
+            <div className='content'>
                 <p>There will be article about war</p>
                 <div>
                     <SideBarContainer/>
@@ -244,7 +278,7 @@ function RenderWithHealth() {
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
-            <div id='content'>
+            <div className='content'>
                 <p>There will be article about health</p>
                 <div>
                     <SideBarContainer/>
@@ -261,7 +295,7 @@ function RenderWithSociety() {
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
-            <div id='content'>
+            <div className='content'>
                 <p>There will be article about society</p>
                 <div>
                     <SideBarContainer/>
@@ -278,7 +312,7 @@ function RenderWithPolitic() {
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
-            <div id='content'>
+            <div className='content'>
                 <p>There will be article about politic</p>
                 <div>
                     <SideBarContainer/>
@@ -295,7 +329,7 @@ function RenderWithEconomy() {
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
-            <div id='content'>
+            <div className='content'>
                 <p>There will be article about economy</p>
                 <div>
                     <SideBarContainer/>
@@ -312,7 +346,7 @@ function RenderWithTech() {
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
-            <div id='content'>
+            <div className='content'>
                 <p>There will be article about tech</p>
                 <div>
                     <SideBarContainer/>

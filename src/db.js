@@ -17,32 +17,24 @@ export default class DB {
         })
     }
     async insertArticles(Articles) {
+        Articles.forEach(article => {
+            supabase.from('main_article').insert({
+                article_id: article.article_id,
+                title: article.title,
+                link: article.link,
+                content: article.content,
+                image_url: article.image_url
+            });
+        });
         supabase.from('main_article').select('article_id').then(DBresponse => {
-            if(DBresponse.data.length === 0 && Articles) {
-                Articles.forEach(article => {
-                    supabase.from('main_article').insert({
-                        article_id: article.article_id,
-                        title: article.title,
-                        link: article.link,
-                        content: article.content,
-                        image_url: article.image_url
+            if(DBresponse.data.length >= 10) {
+                for(let i = 0; i < 10; i++) {
+                    supabase.from('main_article').delete().match(DBresponse.data[i].article_id)
+                    .then(databaseResponse => {
+                        console.log(databaseResponse)
+                    }).catch(error => {
+                        console.log(error);
                     });
-                });
-            } else if(DBresponse.data.length !== 0 && Articles) {
-                let index = 0;
-                for(let article of DBresponse.data) {
-                    supabase.from('main_article').update({
-                        title: Articles[index].title,
-                        link: Articles[index].link,
-                        content: Articles[index].content,
-                        image_url: Articles[index].image_url
-                    }).match({
-                        article_id: article.article_id
-                    });
-                    index++;
-                    if(index === Articles.length - 1) {
-                        break;
-                    }
                 }
             }
         }).catch(error => {
