@@ -47,7 +47,7 @@ function MainArticle() {
                     });
                     setNew(allArticles[0]);
                     const DBclient = new DB();
-                    DBclient.insertArticles(allArticles);
+                    DBclient.insertArticles(allArticles, null);
                 } else {
                     setNew(response.data.shift());
                 }
@@ -93,7 +93,7 @@ function SideBarContainer() {
         for(let article of articles) {
             news.push(createArticle(article.article_id, article.title, article.image_url, article.link));
         }
-        DBclient.insertArticles(articles);
+        DBclient.insertArticles(articles, null);
         return news;
     } else {
         return (<div></div>);
@@ -235,7 +235,7 @@ function RerenderWithWar() {
                     link: article.url,
                     content: article.description,
                     image_url: article.image
-                }]);
+                }], 'war');
             }).catch(error => {
                 console.log(error.message);
             });

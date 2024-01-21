@@ -16,19 +16,24 @@ export default class DB {
             console.log(err.message);
         })
     }
-    async insertArticles(Articles) {
+    async insertArticles(Articles, q) {
         Articles.forEach(article => {
             supabase.from('main_article').insert({
                 article_id: article.article_id,
                 title: article.title,
                 link: article.link,
                 content: article.content,
-                image_url: article.image_url
-            }).then(response => {}).catch(error => {
+                image_url: article.image_url,
+                topic: q
+            }).then(response => {
+                console.log(response);
+            }).catch(error => {
                 console.log(error.message);
             });
         });
-        supabase.from('main_article').select('article_id').then(DBresponse => {
+        supabase.from('main_article').select('article_id').match({
+            topic: null
+        }).then(DBresponse => {
             if(DBresponse.data.length >= 30) {
                 for(let i = 0; i < 30; i++) {
                     supabase.from('main_article').delete().match({
