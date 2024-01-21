@@ -24,15 +24,20 @@ export default class DB {
                 link: article.link,
                 content: article.content,
                 image_url: article.image_url
+            }).then(response => {}).catch(error => {
+                console.log(error.message);
             });
         });
         supabase.from('main_article').select('article_id').then(DBresponse => {
             if(DBresponse.data.length >= 10) {
                 for(let i = 0; i < 10; i++) {
-                    supabase.from('main_article').delete().match(DBresponse.data[i].article_id)
+                    supabase.from('main_article').delete().match({
+                        article_id: DBresponse.data[i].article_id
+                    })
                     .then(databaseResponse => {
-                        console.log(databaseResponse)
+                        console.log(databaseResponse);
                     }).catch(error => {
+                        console.log('Error happened here');
                         console.log(error);
                     });
                 }
