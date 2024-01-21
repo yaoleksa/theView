@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import Apis from './apis';
 import DB from './db';
 
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
 function NavigationPanel() {
     return (<>
         <span id="navigation">
@@ -218,7 +220,7 @@ function RenderDefault() {
             </div>
             </>);
     }
-    ReactDOM.createRoot(document.getElementById('root')).render(<DefaultPage/>);
+    root.render(<DefaultPage/>);
 }
 
 function RerenderWithWar() {
@@ -269,7 +271,7 @@ function RerenderWithWar() {
             </div>
             </>);
     }
-    ReactDOM.createRoot(document.getElementById('root')).render(<AboutWar/>);
+    root.render(<AboutWar/>);
 }
 
 function RenderWithHealth() {
@@ -286,7 +288,7 @@ function RenderWithHealth() {
             </div>
             </>);
     }
-    ReactDOM.createRoot(document.getElementById('root')).render(<AboutHealth/>);
+    root.render(<AboutHealth/>);
 }
 
 function RenderWithSociety() {
@@ -303,7 +305,7 @@ function RenderWithSociety() {
             </div>
             </>);
     }
-    ReactDOM.createRoot(document.getElementById('root')).render(<AboutSociety/>);
+    root.render(<AboutSociety/>);
 }
 
 function RenderWithPolitic() {
@@ -320,7 +322,7 @@ function RenderWithPolitic() {
             </div>
             </>);
     }
-    ReactDOM.createRoot(document.getElementById('root')).render(<AboutPolitic/>);
+    root.render(<AboutPolitic/>);
 }
 
 function RenderWithEconomy() {
@@ -337,7 +339,7 @@ function RenderWithEconomy() {
             </div>
             </>);
     }
-    ReactDOM.createRoot(document.getElementById('root')).render(<AboutEconomy/>);
+    root.render(<AboutEconomy/>);
 }
 
 function RenderWithTech() {
@@ -354,8 +356,8 @@ function RenderWithTech() {
             </div>
             </>);
     }
-    ReactDOM.createRoot(document.getElementById('root')).render(<AboutTech/>);
+    root.render(<AboutTech/>);
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<Page/>);
+root.render(<Page/>);
 export { NavigationPanel, SideBarContainer };
