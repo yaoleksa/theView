@@ -29,8 +29,8 @@ export default class DB {
             });
         });
         supabase.from('main_article').select('article_id').then(DBresponse => {
-            if(DBresponse.data.length >= 10) {
-                for(let i = 0; i < 10; i++) {
+            if(DBresponse.data.length >= 30) {
+                for(let i = 0; i < 30; i++) {
                     supabase.from('main_article').delete().match({
                         article_id: DBresponse.data[i].article_id
                     })
