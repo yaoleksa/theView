@@ -276,12 +276,46 @@ function RerenderWithWar() {
 
 function RenderWithHealth() {
     function AboutHealth() {
+        const [warNew, setNew] = useState(null);
+        useEffect(() => {
+            Apis.getNewsByTopic("здоров").then(response => {
+                const article = response.data.articles[0];
+                setNew(article);
+                const client = new DB();
+                client.insertArticles([{
+                    article_id: Date.now(),
+                    title: article.title,
+                    link: article.url,
+                    content: article.description,
+                    image_url: article.image
+                }], 'war');
+            }).catch(error => {
+                console.log(error.message);
+            });
+        });
+        if(warNew) {
+            return (<>
+                <NavigationPanel/>
+                <WeatherForecast/>
+                <ExchangeRate/>
+                <div className='content'>
+                <div className="main_article">
+                    <img className="main_image" src={warNew.image}/>
+                    <h1>{warNew.title}</h1>
+                    <p>{warNew.description}</p>
+                </div>
+                    <div>
+                        <SideBarContainer/>
+                    </div>
+                </div>
+                </>);
+        }
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
-                <p>There will be article about health</p>
+                <p>There will be article about war</p>
                 <div>
                     <SideBarContainer/>
                 </div>
@@ -293,12 +327,46 @@ function RenderWithHealth() {
 
 function RenderWithSociety() {
     function AboutSociety() {
+        const [warNew, setNew] = useState(null);
+        useEffect(() => {
+            Apis.getNewsByTopic("суспільство").then(response => {
+                const article = response.data.articles[0];
+                setNew(article);
+                const client = new DB();
+                client.insertArticles([{
+                    article_id: Date.now(),
+                    title: article.title,
+                    link: article.url,
+                    content: article.description,
+                    image_url: article.image
+                }], 'war');
+            }).catch(error => {
+                console.log(error.message);
+            });
+        });
+        if(warNew) {
+            return (<>
+                <NavigationPanel/>
+                <WeatherForecast/>
+                <ExchangeRate/>
+                <div className='content'>
+                <div className="main_article">
+                    <img className="main_image" src={warNew.image}/>
+                    <h1>{warNew.title}</h1>
+                    <p>{warNew.description}</p>
+                </div>
+                    <div>
+                        <SideBarContainer/>
+                    </div>
+                </div>
+                </>);
+        }
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
-                <p>There will be article about society</p>
+                <p>There will be article about war</p>
                 <div>
                     <SideBarContainer/>
                 </div>
@@ -310,12 +378,46 @@ function RenderWithSociety() {
 
 function RenderWithPolitic() {
     function AboutPolitic() {
+        const [warNew, setNew] = useState(null);
+        useEffect(() => {
+            Apis.getNewsByTopic("політика").then(response => {
+                const article = response.data.articles[0];
+                setNew(article);
+                const client = new DB();
+                client.insertArticles([{
+                    article_id: Date.now(),
+                    title: article.title,
+                    link: article.url,
+                    content: article.description,
+                    image_url: article.image
+                }], 'war');
+            }).catch(error => {
+                console.log(error.message);
+            });
+        });
+        if(warNew) {
+            return (<>
+                <NavigationPanel/>
+                <WeatherForecast/>
+                <ExchangeRate/>
+                <div className='content'>
+                <div className="main_article">
+                    <img className="main_image" src={warNew.image}/>
+                    <h1>{warNew.title}</h1>
+                    <p>{warNew.description}</p>
+                </div>
+                    <div>
+                        <SideBarContainer/>
+                    </div>
+                </div>
+                </>);
+        }
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
-                <p>There will be article about politic</p>
+                <p>There will be article about war</p>
                 <div>
                     <SideBarContainer/>
                 </div>
@@ -327,12 +429,46 @@ function RenderWithPolitic() {
 
 function RenderWithEconomy() {
     function AboutEconomy() {
+        const [warNew, setNew] = useState(null);
+        useEffect(() => {
+            Apis.getNewsByTopic("економіка").then(response => {
+                const article = response.data.articles[0];
+                setNew(article);
+                const client = new DB();
+                client.insertArticles([{
+                    article_id: Date.now(),
+                    title: article.title,
+                    link: article.url,
+                    content: article.description,
+                    image_url: article.image
+                }], 'war');
+            }).catch(error => {
+                console.log(error.message);
+            });
+        });
+        if(warNew) {
+            return (<>
+                <NavigationPanel/>
+                <WeatherForecast/>
+                <ExchangeRate/>
+                <div className='content'>
+                <div className="main_article">
+                    <img className="main_image" src={warNew.image}/>
+                    <h1>{warNew.title}</h1>
+                    <p>{warNew.description}</p>
+                </div>
+                    <div>
+                        <SideBarContainer/>
+                    </div>
+                </div>
+                </>);
+        }
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
-                <p>There will be article about economy</p>
+                <p>There will be article about war</p>
                 <div>
                     <SideBarContainer/>
                 </div>
@@ -344,12 +480,46 @@ function RenderWithEconomy() {
 
 function RenderWithTech() {
     function AboutTech() {
+        const [warNew, setNew] = useState(null);
+        useEffect(() => {
+            Apis.getNewsByTopic("технології").then(response => {
+                const article = response.data.articles[0];
+                setNew(article);
+                const client = new DB();
+                client.insertArticles([{
+                    article_id: Date.now(),
+                    title: article.title,
+                    link: article.url,
+                    content: article.description,
+                    image_url: article.image
+                }], 'war');
+            }).catch(error => {
+                console.log(error.message);
+            });
+        });
+        if(warNew) {
+            return (<>
+                <NavigationPanel/>
+                <WeatherForecast/>
+                <ExchangeRate/>
+                <div className='content'>
+                <div className="main_article">
+                    <img className="main_image" src={warNew.image}/>
+                    <h1>{warNew.title}</h1>
+                    <p>{warNew.description}</p>
+                </div>
+                    <div>
+                        <SideBarContainer/>
+                    </div>
+                </div>
+                </>);
+        }
         return (<>
             <NavigationPanel/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
-                <p>There will be article about tech</p>
+                <p>There will be article about war</p>
                 <div>
                     <SideBarContainer/>
                 </div>
