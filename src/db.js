@@ -61,6 +61,7 @@ export default class DB {
                     supabase.from('currency_info').delete().match({
                         id: databaseResponse.data[i].id
                     }).then(resp => {
+                        console.log('item has been deleted');
                         console.log(resp);
                     }).catch(err => {
                         console.log(err.message);
