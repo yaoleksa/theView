@@ -34,8 +34,8 @@ export default class DB {
         supabase.from('main_article').select('article_id').match({
             topic: null
         }).then(DBresponse => {
-            if(DBresponse.data.length >= 30) {
-                for(let i = 0; i < 30; i++) {
+            if(DBresponse.data.length >= 15) {
+                for(let i = 0; i < 10; i++) {
                     supabase.from('main_article').delete().match({
                         article_id: DBresponse.data[i].article_id
                     })
