@@ -279,7 +279,7 @@ function RenderWithHealth() {
         const [warNew, setNew] = useState(null);
         useEffect(() => {
             Apis.getNewsByTopic("здоров").then(response => {
-                const article = response.data.articles[0];
+                const article = response.data.articles ? response.data.articles[0] : response.data[0];
                 setNew(article);
                 const client = new DB();
                 client.insertArticles([{
@@ -330,7 +330,7 @@ function RenderWithSociety() {
         const [warNew, setNew] = useState(null);
         useEffect(() => {
             Apis.getNewsByTopic("суспільство").then(response => {
-                const article = response.data.articles[0];
+                const article = response.data.articles ? response.data.articles[0] : response.data[0];
                 setNew(article);
                 const client = new DB();
                 client.insertArticles([{
@@ -381,7 +381,7 @@ function RenderWithPolitic() {
         const [warNew, setNew] = useState(null);
         useEffect(() => {
             Apis.getNewsByTopic("політика").then(response => {
-                const article = response.data.articles[0];
+                const article = response.data.articles ? response.data.articles[0] : response.data[0];
                 setNew(article);
                 const client = new DB();
                 client.insertArticles([{
@@ -432,7 +432,7 @@ function RenderWithEconomy() {
         const [warNew, setNew] = useState(null);
         useEffect(() => {
             Apis.getNewsByTopic("економіка").then(response => {
-                const article = response.data.articles[0];
+                const article = response.data.articles ? response.data.articles[0] : response.data[0];
                 setNew(article);
                 const client = new DB();
                 client.insertArticles([{
@@ -483,7 +483,7 @@ function RenderWithTech() {
         const [warNew, setNew] = useState(null);
         useEffect(() => {
             Apis.getNewsByTopic("технології").then(response => {
-                const article = response.data.articles[0];
+                const article = response.data.articles ? response.data.articles[0] : response.data[0];
                 setNew(article);
                 const client = new DB();
                 client.insertArticles([{
