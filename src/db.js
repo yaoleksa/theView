@@ -77,8 +77,10 @@ export default class DB {
             console.log(error.message);
         })
     }
-    static getSavedArticles() {
-        return supabase.from('main_article').select('*');
+    static getSavedArticles(q) {
+        return supabase.from('main_article').select('*').match({
+            topic: q
+        });
     }
     static getSavedRates() {
         return supabase.from('currency_info').select('*').limit(1);

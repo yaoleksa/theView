@@ -17,7 +17,7 @@ export default class Apis {
             }
         }).catch(err => {
             console.log(`and this one: ${err.message}`);
-            return DB.getSavedArticles();
+            return DB.getSavedArticles(null);
         })
     }
     static getWeather() {
@@ -50,6 +50,9 @@ export default class Apis {
                 max: 1,
                 apikey: '985901b98d070eed7d957eda27580896'
             }
+        }).catch(error => {
+            console.log(error.message);
+            return DB.getSavedArticles(topic);
         })
     }
 }

@@ -228,7 +228,7 @@ function RerenderWithWar() {
         const [warNew, setNew] = useState(null);
         useEffect(() => {
             Apis.getNewsByTopic('війна').then(response => {
-                const article = response.data.articles[0];
+                const article = response.data.articles ? response.data.articles[0] : response.data[0];
                 setNew(article);
                 const client = new DB();
                 client.insertArticles([{
@@ -237,7 +237,7 @@ function RerenderWithWar() {
                     link: article.url,
                     content: article.description,
                     image_url: article.image
-                }], 'war');
+                }], 'війна');
             }).catch(error => {
                 console.log(error.message);
             });
@@ -288,7 +288,7 @@ function RenderWithHealth() {
                     link: article.url,
                     content: article.description,
                     image_url: article.image
-                }], 'war');
+                }], 'здоров');
             }).catch(error => {
                 console.log(error.message);
             });
@@ -339,7 +339,7 @@ function RenderWithSociety() {
                     link: article.url,
                     content: article.description,
                     image_url: article.image
-                }], 'war');
+                }], 'суспільство');
             }).catch(error => {
                 console.log(error.message);
             });
@@ -390,7 +390,7 @@ function RenderWithPolitic() {
                     link: article.url,
                     content: article.description,
                     image_url: article.image
-                }], 'war');
+                }], 'політика');
             }).catch(error => {
                 console.log(error.message);
             });
@@ -441,7 +441,7 @@ function RenderWithEconomy() {
                     link: article.url,
                     content: article.description,
                     image_url: article.image
-                }], 'war');
+                }], 'економіка');
             }).catch(error => {
                 console.log(error.message);
             });
@@ -492,7 +492,7 @@ function RenderWithTech() {
                     link: article.url,
                     content: article.description,
                     image_url: article.image
-                }], 'war');
+                }], 'технології');
             }).catch(error => {
                 console.log(error.message);
             });
