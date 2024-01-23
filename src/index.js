@@ -65,6 +65,7 @@ function MainArticle() {
             <img className="main_image" src={mainNew.image_url}/>
             <h1>{mainNew.title}</h1>
             <p>{mainNew.content}</p>
+            <a href={mainNew.link}>Читати повний текст статті...</a>
         </div>
         </>);
     } else {
@@ -229,16 +230,18 @@ function RerenderWithWar() {
         useEffect(() => {
             Apis.getNewsByTopic('війна').then(response => {
                 if(!topicNew) {
+                    const allArticles = [];
                     const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    setNew(article);
-                    const client = new DB();
-                    client.insertArticles([{
+                    allArticles.push({
                         article_id: Date.now(),
                         title: article.title,
-                        link: article.url,
-                        content: article.description,
-                        image_url: article.image
-                    }], 'війна');
+                        link: article.url ? article.url : article.link,
+                        content: article.description ? article.description : article.content,
+                        image_url: article.image ? article.image : article.image_url
+                    });
+                    setNew(allArticles[0]);
+                    const client = new DB();
+                    client.insertArticles(allArticles, 'війна');
                 }
             }).catch(error => {
                 console.log(error.message);
@@ -251,9 +254,10 @@ function RerenderWithWar() {
                 <ExchangeRate/>
                 <div className='content'>
                 <div className="main_article">
-                    <img className="main_image" src={topicNew.image}/>
+                    <img className="main_image" src={topicNew.image_url}/>
                     <h1>{topicNew.title}</h1>
-                    <p>{topicNew.description}</p>
+                    <p>{topicNew.content}</p>
+                    <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
                         <SideBarContainer/>
@@ -280,18 +284,20 @@ function RenderWithHealth() {
     function AboutHealth() {
         const [topicNew, setNew] = useState(null);
         useEffect(() => {
-            Apis.getNewsByTopic("здоров").then(response => {
+            Apis.getNewsByTopic('здоров').then(response => {
                 if(!topicNew) {
+                    const allArticles = [];
                     const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    setNew(article);
-                    const client = new DB();
-                    client.insertArticles([{
+                    allArticles.push({
                         article_id: Date.now(),
                         title: article.title,
-                        link: article.url,
-                        content: article.description,
-                        image_url: article.image
-                    }], 'здоров');
+                        link: article.url ? article.url : article.link,
+                        content: article.description ? article.description : article.content,
+                        image_url: article.image ? article.image : article.image_url
+                    });
+                    setNew(allArticles[0]);
+                    const client = new DB();
+                    client.insertArticles(allArticles, 'здоров');
                 }
             }).catch(error => {
                 console.log(error.message);
@@ -304,9 +310,10 @@ function RenderWithHealth() {
                 <ExchangeRate/>
                 <div className='content'>
                 <div className="main_article">
-                    <img className="main_image" src={topicNew.image}/>
+                    <img className="main_image" src={topicNew.image_url}/>
                     <h1>{topicNew.title}</h1>
-                    <p>{topicNew.description}</p>
+                    <p>{topicNew.content}</p>
+                    <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
                         <SideBarContainer/>
@@ -333,18 +340,20 @@ function RenderWithSociety() {
     function AboutSociety() {
         const [topicNew, setNew] = useState(null);
         useEffect(() => {
-            Apis.getNewsByTopic("суспільство").then(response => {
+            Apis.getNewsByTopic('суспільство').then(response => {
                 if(!topicNew) {
+                    const allArticles = [];
                     const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    setNew(article);
-                    const client = new DB();
-                    client.insertArticles([{
+                    allArticles.push({
                         article_id: Date.now(),
                         title: article.title,
-                        link: article.url,
-                        content: article.description,
-                        image_url: article.image
-                    }], 'суспільство');
+                        link: article.url ? article.url : article.link,
+                        content: article.description ? article.description : article.content,
+                        image_url: article.image ? article.image : article.image_url
+                    });
+                    setNew(allArticles[0]);
+                    const client = new DB();
+                    client.insertArticles(allArticles, 'суспільство');
                 }
             }).catch(error => {
                 console.log(error.message);
@@ -357,9 +366,10 @@ function RenderWithSociety() {
                 <ExchangeRate/>
                 <div className='content'>
                 <div className="main_article">
-                    <img className="main_image" src={topicNew.image}/>
+                    <img className="main_image" src={topicNew.image_url}/>
                     <h1>{topicNew.title}</h1>
-                    <p>{topicNew.description}</p>
+                    <p>{topicNew.content}</p>
+                    <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
                         <SideBarContainer/>
@@ -386,18 +396,20 @@ function RenderWithPolitic() {
     function AboutPolitic() {
         const [topicNew, setNew] = useState(null);
         useEffect(() => {
-            Apis.getNewsByTopic("політика").then(response => {
+            Apis.getNewsByTopic('політика').then(response => {
                 if(!topicNew) {
+                    const allArticles = [];
                     const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    setNew(article);
-                    const client = new DB();
-                    client.insertArticles([{
+                    allArticles.push({
                         article_id: Date.now(),
                         title: article.title,
-                        link: article.url,
-                        content: article.description,
-                        image_url: article.image
-                    }], 'політика');
+                        link: article.url ? article.url : article.link,
+                        content: article.description ? article.description : article.content,
+                        image_url: article.image ? article.image : article.image_url
+                    });
+                    setNew(allArticles[0]);
+                    const client = new DB();
+                    client.insertArticles(allArticles, 'політика');
                 }
             }).catch(error => {
                 console.log(error.message);
@@ -410,9 +422,10 @@ function RenderWithPolitic() {
                 <ExchangeRate/>
                 <div className='content'>
                 <div className="main_article">
-                    <img className="main_image" src={topicNew.image}/>
+                    <img className="main_image" src={topicNew.image_url}/>
                     <h1>{topicNew.title}</h1>
-                    <p>{topicNew.description}</p>
+                    <p>{topicNew.content}</p>
+                    <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
                         <SideBarContainer/>
@@ -439,18 +452,20 @@ function RenderWithEconomy() {
     function AboutEconomy() {
         const [topicNew, setNew] = useState(null);
         useEffect(() => {
-            Apis.getNewsByTopic("економіка").then(response => {
+            Apis.getNewsByTopic('економіка').then(response => {
                 if(!topicNew) {
+                    const allArticles = [];
                     const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    setNew(article);
-                    const client = new DB();
-                    client.insertArticles([{
+                    allArticles.push({
                         article_id: Date.now(),
                         title: article.title,
-                        link: article.url,
-                        content: article.description,
-                        image_url: article.image
-                    }], 'економіка');
+                        link: article.url ? article.url : article.link,
+                        content: article.description ? article.description : article.content,
+                        image_url: article.image ? article.image : article.image_url
+                    });
+                    setNew(allArticles[0]);
+                    const client = new DB();
+                    client.insertArticles(allArticles, 'економіка');
                 }
             }).catch(error => {
                 console.log(error.message);
@@ -463,9 +478,10 @@ function RenderWithEconomy() {
                 <ExchangeRate/>
                 <div className='content'>
                 <div className="main_article">
-                    <img className="main_image" src={topicNew.image}/>
+                    <img className="main_image" src={topicNew.image_url}/>
                     <h1>{topicNew.title}</h1>
-                    <p>{topicNew.description}</p>
+                    <p>{topicNew.content}</p>
+                    <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
                         <SideBarContainer/>
@@ -492,18 +508,20 @@ function RenderWithTech() {
     function AboutTech() {
         const [topicNew, setNew] = useState(null);
         useEffect(() => {
-            Apis.getNewsByTopic("технології").then(response => {
+            Apis.getNewsByTopic('технології').then(response => {
                 if(!topicNew) {
+                    const allArticles = [];
                     const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    setNew(article);
-                    const client = new DB();
-                    client.insertArticles([{
+                    allArticles.push({
                         article_id: Date.now(),
                         title: article.title,
-                        link: article.url,
-                        content: article.description,
-                        image_url: article.image
-                    }], 'технології');
+                        link: article.url ? article.url : article.link,
+                        content: article.description ? article.description : article.content,
+                        image_url: article.image ? article.image : article.image_url
+                    });
+                    setNew(allArticles[0]);
+                    const client = new DB();
+                    client.insertArticles(allArticles, 'технології');
                 }
             }).catch(error => {
                 console.log(error.message);
@@ -516,9 +534,10 @@ function RenderWithTech() {
                 <ExchangeRate/>
                 <div className='content'>
                 <div className="main_article">
-                    <img className="main_image" src={topicNew.image}/>
+                    <img className="main_image" src={topicNew.image_url}/>
                     <h1>{topicNew.title}</h1>
-                    <p>{topicNew.description}</p>
+                    <p>{topicNew.content}</p>
+                    <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
                         <SideBarContainer/>
