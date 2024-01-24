@@ -134,7 +134,7 @@ export default class DB {
             console.log(errora.message);
         });
         supabase.from('currency_info').select('id').then(databaseResponse => {
-            if(databaseResponse.data.length > 3) {
+            if(databaseResponse.data.length >= 6) {
                 for(let i = 0; i < 3; i++) {
                     supabase.from('currency_info').delete().match({
                         id: databaseResponse.data[i].id
