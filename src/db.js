@@ -32,7 +32,7 @@ export default class DB {
             });
         });
         supabase.from('main_article').select('article_id').is('topic', null).then(DBresponse => {
-            if(DBresponse.data.length >= 15) {
+            if(DBresponse.data.length >= 20) {
                 for(let i = 0; i < 10; i++) {
                     supabase.from('main_article').delete().match({
                         article_id: DBresponse.data[i].article_id
@@ -50,7 +50,7 @@ export default class DB {
         });
         supabase.from('main_article').select('article_id').eq('topic', 'війна').then(DBresponse => {
             if(DBresponse.data.length >= 5) {
-                for(let i = 0; i < 3; i++) {
+                for(let i = 0; i < 2; i++) {
                     supabase.from('main_article').delete().match({
                         article_id: DBresponse.data[i].article_id
                     }).then(resp => {
@@ -65,7 +65,7 @@ export default class DB {
         });
         supabase.from('main_article').select('article_id').eq('topic', 'суспільство').then(DBresponse => {
             if(DBresponse.data.length >= 5) {
-                for(let i = 0; i < 3; i++) {
+                for(let i = 0; i < 2; i++) {
                     supabase.from('main_article').delete().match({
                         article_id: DBresponse.data[i].article_id
                     }).then(resp => {
@@ -80,7 +80,7 @@ export default class DB {
         });
         supabase.from('main_article').select('article_id').eq('topic', 'здоров').then(DBresponse => {
             if(DBresponse.data.length >= 5) {
-                for(let i = 0; i < 3; i++) {
+                for(let i = 0; i < 2; i++) {
                     supabase.from('main_article').delete().match({
                         article_id: DBresponse.data[i].article_id
                     }).then(resp => {
@@ -95,7 +95,7 @@ export default class DB {
         });
         supabase.from('main_article').select('article_id').eq('topic', 'політика').then(DBresponse => {
             if(DBresponse.data.length >= 5) {
-                for(let i = 0; i < 3; i++) {
+                for(let i = 0; i < 2; i++) {
                     supabase.from('main_article').delete().match({
                         article_id: DBresponse.data[i].article_id
                     }).then(resp => {
@@ -110,7 +110,7 @@ export default class DB {
         });
         supabase.from('main_article').select('article_id').eq('topic', 'технології').then(DBresponse => {
             if(DBresponse.data.length >= 5) {
-                for(let i = 0; i < 3; i++) {
+                for(let i = 0; i < 2; i++) {
                     supabase.from('main_article').delete().match({
                         article_id: DBresponse.data[i].article_id
                     }).then(resp => {

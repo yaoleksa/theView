@@ -1,3 +1,9 @@
+@media screen and (max-device-width: 800px) {
+    #navigation {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
 #navigation {
     display: flex;
 }
@@ -55,4 +61,10 @@
 .cu_name {
     margin-left: 3%;
     margin-right: 0.5%;
+}
+a:link {
+    color: blue;
+}
+a:visited {
+    color: blue;
 }
