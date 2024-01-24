@@ -48,7 +48,81 @@ export default class DB {
         }).catch(error => {
             console.log(error.message);
         });
-        // implement rest of the logic...
+        supabase.from('main_article').select('article_id').eq('topic', 'війна').then(DBresponse => {
+            if(DBresponse.data.length >= 5) {
+                for(let i = 0; i < 3; i++) {
+                    supabase.from('main_article').delete().match({
+                        article_id: DBresponse.data[i].article_id
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(error => {
+                        console.log(error.message);
+                    });
+                }
+            }
+        }).catch(error => {
+            console.log(error.message);
+        });
+        supabase.from('main_article').select('article_id').eq('topic', 'суспільство').then(DBresponse => {
+            if(DBresponse.data.length >= 5) {
+                for(let i = 0; i < 3; i++) {
+                    supabase.from('main_article').delete().match({
+                        article_id: DBresponse.data[i].article_id
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(error => {
+                        console.log(error.message);
+                    });
+                }
+            }
+        }).catch(error => {
+            console.log(error.message);
+        });
+        supabase.from('main_article').select('article_id').eq('topic', 'здоров').then(DBresponse => {
+            if(DBresponse.data.length >= 5) {
+                for(let i = 0; i < 3; i++) {
+                    supabase.from('main_article').delete().match({
+                        article_id: DBresponse.data[i].article_id
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(error => {
+                        console.log(error.message);
+                    });
+                }
+            }
+        }).catch(error => {
+            console.log(error.message);
+        });
+        supabase.from('main_article').select('article_id').eq('topic', 'політика').then(DBresponse => {
+            if(DBresponse.data.length >= 5) {
+                for(let i = 0; i < 3; i++) {
+                    supabase.from('main_article').delete().match({
+                        article_id: DBresponse.data[i].article_id
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(error => {
+                        console.log(error.message);
+                    });
+                }
+            }
+        }).catch(error => {
+            console.log(error.message);
+        });
+        supabase.from('main_article').select('article_id').eq('topic', 'технології').then(DBresponse => {
+            if(DBresponse.data.length >= 5) {
+                for(let i = 0; i < 3; i++) {
+                    supabase.from('main_article').delete().match({
+                        article_id: DBresponse.data[i].article_id
+                    }).then(resp => {
+                        console.log(resp);
+                    }).catch(error => {
+                        console.log(error.message);
+                    });
+                }
+            }
+        }).catch(error => {
+            console.log(error.message);
+        });
     }
     static insertRate(obj) {
         supabase.from('currency_info').insert({
