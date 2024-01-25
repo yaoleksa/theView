@@ -3,6 +3,10 @@
         display: grid !important;
         grid-template-columns: 1fr !important;
     }
+    #ex_rate {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+    }
     .main_article {
         margin-bottom: 25% !important;
     }
@@ -74,8 +78,11 @@
     margin-right: 0.5%;
 }
 a:link {
-    color: blue;
+    color: #078ba6;
 }
 a:visited {
-    color: blue;
+    color: #078ba6;
+}
+body {
+    background-color: #ebe9e6;
 }
