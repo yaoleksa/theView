@@ -42,6 +42,7 @@
 }
 #ex_rate {
     margin-left: 1%;
+    background-color: gold;
 }
 .topic {
     margin: 2rem;
@@ -85,4 +86,5 @@ a:visited {
 }
 body {
     background-color: #ebe9e6;
+    font-family: 'Ubuntu', sans-serif;
 }
