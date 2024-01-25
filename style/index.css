@@ -3,6 +3,17 @@
         display: grid !important;
         grid-template-columns: 1fr !important;
     }
+    .main_article {
+        margin-bottom: 25% !important;
+    }
+    .content {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+    }
+    .winter, .autumn, .summer, .spring {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+    }
 }
 #navigation {
     display: flex;

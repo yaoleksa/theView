@@ -166,9 +166,10 @@ function ExchangeRate() {
             Apis.getExchangeRateCache().then(response => {
                 console.log('ABOUT CURRENCY');
                 console.log(response);
-                setRate(response.data.rates);
+                const rates = response.data.rates ? response.data.rates : response.data[0].resp_body.rates;
+                setRate(rates);
                 DB.insertRate({
-                    rates: response.data.rates
+                    rates: rates
                 });
             }).catch(err => {
                 console.log(err.message);
