@@ -151,6 +151,9 @@ export default class DB {
         })
     }
     static getSavedArticles(q) {
+        if(!q) {
+            return supabase.from('main_article').select('*').is('topic', null);
+        }
         return supabase.from('main_article').select('*').match({
             topic: q
         });
