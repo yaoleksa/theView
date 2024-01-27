@@ -47,7 +47,7 @@ export default class Apis {
                 q: topic,
                 lang: 'ua',
                 country:'ua',
-                max: 1,
+                max: 10,
                 apikey: '985901b98d070eed7d957eda27580896'
             }
         }).catch(error => {

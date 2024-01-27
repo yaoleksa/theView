@@ -23,6 +23,7 @@ function createArticle(articleKey, title, imageSource, link) {
     return (<>
     <div key={articleKey} className='sideBarArticles'>
         <img src={`${imageSource}`} key={'_' + articleKey} className='sideBarImg'/>
+        <br></br>
         <a key={articleKey + '_'} href={link} className='sideBarLink'>{title}</a>
     </div>
     </>);
@@ -238,19 +239,23 @@ function RenderDefault() {
 function RerenderWithWar() {
     function AboutWar() {
         const [topicNew, setNew] = useState(null);
+        const [topicNews, setNews] = useState(null);
         useEffect(() => {
             Apis.getNewsByTopic('війна').then(response => {
                 if(!topicNew) {
                     const allArticles = [];
-                    const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    allArticles.push({
-                        article_id: Date.now(),
-                        title: article.title,
-                        link: article.url ? article.url : article.link,
-                        content: article.description ? article.description : article.content,
-                        image_url: article.image ? article.image : article.image_url
-                    });
-                    setNew(allArticles[0]);
+                    const articleList = response.data.articles ? response.data.articles : response.data;
+                    for(let article of articleList) {
+                        allArticles.push({
+                            article_id: Date.now(),
+                            title: article.title,
+                            link: article.url ? article.url : article.link,
+                            content: article.description ? article.description : article.content,
+                            image_url: article.image ? article.image : article.image_url
+                        });
+                    }
+                    setNew(allArticles.shift());
+                    setNews(allArticles);
                     const client = new DB();
                     client.insertArticles(allArticles, 'війна');
                 }
@@ -258,7 +263,11 @@ function RerenderWithWar() {
                 console.log(error.message);
             });
         });
-        if(topicNew) {
+        if(topicNew && topicNews) {
+            const news = [];
+            for(let n of topicNews) {
+                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
+            }
             return (<>
                 <NavigationPanel/>
                 <WeatherForecast/>
@@ -271,7 +280,7 @@ function RerenderWithWar() {
                     <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
-                        <SideBarContainer/>
+                        {news}
                     </div>
                 </div>
                 </>);
@@ -294,19 +303,23 @@ function RerenderWithWar() {
 function RenderWithHealth() {
     function AboutHealth() {
         const [topicNew, setNew] = useState(null);
+        const [topicNews, setNews] = useState(null);
         useEffect(() => {
             Apis.getNewsByTopic('здоров').then(response => {
                 if(!topicNew) {
                     const allArticles = [];
-                    const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    allArticles.push({
-                        article_id: Date.now(),
-                        title: article.title,
-                        link: article.url ? article.url : article.link,
-                        content: article.description ? article.description : article.content,
-                        image_url: article.image ? article.image : article.image_url
-                    });
-                    setNew(allArticles[0]);
+                    const articleList = response.data.articles ? response.data.articles : response.data;
+                    for(let article of articleList) {
+                        allArticles.push({
+                            article_id: Date.now(),
+                            title: article.title,
+                            link: article.url ? article.url : article.link,
+                            content: article.description ? article.description : article.content,
+                            image_url: article.image ? article.image : article.image_url
+                        });
+                    }
+                    setNew(allArticles.shift());
+                    setNews(allArticles);
                     const client = new DB();
                     client.insertArticles(allArticles, 'здоров');
                 }
@@ -314,7 +327,11 @@ function RenderWithHealth() {
                 console.log(error.message);
             });
         });
-        if(topicNew) {
+        if(topicNew && topicNews) {
+            const news = [];
+            for(let n of topicNews) {
+                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
+            }
             return (<>
                 <NavigationPanel/>
                 <WeatherForecast/>
@@ -327,7 +344,7 @@ function RenderWithHealth() {
                     <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
-                        <SideBarContainer/>
+                        {news}
                     </div>
                 </div>
                 </>);
@@ -350,19 +367,23 @@ function RenderWithHealth() {
 function RenderWithSociety() {
     function AboutSociety() {
         const [topicNew, setNew] = useState(null);
+        const [topicNews, setNews] = useState(null);
         useEffect(() => {
             Apis.getNewsByTopic('суспільство').then(response => {
                 if(!topicNew) {
                     const allArticles = [];
-                    const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    allArticles.push({
-                        article_id: Date.now(),
-                        title: article.title,
-                        link: article.url ? article.url : article.link,
-                        content: article.description ? article.description : article.content,
-                        image_url: article.image ? article.image : article.image_url
-                    });
-                    setNew(allArticles[0]);
+                    const articleList = response.data.articles ? response.data.articles : response.data;
+                    for(let article of articleList) {
+                        allArticles.push({
+                            article_id: Date.now(),
+                            title: article.title,
+                            link: article.url ? article.url : article.link,
+                            content: article.description ? article.description : article.content,
+                            image_url: article.image ? article.image : article.image_url
+                        });
+                    }
+                    setNew(allArticles.shift());
+                    setNews(allArticles);
                     const client = new DB();
                     client.insertArticles(allArticles, 'суспільство');
                 }
@@ -370,7 +391,11 @@ function RenderWithSociety() {
                 console.log(error.message);
             });
         });
-        if(topicNew) {
+        if(topicNew && topicNews) {
+            const news = [];
+            for(let n of topicNews) {
+                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
+            }
             return (<>
                 <NavigationPanel/>
                 <WeatherForecast/>
@@ -383,7 +408,7 @@ function RenderWithSociety() {
                     <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
-                        <SideBarContainer/>
+                        {news}
                     </div>
                 </div>
                 </>);
@@ -403,78 +428,26 @@ function RenderWithSociety() {
     root.render(<AboutSociety/>);
 }
 
-function RenderWithPolitic() {
-    function AboutPolitic() {
-        const [topicNew, setNew] = useState(null);
-        useEffect(() => {
-            Apis.getNewsByTopic('політика').then(response => {
-                if(!topicNew) {
-                    const allArticles = [];
-                    const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    allArticles.push({
-                        article_id: Date.now(),
-                        title: article.title,
-                        link: article.url ? article.url : article.link,
-                        content: article.description ? article.description : article.content,
-                        image_url: article.image ? article.image : article.image_url
-                    });
-                    setNew(allArticles[0]);
-                    const client = new DB();
-                    client.insertArticles(allArticles, 'політика');
-                }
-            }).catch(error => {
-                console.log(error.message);
-            });
-        });
-        if(topicNew) {
-            return (<>
-                <NavigationPanel/>
-                <WeatherForecast/>
-                <ExchangeRate/>
-                <div className='content'>
-                <div className="main_article">
-                    <img className="main_image" src={topicNew.image_url}/>
-                    <h1>{topicNew.title}</h1>
-                    <p>{topicNew.content}</p>
-                    <a href={topicNew.link}>Читати повний текст статті...</a>
-                </div>
-                    <div>
-                        <SideBarContainer/>
-                    </div>
-                </div>
-                </>);
-        }
-        return (<>
-            <NavigationPanel/>
-            <WeatherForecast/>
-            <ExchangeRate/>
-            <div className='content'>
-                <MainArticle />
-                <div>
-                    <SideBarContainer/>
-                </div>
-            </div>
-            </>);
-    }
-    root.render(<AboutPolitic/>);
-}
-
 function RenderWithEconomy() {
     function AboutEconomy() {
         const [topicNew, setNew] = useState(null);
+        const [topicNews, setNews] = useState(null);
         useEffect(() => {
             Apis.getNewsByTopic('економіка').then(response => {
                 if(!topicNew) {
                     const allArticles = [];
-                    const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    allArticles.push({
-                        article_id: Date.now(),
-                        title: article.title,
-                        link: article.url ? article.url : article.link,
-                        content: article.description ? article.description : article.content,
-                        image_url: article.image ? article.image : article.image_url
-                    });
-                    setNew(allArticles[0]);
+                    const articleList = response.data.articles ? response.data.articles : response.data;
+                    for(let article of articleList) {
+                        allArticles.push({
+                            article_id: Date.now(),
+                            title: article.title,
+                            link: article.url ? article.url : article.link,
+                            content: article.description ? article.description : article.content,
+                            image_url: article.image ? article.image : article.image_url
+                        });
+                    }
+                    setNew(allArticles.shift());
+                    setNews(allArticles);
                     const client = new DB();
                     client.insertArticles(allArticles, 'економіка');
                 }
@@ -482,7 +455,11 @@ function RenderWithEconomy() {
                 console.log(error.message);
             });
         });
-        if(topicNew) {
+        if(topicNew && topicNews) {
+            const news = [];
+            for(let n of topicNews) {
+                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
+            }
             return (<>
                 <NavigationPanel/>
                 <WeatherForecast/>
@@ -495,7 +472,7 @@ function RenderWithEconomy() {
                     <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
-                        <SideBarContainer/>
+                        {news}
                     </div>
                 </div>
                 </>);
@@ -515,30 +492,38 @@ function RenderWithEconomy() {
     root.render(<AboutEconomy/>);
 }
 
-function RenderWithTech() {
-    function AboutTech() {
+function RenderWithPolitic() {
+    function AboutPolitic() {
         const [topicNew, setNew] = useState(null);
+        const [topicNews, setNews] = useState(null);
         useEffect(() => {
-            Apis.getNewsByTopic('технології').then(response => {
+            Apis.getNewsByTopic('політика').then(response => {
                 if(!topicNew) {
                     const allArticles = [];
-                    const article = response.data.articles ? response.data.articles[0] : response.data[0];
-                    allArticles.push({
-                        article_id: Date.now(),
-                        title: article.title,
-                        link: article.url ? article.url : article.link,
-                        content: article.description ? article.description : article.content,
-                        image_url: article.image ? article.image : article.image_url
-                    });
-                    setNew(allArticles[0]);
+                    const articleList = response.data.articles ? response.data.articles : response.data;
+                    for(let article of articleList) {
+                        allArticles.push({
+                            article_id: Date.now(),
+                            title: article.title,
+                            link: article.url ? article.url : article.link,
+                            content: article.description ? article.description : article.content,
+                            image_url: article.image ? article.image : article.image_url
+                        });
+                    }
+                    setNew(allArticles.shift());
+                    setNews(allArticles);
                     const client = new DB();
-                    client.insertArticles(allArticles, 'технології');
+                    client.insertArticles(allArticles, 'політика');
                 }
             }).catch(error => {
                 console.log(error.message);
             });
         });
-        if(topicNew) {
+        if(topicNew && topicNews) {
+            const news = [];
+            for(let n of topicNews) {
+                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
+            }
             return (<>
                 <NavigationPanel/>
                 <WeatherForecast/>
@@ -551,7 +536,71 @@ function RenderWithTech() {
                     <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
-                        <SideBarContainer/>
+                        {news}
+                    </div>
+                </div>
+                </>);
+        }
+        return (<>
+            <NavigationPanel/>
+            <WeatherForecast/>
+            <ExchangeRate/>
+            <div className='content'>
+                <MainArticle />
+                <div>
+                    <SideBarContainer/>
+                </div>
+            </div>
+            </>);
+    }
+    root.render(<AboutPolitic/>);
+}
+
+function RenderWithTech() {
+    function AboutTech() {
+        const [topicNew, setNew] = useState(null);
+        const [topicNews, setNews] = useState(null);
+        useEffect(() => {
+            Apis.getNewsByTopic('технології').then(response => {
+                if(!topicNew) {
+                    const allArticles = [];
+                    const articleList = response.data.articles ? response.data.articles : response.data;
+                    for(let article of articleList) {
+                        allArticles.push({
+                            article_id: Date.now(),
+                            title: article.title,
+                            link: article.url ? article.url : article.link,
+                            content: article.description ? article.description : article.content,
+                            image_url: article.image ? article.image : article.image_url
+                        });
+                    }
+                    setNew(allArticles.shift());
+                    setNews(allArticles);
+                    const client = new DB();
+                    client.insertArticles(allArticles, 'технології');
+                }
+            }).catch(error => {
+                console.log(error.message);
+            });
+        });
+        if(topicNew && topicNews) {
+            const news = [];
+            for(let n of topicNews) {
+                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
+            }
+            return (<>
+                <NavigationPanel/>
+                <WeatherForecast/>
+                <ExchangeRate/>
+                <div className='content'>
+                <div className="main_article">
+                    <img className="main_image" src={topicNew.image_url}/>
+                    <h1>{topicNew.title}</h1>
+                    <p>{topicNew.content}</p>
+                    <a href={topicNew.link}>Читати повний текст статті...</a>
+                </div>
+                    <div>
+                        {news}
                     </div>
                 </div>
                 </>);
@@ -572,4 +621,3 @@ function RenderWithTech() {
 }
 
 root.render(<Page/>);
-export { NavigationPanel, SideBarContainer };
