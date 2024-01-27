@@ -5,6 +5,28 @@ import DB from './db';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+document.getElementsByTagName('body')[0].addEventListener('keydown', event => {
+    if(event.ctrlKey && event.shiftKey && event.key === 'E') {
+        root.render(<>
+            <div id="ediror_form">
+                <label htmlFor="title">Title</label><br></br>
+                <input type="text" placeholder="title" name="title"></input><br></br>
+                <label htmlFor="topic">Topic</label><br></br>
+                <select name="topic">
+                    <option>загальні</option>
+                    <option>війна</option>
+                    <option>здоров'я</option>
+                    <option>суспільство</option>
+                    <option>політика</option>
+                    <option>економіка</option>
+                    <option>технології</option>
+                </select>
+                <p id="submit_button">Submit</p>
+            </div>
+        </>);
+    }
+});
+
 function NavigationPanel() {
     return (<>
         <span id="navigation">
