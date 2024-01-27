@@ -23,7 +23,7 @@ function createArticle(articleKey, title, imageSource, link) {
     return (<>
     <div key={articleKey} className='sideBarArticles'>
         <img src={`${imageSource}`} key={'_' + articleKey} className='sideBarImg'/>
-        <a key={articleKey + '_'} href={link}>{title}</a>
+        <a key={articleKey + '_'} href={link} className='sideBarLink'>{title}</a>
     </div>
     </>);
 }
@@ -140,18 +140,25 @@ function WeatherForecast() {
         return (<>
         <span className={nameOfClass}>
             <span className='weather'>Прогноз погоди:</span>
-            <span className='weather'>{week[tommorow]}:</span>
-            <span>{weatherInfo.hourly.temperature_2m[24 + currentHour]}{'C' + String.fromCharCode(176)}</span>
-            <span className='weather'>{week[tommorowOne]}:</span>
-            <span>{weatherInfo.hourly.temperature_2m[48 + currentHour]}{'C' + String.fromCharCode(176)}</span>
-            <span className='weather'>{week[tommorowTwo]}:</span>
-            <span>{weatherInfo.hourly.temperature_2m[64 + currentHour]}{'C' + String.fromCharCode(176)}</span>
-            <span className='weather'>{week[tommorowThree]}:</span>
-            <span>{weatherInfo.hourly.temperature_2m[88 + currentHour]}{'C' + String.fromCharCode(176)}</span>
-            <span className='weather'>{week[tommorowFour]}:</span>
-            <span>{weatherInfo.hourly.temperature_2m[112 + currentHour]}{'C' + String.fromCharCode(176)}</span>
-            <span className='weather'>{week[tommorowFive]}:</span>
-            <span>{weatherInfo.hourly.temperature_2m[136 + currentHour]}{'C' + String.fromCharCode(176)}</span>
+            <span className='weather'>{week[tommorow]}:&nbsp;&nbsp;&nbsp;&nbsp;
+            {weatherInfo.hourly.temperature_2m[24 + currentHour]}{'C' + String.fromCharCode(176)}
+            &nbsp;&nbsp;</span>
+            <span className='weather'>{week[tommorowOne]}:&nbsp;&nbsp;&nbsp;&nbsp;
+            {weatherInfo.hourly.temperature_2m[48 + currentHour]}{'C' + String.fromCharCode(176)}
+            &nbsp;&nbsp;</span>
+            <span className='weather'>{week[tommorowTwo]}:&nbsp;&nbsp;&nbsp;&nbsp;
+            {weatherInfo.hourly.temperature_2m[64 + currentHour]}{'C' + String.fromCharCode(176)}
+            &nbsp;&nbsp;</span>
+            <span className='weather'>{week[tommorowThree]}:&nbsp;&nbsp;&nbsp;&nbsp;
+            {weatherInfo.hourly.temperature_2m[88 + currentHour]}{'C' + String.fromCharCode(176)}
+            &nbsp;&nbsp;</span>
+            <span></span>
+            <span className='weather'>{week[tommorowFour]}:&nbsp;&nbsp;&nbsp;&nbsp;
+            {weatherInfo.hourly.temperature_2m[112 + currentHour]}{'C' + String.fromCharCode(176)}
+            &nbsp;&nbsp;</span>
+            <span className='weather'>{week[tommorowFive]}:&nbsp;&nbsp;&nbsp;&nbsp;
+            {weatherInfo.hourly.temperature_2m[136 + currentHour]}{'C' + String.fromCharCode(176)}
+            &nbsp;&nbsp;</span>
         </span>
         </>);
     } else {
@@ -181,12 +188,15 @@ function ExchangeRate() {
         <br/>
         <span id="ex_rate">
             <span>{'Курси валют: '}</span>
-            <span className='cu_name'>{'USD:'}</span>
-            <span>{`${currencyRate.USD < 1 ? (1/currencyRate.USD).toFixed(2) : currencyRate.USD.toFixed(2)}  `}</span>
-            <span className='cu_name'>{'EUR:'}</span>
-            <span>{`${currencyRate.EUR < 1 ? (1/currencyRate.EUR).toFixed(2) : currencyRate.EUR.toFixed(2)}  `}</span>
-            <span className='cu_name'>{'PLN:'}</span>
-            <span>{currencyRate.PLN < 1 ? (1/currencyRate.PLN).toFixed(2) : currencyRate.PLN.toFixed(2)}</span>
+            <span className='cu_name'>{'USD:'}&nbsp;&nbsp;&nbsp;&nbsp;
+            {`${currencyRate.USD < 1 ? (1/currencyRate.USD).toFixed(2) : currencyRate.USD.toFixed(2)}  `}
+            &nbsp;&nbsp;</span>
+            <span className='cu_name'>{'EUR:'}&nbsp;&nbsp;&nbsp;&nbsp;
+            {`${currencyRate.EUR < 1 ? (1/currencyRate.EUR).toFixed(2) : currencyRate.EUR.toFixed(2)}  `}
+            &nbsp;&nbsp;</span>
+            <span className='cu_name'>{'PLN:'}&nbsp;&nbsp;&nbsp;&nbsp;
+            {currencyRate.PLN < 1 ? (1/currencyRate.PLN).toFixed(2) : currencyRate.PLN.toFixed(2)}
+            &nbsp;&nbsp;</span>
         </span>
         </>);
     } else {

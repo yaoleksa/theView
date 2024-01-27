@@ -41,7 +41,7 @@
     width: 80%;
 }
 #ex_rate {
-    margin-left: 1%;
+    padding-left: 1%;
     background-color: gold;
 }
 .topic {
@@ -54,10 +54,13 @@
 .sideBarArticles {
     height: 15rem;
     width: 15rem;
-    margin: 2%;
+    margin: 8%;
 }
 .sideBarImg {
     height: 10rem;
+}
+.sideBarLink {
+    margin-bottom: 2%;
 }
 .weather {
     padding: 1%;
@@ -75,7 +78,7 @@
     background-color: lightsalmon;
 }
 .cu_name {
-    margin-left: 3%;
+    padding: 1% 1% 1% 0%;
     margin-right: 0.5%;
 }
 a:link {
