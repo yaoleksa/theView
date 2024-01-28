@@ -672,10 +672,14 @@ function storeOwnArticle() {
         'економіка': 'економіка',
         'технології': 'технології'
     }
-    // DB.insertArticles([{
-    //     article_id: Date.now(),
-    //     title: document.getElementsByName('title')[0].value
-    // }], topicMap[document.getElementsByName('topic')[0].value]);
+    DB.insertArticles([{
+        article_id: Date.now(),
+        title: document.getElementsByName('title')[0].value,
+        link: '#',
+        content: document.getElementsByName('content')[0].value,
+        image_url: document.getElementsByName('image')[0].value
+    }], topicMap[document.getElementsByName('topic')[0].value]);
+    RenderDefault();
 }
 
 root.render(<Page/>);
