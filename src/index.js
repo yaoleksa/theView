@@ -672,7 +672,7 @@ function storeOwnArticle() {
         'економіка': 'економіка',
         'технології': 'технології'
     }
-    DB.insertArticles([{
+    new DB().insertArticles([{
         article_id: Date.now(),
         title: document.getElementsByName('title')[0].value,
         link: '#',
