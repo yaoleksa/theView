@@ -648,14 +648,34 @@ function auth() {
                     <option>політика</option>
                     <option>економіка</option>
                     <option>технології</option>
-                </select>
-                <p className="submit_button">Submit</p>
+                </select><br></br>
+                <label htmlFor='image'>Link to image</label><br></br>
+                <input type='text' name='image' placeholder='URL'></input><br></br>
+                <label htmlFor='content'>Content</label><br></br>
+                <textarea placeholder='Article' name='content'></textarea>
+                <p className="submit_button" onClick={storeOwnArticle}>Submit</p>
             </div>
         </>);
     } else {
         setTimeout(RenderDefault, 3000);
         root.render(<><p>INVALID PASSWORD</p></>);
     }
+}
+
+function storeOwnArticle() {
+    const topicMap = {
+        'загальні': null,
+        'війна': 'війна',
+        'здоров\'я': 'здоров',
+        'суспільство': 'суспільство',
+        'політика': 'політика',
+        'економіка': 'економіка',
+        'технології': 'технології'
+    }
+    // DB.insertArticles([{
+    //     article_id: Date.now(),
+    //     title: document.getElementsByName('title')[0].value
+    // }], topicMap[document.getElementsByName('topic')[0].value]);
 }
 
 root.render(<Page/>);
