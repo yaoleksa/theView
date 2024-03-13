@@ -124,17 +124,23 @@ function WeatherForecast() {
         if(!IP) {
             Apis.getIPaddress().then(response => {
                 setIP(response.data.ip);
+            }).catch(error => {
+                console.log(error);
             });
         }
         if(IP && !location) {
             Apis.getGeoLocation(IP).then(response => {
                 setLocation(response.data);
-            })
+            }).catch(error => {
+                console.log(error);
+            });
         }
         if(location && !weatherInfo) {
             Apis.getWeatherWithGeolocation(location).then(response => {
                 setWeather(response.data);
-            })
+            }).catch(error => {
+                console.log(error);
+            });
         } else if(!weatherInfo) {
             Apis.getWeather().then(response => {
                 setWeather(response.data);
