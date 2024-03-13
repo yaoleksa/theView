@@ -2,6 +2,12 @@ import axios from 'axios';
 import DB from './db';
 
 export default class Apis {
+    static getIPaddress() {
+        return axios.get('https://api.ipify.org/?format=json');
+    }
+    static getGeoLocation(ip) {
+        return axios.get(`https://ipinfo.io/${ip}/geo`);
+    }
     static getMainNew() {
         return axios.get('https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk', {
             headers: {
@@ -21,19 +27,11 @@ export default class Apis {
         })
     }
     static getWeather() {
-        axios.get('https://api.ipify.org/?format=json').then(response => {
-            axios.get(`https://ipinfo.io/${response.data.ip}/geo`).then(response => {
-                console.log('Returned ptopper forecats');
-                return axios.get(`https://api.open-meteo.com/v1/forecast?${response.data.lattitude}&longitude=${response.data.longitude}&hourly=temperature_2m`);
-            }).catch(error => {
-                console.error(error.message);
-                return axios.get('https://api.open-meteo.com/v1/forecast?latitude=49.84&longitude=24.02&hourly=temperature_2m');
-            })
-        }).catch(error => {
-            console.error(error.message);
-            return axios.get('https://api.open-meteo.com/v1/forecast?latitude=49.84&longitude=24.02&hourly=temperature_2m');
-        });
         return axios.get('https://api.open-meteo.com/v1/forecast?latitude=49.84&longitude=24.02&hourly=temperature_2m');
+    }
+    static getWeatherWithGeolocation(location) {
+        const latLong = location.loc.split(',');
+        return axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${latLong[0]}&longitude=${latLong[1]}&hourly=temperature_2m`);
     }
     static getExchangeRateCache() {
         return axios.request({

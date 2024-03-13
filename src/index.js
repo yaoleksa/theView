@@ -118,8 +118,24 @@ function SideBarContainer() {
 
 function WeatherForecast() {
     const [weatherInfo, setWeather] = useState(null);
+    const [IP, setIP] = useState(null);
+    const [location, setLocation] = useState(null);
     useEffect(() => {
-        if(!weatherInfo) {
+        if(!IP) {
+            Apis.getIPaddress().then(response => {
+                setIP(response.data.ip);
+            });
+        }
+        if(IP && !location) {
+            Apis.getGeoLocation(IP).then(response => {
+                setLocation(response.data);
+            })
+        }
+        if(location && !weatherInfo) {
+            Apis.getWeatherWithGeolocation(location).then(response => {
+                setWeather(response.data);
+            })
+        } else if(!weatherInfo) {
             Apis.getWeather().then(response => {
                 setWeather(response.data);
             }).catch(error => {
