@@ -26,10 +26,7 @@ export default class Apis {
             return DB.getSavedArticles(null);
         })
     }
-    static getWeather() {
-        return axios.get('https://api.open-meteo.com/v1/forecast?latitude=49.84&longitude=24.02&hourly=temperature_2m');
-    }
-    static getWeatherWithGeolocation(location) {
+    static getWeather(location) {
         const latLong = location.loc.split(',');
         return axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${latLong[0]}&longitude=${latLong[1]}&hourly=temperature_2m`);
     }

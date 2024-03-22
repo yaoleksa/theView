@@ -136,16 +136,12 @@ function WeatherForecast() {
             });
         }
         if(location && !weatherInfo) {
-            Apis.getWeatherWithGeolocation(location).then(response => {
+            console.log('Location');
+            console.log(location);
+            Apis.getWeather(location).then(response => {
                 setWeather(response.data);
             }).catch(error => {
                 console.log(error);
-            });
-        } else if(!weatherInfo) {
-            Apis.getWeather().then(response => {
-                setWeather(response.data);
-            }).catch(error => {
-                console.log(error.message);
             });
         }
     });
