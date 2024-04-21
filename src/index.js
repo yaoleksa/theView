@@ -58,7 +58,8 @@ function MainArticle() {
                         .replace(/Автор фото, /g, '')
                         .replace(/Підпис до фото/g, '')
                         .replace(/^[A-Za-z\s\,]+/, ''),
-                        image_url: zeroArticle.media
+                        image_url: zeroArticle.media,
+                        publishedDate: zeroArticle.published_date.split(' ')[0]
                     });
                     setNew(allArticles[0]);
                     const DBclient = new DB();
@@ -76,8 +77,12 @@ function MainArticle() {
         return (<>
         <div className="main_article">
             <img className="main_image" src={mainNew.image_url}/>
-            <h1>{mainNew.title}</h1>
+            <meta itemprop="image" content={mainNew.image_url} />
+            <h1 itemprop="headline">{mainNew.title}</h1>
             <p>{mainNew.content}</p>
+            <span itemprop="datePublished" content={mainNew.publishedDate}>
+                Дата публікації: {mainNew.publishedDate}
+            </span><br/>
             <a href={mainNew.link}>Читати повний текст статті...</a>
         </div>
         </>);
@@ -281,7 +286,8 @@ function RerenderWithWar() {
                             title: article.title,
                             link: article.url ? article.url : article.link,
                             content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url
+                            image_url: article.image ? article.image : article.image_url,
+                            publishedDate: article.publishedAt.split('T')[0]
                         });
                     }
                     setNew(allArticles.shift());
@@ -305,8 +311,12 @@ function RerenderWithWar() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <h1>{topicNew.title}</h1>
+                    <meta itemprop="image" content={topicNew.image_url} />
+                    <h1 itemprop="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
+                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                        Дата публікації: {topicNew.publishedDate}
+                    </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
@@ -345,7 +355,8 @@ function RenderWithHealth() {
                             title: article.title,
                             link: article.url ? article.url : article.link,
                             content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url
+                            image_url: article.image ? article.image : article.image_url,
+                            publishedDate: article.publishedAt.split('T')[0]
                         });
                     }
                     setNew(allArticles.shift());
@@ -369,8 +380,12 @@ function RenderWithHealth() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <h1>{topicNew.title}</h1>
+                    <meta itemprop="image" content={topicNew.image_url} />
+                    <h1 itemprop="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
+                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                        Дата публікації: {topicNew.publishedDate}
+                    </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
@@ -409,7 +424,8 @@ function RenderWithSociety() {
                             title: article.title,
                             link: article.url ? article.url : article.link,
                             content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url
+                            image_url: article.image ? article.image : article.image_url,
+                            publishedDate: article.publishedAt.split('T')[0]
                         });
                     }
                     setNew(allArticles.shift());
@@ -433,8 +449,12 @@ function RenderWithSociety() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <h1>{topicNew.title}</h1>
+                    <meta itemprop="image" content={topicNew.image_url} />
+                    <h1 itemprop="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
+                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                        Дата публікації: {topicNew.publishedDate}
+                    </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
@@ -473,7 +493,8 @@ function RenderWithEconomy() {
                             title: article.title,
                             link: article.url ? article.url : article.link,
                             content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url
+                            image_url: article.image ? article.image : article.image_url,
+                            publishedDate: article.publishedAt.split('T')[0]
                         });
                     }
                     setNew(allArticles.shift());
@@ -497,8 +518,12 @@ function RenderWithEconomy() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <h1>{topicNew.title}</h1>
+                    <meta itemprop="image" content={topicNew.image_url} />
+                    <h1 itemprop="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
+                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                        Дата публікації: {topicNew.publishedDate}
+                    </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
@@ -537,7 +562,8 @@ function RenderWithPolitic() {
                             title: article.title,
                             link: article.url ? article.url : article.link,
                             content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url
+                            image_url: article.image ? article.image : article.image_url,
+                            publishedDate: article.publishedAt.split('T')[0]
                         });
                     }
                     setNew(allArticles.shift());
@@ -561,8 +587,12 @@ function RenderWithPolitic() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <h1>{topicNew.title}</h1>
+                    <meta itemprop="image" content={topicNew.image_url} />
+                    <h1 itemprop="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
+                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                        Дата публікації: {topicNew.publishedDate}
+                    </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
@@ -601,7 +631,8 @@ function RenderWithTech() {
                             title: article.title,
                             link: article.url ? article.url : article.link,
                             content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url
+                            image_url: article.image ? article.image : article.image_url,
+                            publishedDate: article.publishedAt.split('T')[0]
                         });
                     }
                     setNew(allArticles.shift());
@@ -625,8 +656,12 @@ function RenderWithTech() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <h1>{topicNew.title}</h1>
+                    <meta itemprop="image" content={topicNew.image_url} />
+                    <h1 itemprop="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
+                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                        Дата публікації: {topicNew.publishedDate}
+                    </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
                 </div>
                     <div>
