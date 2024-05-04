@@ -4,6 +4,9 @@ import Apis from './apis';
 import DB from './db';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const week = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота', 'Неділя'];
+const year = [' Січеня ', ' Лютого ', ' Березня ', ' Квітня ', ' Травня ', ' Червня ', 
+' Липня ', 'Серпня', 'Вересня', 'Жовтня', 'Листопада', 'Грудня'];
 
 document.getElementsByTagName('body')[0].addEventListener('keydown', event => {
     if(event.ctrlKey && event.shiftKey && event.key === 'E') {
@@ -121,6 +124,51 @@ function SideBarContainer() {
     }
 }
 
+function GetCurrentDate() {
+    const [currentTime, setCurrentTime] = useState(null);
+    useEffect(() => {
+        setInterval(() => {
+            const [
+                nameOfClass,
+                date,
+                currentDay,
+                currentMonth,
+                tommorow, 
+                tommorowOne, 
+                tommorowTwo, 
+                tommorowThree, 
+                tommorowFour,
+                tommorowFive,
+                currentYear,
+                currentHour,
+                currentMinute,
+                currentSecond
+            ] = dateProcessing();
+            setCurrentTime({
+                nameOfClass: nameOfClass,
+                day: week[currentDay],
+                date: date,
+                month: year[currentMonth],
+                year: currentYear,
+                hour: currentHour,
+                minute: currentMinute,
+                second: currentSecond
+            });
+        }, 1000);
+    });
+    if(currentTime) {
+        return <span className={currentTime.nameOfClass} id="time">
+        {currentTime.day},
+        &nbsp;
+        {currentTime.date} 
+        {currentTime.month} 
+        {currentTime.year} року&nbsp;
+        {currentTime.hour}:{currentTime.minute}:{currentTime.second}<br/></span>
+    } else {
+        return <span></span>
+    }
+}
+
 function WeatherForecast() {
     const [weatherInfo, setWeather] = useState(null);
     const [IP, setIP] = useState(null);
@@ -152,27 +200,22 @@ function WeatherForecast() {
     });
     if(weatherInfo) {
         console.log(weatherInfo);
-        const week = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота', 'Неділя'];
-        const currentDate = new Date();
-        const currentHour = currentDate.getHours();
-        const currentMonth = currentDate.getMonth();
-        let currentDay = currentDate.getDay() - 1;
-        let nameOfClass;
-        const tommorow = currentDay + 1 < 7 ? currentDay + 1 : (currentDay + 1)%7;
-        const tommorowOne = currentDay + 2 < 7 ? currentDay + 2 : (currentDay + 2)%7;
-        const tommorowTwo = currentDay + 3 < 7 ? currentDay + 3 : (currentDay + 3)%7;
-        const tommorowThree = currentDay + 4 < 7 ? currentDay + 4 : (currentDay + 4)%7;
-        const tommorowFour = currentDay + 5 < 7 ? currentDay + 5 : (currentDay + 5)%7;
-        const tommorowFive = currentDay + 6 < 7 ? currentDay + 6 : (currentDay + 6)%7;
-        if(currentMonth > 10 || currentMonth < 2) {
-            nameOfClass = 'winter';
-        } else if(currentMonth > 1 && currentMonth < 5) {
-            nameOfClass = 'spring';
-        } else if(currentMonth > 4 && currentMonth < 8) {
-            nameOfClass = 'summer';
-        } else {
-            nameOfClass = 'autumn';
-        }
+        const [
+            nameOfClass,
+            date,
+            currentDay,
+            currentMonth,
+            tommorow, 
+            tommorowOne, 
+            tommorowTwo, 
+            tommorowThree, 
+            tommorowFour, 
+            tommorowFive,
+            currentYear,
+            currentHour,
+            currentMinute,
+            currentSecond
+        ] = dateProcessing();
         return (<>
         <span className={nameOfClass}>
             <span className='weather'>Прогноз погоди:</span>
@@ -243,6 +286,7 @@ function ExchangeRate() {
 function Page() {
     return (<>
         <NavigationPanel/>
+        <GetCurrentDate/>
         <WeatherForecast/>
         <ExchangeRate/>
         <div className='content'>
@@ -258,6 +302,7 @@ function RenderDefault() {
     function DefaultPage() {
         return (<>
             <NavigationPanel/>
+            <GetCurrentDate/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
@@ -306,6 +351,7 @@ function RerenderWithWar() {
             }
             return (<>
                 <NavigationPanel/>
+                <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
                 <div className='content'>
@@ -733,6 +779,49 @@ function storeOwnArticle() {
         image_url: document.getElementsByName('image')[0].value
     }], topicMap[document.getElementsByName('topic')[0].value]);
     RenderDefault();
+}
+
+function dateProcessing() {
+    const currentDate = new Date();
+    const date = currentDate.getDate();
+    const currentHour = currentDate.getHours();
+    const currentMinute = currentDate.getMinutes();
+    const currentSecond = currentDate.getSeconds();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    let currentDay = currentDate.getDay() - 1;
+    let nameOfClass;
+    const tommorow = currentDay + 1 < 7 ? currentDay + 1 : (currentDay + 1)%7;
+    const tommorowOne = currentDay + 2 < 7 ? currentDay + 2 : (currentDay + 2)%7;
+    const tommorowTwo = currentDay + 3 < 7 ? currentDay + 3 : (currentDay + 3)%7;
+    const tommorowThree = currentDay + 4 < 7 ? currentDay + 4 : (currentDay + 4)%7;
+    const tommorowFour = currentDay + 5 < 7 ? currentDay + 5 : (currentDay + 5)%7;
+    const tommorowFive = currentDay + 6 < 7 ? currentDay + 6 : (currentDay + 6)%7;
+    if(currentMonth > 10 || currentMonth < 2) {
+        nameOfClass = 'winter';
+    } else if(currentMonth > 1 && currentMonth < 5) {
+        nameOfClass = 'spring';
+    } else if(currentMonth > 4 && currentMonth < 8) {
+        nameOfClass = 'summer';
+    } else {
+        nameOfClass = 'autumn';
+    }
+    return [
+        nameOfClass,
+        date,
+        currentDay,
+        currentMonth,
+        tommorow, 
+        tommorowOne, 
+        tommorowTwo, 
+        tommorowThree, 
+        tommorowFour,
+        tommorowFive,
+        currentYear,
+        currentHour,
+        currentMinute,
+        currentSecond
+    ];
 }
 
 root.render(<Page/>);

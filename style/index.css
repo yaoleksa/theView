@@ -58,6 +58,9 @@
     padding-left: 1%;
     background-color: gold;
 }
+#time{
+    padding: 0.7rem;
+}
 .topic {
     margin: 2rem;
     text-decoration: none;
