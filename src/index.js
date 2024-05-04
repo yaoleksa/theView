@@ -101,7 +101,9 @@ function SideBarContainer() {
         if(articles.length === 0) {
             Apis.getNews().then(response => {
                 if(response.data.results) {
-                    const allArticles = response.data.results.filter(article => article.language === 'ukrainian' && article.image_url && article.image_url.length > 10);
+                    const allArticles = response.data.results
+                    .filter(article => article.language === 'ukrainian' && 
+                    article.image_url && article.image_url.length > 10);
                     allArticles.shift();
                     setArticles(allArticles);
                 } else {
@@ -146,13 +148,13 @@ function GetCurrentDate() {
             ] = dateProcessing();
             setCurrentTime({
                 nameOfClass: nameOfClass,
-                day: week[currentDay],
+                day: week[currentDay >= 0 ? currentDay : 6],
                 date: date,
                 month: year[currentMonth],
                 year: currentYear,
-                hour: currentHour,
-                minute: currentMinute,
-                second: currentSecond
+                hour: currentHour > 9 ? currentHour : `0${currentHour}`,
+                minute: currentMinute > 9 ? currentMinute : `0${currentMinute}`,
+                second: currentSecond > 9 ? currentSecond : `0${currentSecond}`
             });
         }, 1000);
     });
