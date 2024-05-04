@@ -423,6 +423,7 @@ function RenderWithHealth() {
             }
             return (<>
                 <NavigationPanel/>
+                <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
                 <div className='content'>
@@ -444,6 +445,7 @@ function RenderWithHealth() {
         }
         return (<>
             <NavigationPanel/>
+            <GetCurrentDate/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
@@ -492,6 +494,7 @@ function RenderWithSociety() {
             }
             return (<>
                 <NavigationPanel/>
+                <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
                 <div className='content'>
@@ -513,6 +516,7 @@ function RenderWithSociety() {
         }
         return (<>
             <NavigationPanel/>
+            <GetCurrentDate/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
@@ -561,6 +565,7 @@ function RenderWithEconomy() {
             }
             return (<>
                 <NavigationPanel/>
+                <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
                 <div className='content'>
@@ -582,6 +587,7 @@ function RenderWithEconomy() {
         }
         return (<>
             <NavigationPanel/>
+            <GetCurrentDate/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
@@ -630,6 +636,7 @@ function RenderWithPolitic() {
             }
             return (<>
                 <NavigationPanel/>
+                <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
                 <div className='content'>
@@ -699,6 +706,7 @@ function RenderWithTech() {
             }
             return (<>
                 <NavigationPanel/>
+                <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
                 <div className='content'>
