@@ -1,0 +1,11 @@
+name: Code coverage
+run-name: ${{ github.actor }} run this action
+on: [push]
+jobs: 
+  Run-Code-Coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
