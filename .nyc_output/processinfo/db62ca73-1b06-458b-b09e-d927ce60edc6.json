@@ -1,0 +1,1 @@
+{"parent":"33bebd8d-50f7-46d3-aa05-ead9370b18a0","pid":26461,"argv":["/usr/local/bin/node","/usr/local/bin/npm","run","test"],"execArgv":[],"cwd":"/home/oleksa/code/theView","time":1716819985299,"ppid":26450,"coverageFilename":"/home/oleksa/code/theView/.nyc_output/db62ca73-1b06-458b-b09e-d927ce60edc6.json","externalId":"","uuid":"db62ca73-1b06-458b-b09e-d927ce60edc6","files":[]}
