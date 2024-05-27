@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nyc npm run test"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
