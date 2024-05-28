@@ -1,15 +1,13 @@
-name: 'coverage'
-on:
-    pull_request:
-        branches:
-            - '**'
+name: code-coverage-action
+on: [push]
 jobs:
-    coverage:
+    tests-run:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
-            - uses: ArtiomTr/jest-coverage-report-action@v2
-
-              - name: Jest coverage report
-                uses: ArtiomTr/jest-coverage-report-action@v2.3.0
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                node-version: 20
+            - run: npm install -g jest
+            - run: npm test
             
