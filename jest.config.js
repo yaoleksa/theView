@@ -6,10 +6,10 @@
 /** @type {import('jest').Config} */
 const config = {
   // All imported modules in your tests should be mocked automatically
-  automock: true,
+  // automock: false,
 
   // Stop running tests after `n` failures
-  bail: 5,
+  // bail: 0,
 
   // The directory where Jest should store its cached dependency information
   // cacheDirectory: "/tmp/jest_rs",
@@ -27,24 +27,26 @@ const config = {
   coverageDirectory: "coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: [
-    "/node_modules/"
-  ],
+  // coveragePathIgnorePatterns: [
+  //   "/node_modules/"
+  // ],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: "v8",
 
   // A list of reporter names that Jest uses when writing coverage reports
-  coverageReporters: [
-    "json",
-    "text",
-    "lcov",
-    "clover"
-  ],
+  // coverageReporters: [
+  //   "json",
+  //   "text",
+  //   "lcov",
+  //   "clover"
+  // ],
 
   // An object that configures minimum threshold enforcement for coverage results
   coverageThreshold: {
     global: {
+      branches: 80,
+      functions: 80,
       lines: 80
     }
   },
@@ -53,7 +55,7 @@ const config = {
   // dependencyExtractor: undefined,
 
   // Make calling deprecated APIs throw helpful error messages
-  errorOnDeprecated: true,
+  // errorOnDeprecated: false,
 
   // The default configuration for fake timers
   // fakeTimers: {
@@ -76,21 +78,21 @@ const config = {
   // maxWorkers: "50%",
 
   // An array of directory names to be searched recursively up from the requiring module's location
-  moduleDirectories: [
-    "node_modules"
-  ],
+  // moduleDirectories: [
+  //   "node_modules"
+  // ],
 
   // An array of file extensions your modules use
-  moduleFileExtensions: [
-    "js",
-    "mjs",
-    "cjs",
-    "jsx",
-    "ts",
-    "tsx",
-    "json",
-    "node"
-  ],
+  // moduleFileExtensions: [
+  //   "js",
+  //   "mjs",
+  //   "cjs",
+  //   "jsx",
+  //   "ts",
+  //   "tsx",
+  //   "json",
+  //   "node"
+  // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   // moduleNameMapper: {},
@@ -99,10 +101,10 @@ const config = {
   // modulePathIgnorePatterns: [],
 
   // Activates notifications for test results
-  notify: true,
+  // notify: false,
 
   // An enum that specifies notification mode. Requires { notify: true }
-  notifyMode: "failure-change",
+  // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
   // preset: undefined,
@@ -114,7 +116,7 @@ const config = {
   // reporters: undefined,
 
   // Automatically reset mock state before every test
-  resetMocks: true,
+  // resetMocks: false,
 
   // Reset the module registry before running each individual test
   // resetModules: false,
@@ -143,13 +145,13 @@ const config = {
   // setupFilesAfterEnv: [],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
-  slowTestThreshold: 55,
+  // slowTestThreshold: 5,
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: "jsdom",
+  // testEnvironment: "jest-environment-node",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -164,12 +166,12 @@ const config = {
   // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  testPathIgnorePatterns: [
-    "/node_modules/"
-  ],
+  // testPathIgnorePatterns: [
+  //   "/node_modules/"
+  // ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
-  testRegex: [".*\.test\.js$"],
+  // testRegex: [],
 
   // This option allows the use of a custom results processor
   // testResultsProcessor: undefined,

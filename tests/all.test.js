@@ -1,7 +1,3 @@
-const addTwo = (a, b) => {
-    return a + b;
-} 
-
-test('ync test', () => {
-    expect(addTwo(1, 1)).toBe(2);
-}, 70000);
+test('msg', () => {
+    expect(1+1).toBe(2);
+})
