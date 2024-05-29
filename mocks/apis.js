@@ -2,10 +2,24 @@ export default class Apis {
     static getIPaddress() {
         return new Promise((resolve, reject) => {
             resolve("45.45.45.45");
+            reject("Failed to get ip address");
         });
     }
     static getGeoLocation(ip) {
-        return axios.get(`https://ipinfo.io/${ip}/geo`);
+        return new Promise((resolve, reject) => {
+            resolve({
+                "ip": ip,
+                "city": "City",
+                "region": "Region",
+                "country": "CN",
+                "loc": "00.0000,00.0000",
+                "org": "Provider",
+                "postal": "00000",
+                "timezone": "Continent/City",
+                "readme": "https://ipinfo.io/missingauth"
+              });
+            reject("Failed to retrieve a geolocation data");
+        });
     }
     static getMainNew() {
         return axios.get('https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk', {
