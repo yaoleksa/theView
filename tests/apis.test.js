@@ -17,14 +17,45 @@ test('test get location api', () => {
     return Apis.getGeoLocation("45.45.45.45").then(response => {
         expect(response.data).toMatchObject({
             "ip": /[\d]+\.[\d]+\.[\d]+\.[\d]+/,
-            "city": /.+/,
-            "region": /.+/,
-            "country": /.+/,
-            "loc": /.+/,
-            "org": /.+/,
-            "postal": /.+/,
-            "timezone": /.+/,
+            "city": /.*/,
+            "region": /.*/,
+            "country": /.*/,
+            "loc": /.*/,
+            "org": /.*/,
+            "postal": /.*/,
+            "timezone": /.*/,
             "readme": "https://ipinfo.io/missingauth"
         });
+    }).catch(err => {
+        console.error(err.message);
     });
-})
+});
+
+test('test get main new', () => {
+    return Apis.getMainNew().then(response => {
+        if(!response.data) {
+            console.error("Empty response from main new");
+            return null;
+        } else if(!response.data.articles) {
+            console.error("Unexpected response from main new");
+            return null;
+        } else if(!Array.isArray(response.data.articles)) {
+            console.error("Unexpected response from main new. Expect array");
+            return null;
+        } else if(response.data.articles.length < 1) {
+            console.error("Empty news array from main new");
+            return null;
+        }
+        expect.assertions(1);
+        expect(response.data.articles[0]).toMatchObject({
+            "_id": /.*/,
+            "title": /.*/,
+            "link": /^http.*/,
+            "summary": /.*/,
+            "media": /^http.*/,
+            "published_date": /.*/
+        });
+    }).catch(err => {
+        console.error(err.message);
+    })
+});

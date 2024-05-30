@@ -22,10 +22,25 @@ export default class Apis {
         });
     }
     static getMainNew() {
-        return axios.get('https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk', {
+        axios.get('https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk', {
             headers: {
                 'X-RapidAPI-Key': 'dc40d2b288msh88ced99c0191b37p144f83jsne853bb67a11f'
             }
+        });
+        return new Promise((resolve, reject) => {
+            resolve({
+                "articles": [
+                    {
+                        "_id": 1,
+                        "title": "title",
+                        "link": "https://somelink",
+                        "summary": "text",
+                        "media": "https://image",
+                        "published_date": new Date()
+                    }
+                ]
+            });
+            reject("Failed to get main new");
         });
     }
     static getNews() {
