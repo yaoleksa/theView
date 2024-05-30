@@ -59,3 +59,19 @@ test('test get main new', () => {
         console.error(err.message);
     })
 });
+
+test('test get news', () => {
+    return Apis.getNews().then(response => {
+        expect(response.data.results[0]).not.toBeNull();
+    }).catch(err => {
+        console.error(err.message);
+    })
+});
+
+test('test get weather', () => {
+    return Apis.getWeather({
+        "loc": "45.1313,42.1212"
+    }).then(response => {
+        expect(response.data).not.toBeNull();
+    })
+});

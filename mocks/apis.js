@@ -44,19 +44,16 @@ export default class Apis {
         });
     }
     static getNews() {
-        return axios.get('https://newsdata.io/api/1/news', {
-            params: {
-                country: 'ua',
-                apikey: 'pub_8576a5096c78cacae47c5c74fd5c34419a6d'
-            }
-        }).catch(err => {
-            console.log(`and this one: ${err.message}`);
-            return DB.getSavedArticles(null);
-        })
+        new Promise((resolve, reject) => {
+            resolve({});
+            reject("Failed to get news");
+        });
     }
     static getWeather(location) {
-        const latLong = location.loc.split(',');
-        return axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${latLong[0]}&longitude=${latLong[1]}&hourly=temperature_2m`);
+        return new Promise((resolve, reject) => {
+            resolve({});
+            reject("Failed to get weather");
+        })
     }
     static getExchangeRateCache() {
         return axios.request({
