@@ -56,20 +56,10 @@ export default class Apis {
         })
     }
     static getExchangeRateCache() {
-        return axios.request({
-            method: 'GET',
-            url: 'https://exchange-rate-api1.p.rapidapi.com/latest',
-            params: {
-                base: 'UAH'
-            },
-            headers: {
-                'X-RapidAPI-Key': 'dc40d2b288msh88ced99c0191b37p144f83jsne853bb67a11f',
-                'X-RapidAPI-Host': 'exchange-rate-api1.p.rapidapi.com'
-              }
-        }).catch(error => {
-            console.log(error.message);
-            return DB.getSavedRates();
-        });
+        return new Promise((resolve, reject) => {
+            resolve({});
+            reject("Failed to get exchange rate");
+        })
     }
     static getNewsByTopic(topic) {
         return axios.request({

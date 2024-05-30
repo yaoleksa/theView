@@ -75,3 +75,11 @@ test('test get weather', () => {
         expect(response.data).not.toBeNull();
     })
 });
+
+test('test get exchange rate', () => {
+    return Apis.getExchangeRateCache().then(response => {
+        expect(response.data).not.toBeNull();
+    }).catch(err => {
+        console.error(err.message);
+    })
+});
