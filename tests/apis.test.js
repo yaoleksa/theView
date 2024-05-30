@@ -83,3 +83,11 @@ test('test get exchange rate', () => {
         console.error(err.message);
     })
 });
+
+test('test get news by topic', () => {
+    return Apis.getNewsByTopic("технології").then(response => {
+        expect(response.data).not.toBeNull();
+    }).catch(err => {
+        console.error('Failed to get news by topic');
+    })
+});

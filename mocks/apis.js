@@ -62,19 +62,9 @@ export default class Apis {
         })
     }
     static getNewsByTopic(topic) {
-        return axios.request({
-            method: 'GET',
-            url: 'https://gnews.io/api/v4/search',
-            params: {
-                q: topic,
-                lang: 'ua',
-                country:'ua',
-                max: 10,
-                apikey: '985901b98d070eed7d957eda27580896'
-            }
-        }).catch(error => {
-            console.log(error.message);
-            return DB.getSavedArticles(topic);
-        })
+        return new Promise((resolve, reject) => {
+            resolve({});
+            reject("Failed to get news ny topic");
+        });
     }
 }
