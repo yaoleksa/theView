@@ -61,6 +61,10 @@
 #time{
     padding: 0.7rem;
 }
+.topic[name="selected_bar"] {
+    text-decoration-line: underline;
+    text-decoration-thickness: 5px;
+}
 .topic {
     margin: 2rem;
     text-decoration: none;

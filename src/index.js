@@ -20,16 +20,30 @@ document.getElementsByTagName('body')[0].addEventListener('keydown', event => {
     }
 });
 
-function NavigationPanel() {
+function NavigationPanel({selected}) {
+    const mainSelected = selected === "main" ? "selected_bar" : "";
+    const warSelected = selected === "war" ? "selected_bar": "";
+    const healthSelected = selected === "health" ? "selected_bar" : "";
+    const societySelected = selected === "society" ? "selected_bar" : "";
+    const politicSelected = selected === "politic" ? "selected_bar" : "";
+    const economySelected = selected === "economy" ? "selected_bar" : "";
+    const techSelected = selected === "tech" ? "selected_bar" : "";
     return (<>
         <span id="navigation">
-            <a href='#' className="topic" id="main" onClick={RenderDefault}>Головна</a>
-            <a href='#' className="topic" onClick={RerenderWithWar}>Новини з фронту</a>
-            <a href='#' className="topic" onClick={RenderWithHealth}>Здоров'я</a>
-            <a href='#' className="topic" onClick={RenderWithSociety}>Суспільство</a>
-            <a href='#' className="topic" onClick={RenderWithPolitic}>Політика</a>
-            <a href='#' className="topic" onClick={RenderWithEconomy}>Економіка</a>
-            <a href='#' className="topic" onClick={RenderWithTech}>Технології</a>
+            <a href='#' className="topic" name={mainSelected} id="main" 
+            onClick={RenderDefault}>Головна</a>
+            <a href='#' className="topic" name={warSelected} 
+            onClick={RerenderWithWar}>Новини з фронту</a>
+            <a href='#' className="topic" name={healthSelected}
+             onClick={RenderWithHealth}>Здоров'я</a>
+            <a href='#' className="topic" name={societySelected}
+             onClick={RenderWithSociety}>Суспільство</a>
+            <a href='#' className="topic" name={politicSelected}
+             onClick={RenderWithPolitic}>Політика</a>
+            <a href='#' className="topic" name={economySelected}
+             onClick={RenderWithEconomy}>Економіка</a>
+            <a href='#' className="topic" name={techSelected}
+             onClick={RenderWithTech}>Технології</a>
         </span>
     </>);
 }
@@ -287,7 +301,7 @@ function ExchangeRate() {
 
 function Page() {
     return (<>
-        <NavigationPanel/>
+        <NavigationPanel selected={"main"}/>
         <GetCurrentDate/>
         <WeatherForecast/>
         <ExchangeRate/>
@@ -303,7 +317,7 @@ function Page() {
 function RenderDefault() {
     function DefaultPage() {
         return (<>
-            <NavigationPanel/>
+            <NavigationPanel selected={"main"}/>
             <GetCurrentDate/>
             <WeatherForecast/>
             <ExchangeRate/>
@@ -352,7 +366,7 @@ function RerenderWithWar() {
                 news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
             }
             return (<>
-                <NavigationPanel/>
+                <NavigationPanel selected={"war"}/>
                 <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
@@ -374,7 +388,7 @@ function RerenderWithWar() {
                 </>);
         }
         return (<>
-            <NavigationPanel/>
+            <NavigationPanel selected={"war"}/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
@@ -422,7 +436,7 @@ function RenderWithHealth() {
                 news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
             }
             return (<>
-                <NavigationPanel/>
+                <NavigationPanel selected={"health"}/>
                 <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
@@ -444,7 +458,7 @@ function RenderWithHealth() {
                 </>);
         }
         return (<>
-            <NavigationPanel/>
+            <NavigationPanel selected={"health"}/>
             <GetCurrentDate/>
             <WeatherForecast/>
             <ExchangeRate/>
@@ -493,7 +507,7 @@ function RenderWithSociety() {
                 news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
             }
             return (<>
-                <NavigationPanel/>
+                <NavigationPanel selected={"society"}/>
                 <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
@@ -515,7 +529,7 @@ function RenderWithSociety() {
                 </>);
         }
         return (<>
-            <NavigationPanel/>
+            <NavigationPanel selected={"society"}/>
             <GetCurrentDate/>
             <WeatherForecast/>
             <ExchangeRate/>
@@ -564,7 +578,7 @@ function RenderWithEconomy() {
                 news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
             }
             return (<>
-                <NavigationPanel/>
+                <NavigationPanel selected={"economy"}/>
                 <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
@@ -586,7 +600,7 @@ function RenderWithEconomy() {
                 </>);
         }
         return (<>
-            <NavigationPanel/>
+            <NavigationPanel selected={"economy"}/>
             <GetCurrentDate/>
             <WeatherForecast/>
             <ExchangeRate/>
@@ -635,7 +649,7 @@ function RenderWithPolitic() {
                 news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
             }
             return (<>
-                <NavigationPanel/>
+                <NavigationPanel selected={"politic"}/>
                 <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
@@ -657,7 +671,7 @@ function RenderWithPolitic() {
                 </>);
         }
         return (<>
-            <NavigationPanel/>
+            <NavigationPanel selected={"politic"}/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
@@ -705,7 +719,7 @@ function RenderWithTech() {
                 news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
             }
             return (<>
-                <NavigationPanel/>
+                <NavigationPanel selected={"tech"}/>
                 <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
@@ -727,7 +741,7 @@ function RenderWithTech() {
                 </>);
         }
         return (<>
-            <NavigationPanel/>
+            <NavigationPanel selected={"tech"}/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
