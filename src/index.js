@@ -176,8 +176,8 @@ function GetCurrentDate() {
         return <span className={currentTime.nameOfClass} id="time">
         {currentTime.day},
         &nbsp;
-        {currentTime.date} 
-        {currentTime.month} 
+        {currentTime.date} &nbsp;
+        {currentTime.month} &nbsp;
         {currentTime.year} року&nbsp;
         {currentTime.hour}:{currentTime.minute}:{currentTime.second}<br/></span>
     } else {
@@ -233,7 +233,7 @@ function WeatherForecast() {
             currentSecond
         ] = dateProcessing();
         return (<>
-        <span className={nameOfClass}>
+        <span className={nameOfClass} id='weather_start'>
             <span className='weather'>Прогноз погоди:</span>
             <span className='weather'>{week[tommorow]}:&nbsp;&nbsp;&nbsp;&nbsp;
             {weatherInfo.hourly.temperature_2m[24 + currentHour]}{'C' + String.fromCharCode(176)}

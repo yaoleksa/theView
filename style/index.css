@@ -33,6 +33,9 @@
 #ediror_form {
     margin-left: 40%;
 }
+#weather_start {
+    margin-left: -0.1%;
+}
 .submit_button {
     border: solid #078ba6;
     background-color: #078ba6;
