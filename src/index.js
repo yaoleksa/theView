@@ -62,28 +62,11 @@ function MainArticle() {
     const [mainNew, setNew] = useState(null);
     useEffect(() => {
         if(!mainNew) {
-            Apis.getMainNew().then(response => {
-                console.log(`Response status: ${response.status}`);
-                const allArticles = [];
-                if(response.data.articles) {
-                    const zeroArticle = response.data.articles.shift();
-                    allArticles.push({
-                        article_id: zeroArticle._id,
-                        title: zeroArticle.title,
-                        link: zeroArticle.link,
-                        content: zeroArticle.summary
-                        .replace(/Автор фото, /g, '')
-                        .replace(/Підпис до фото/g, '')
-                        .replace(/^[A-Za-z\s\,]+/, ''),
-                        image_url: zeroArticle.media,
-                        publishedDate: zeroArticle.published_date.split(' ')[0]
-                    });
-                    setNew(allArticles[0]);
-                    const DBclient = new DB();
-                    DBclient.insertArticles(allArticles, null);
-                } else {
-                    setNew(response.data.shift());
-                }
+            Apis.getNewsByTopic('а').then(response => {
+                const artile = response.data.articles.shift();
+                setNew(artile);
+                const DBclient = new DB();
+                DBclient.insertArticles(artile, null);
             }).catch(error => {
                 console.error(error.message);
             });
@@ -93,14 +76,14 @@ function MainArticle() {
     if(mainNew) {
         return (<>
         <div className="main_article">
-            <img className="main_image" src={mainNew.image_url}/>
-            <meta itemprop="image" content={mainNew.image_url} />
+            <img className="main_image" src={mainNew.image}/>
+            <meta itemprop="image" content={mainNew.image} />
             <h1 itemprop="headline">{mainNew.title}</h1>
             <p>{mainNew.content}</p>
-            <span itemprop="datePublished" content={mainNew.publishedDate}>
-                Дата публікації: {mainNew.publishedDate}
+            <span itemprop="datePublished" content={mainNew.publishedAt}>
+                Дата публікації: {mainNew.publishedAt}
             </span><br/>
-            <a href={mainNew.link}>Читати повний текст статті...</a>
+            <a href={mainNew.url}>Читати повний текст статті...</a>
         </div>
         </>);
     } else {
