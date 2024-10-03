@@ -62,11 +62,15 @@ function MainArticle() {
     const [mainNew, setNew] = useState(null);
     useEffect(() => {
         if(!mainNew) {
-            Apis.getNewsByTopic('а').then(response => {
-                const artile = response.data.articles.shift();
-                setNew(artile);
-                const DBclient = new DB();
-                DBclient.insertArticles(artile, null);
+            Apis.getNews().then(response => {
+                if(response.data.results) {
+                    const mainArticle = response.data.results.filter(article => article.language === 'ukrainian' && article.image_url && article.image_url.length > 10).shift();
+                    setNew(mainArticle);
+                    const DBclient = new DB();
+                    DBclient.insertArticles(mainArticle, null);
+                } else {
+                    setNew(response.data);
+                }
             }).catch(error => {
                 console.error(error.message);
             });
@@ -76,14 +80,14 @@ function MainArticle() {
     if(mainNew) {
         return (<>
         <div className="main_article">
-            <img className="main_image" src={mainNew.image}/>
-            <meta itemprop="image" content={mainNew.image} />
+            <img className="main_image" src={mainNew.image_url}/>
+            <meta itemprop="image" content={mainNew.image_url} />
             <h1 itemprop="headline">{mainNew.title}</h1>
-            <p>{mainNew.content}</p>
-            <span itemprop="datePublished" content={mainNew.publishedAt}>
-                Дата публікації: {mainNew.publishedAt}
+            <p>{mainNew.description}</p>
+            <span itemprop="datePublished" content={mainNew.pubDate}>
+                Дата публікації: {mainNew.pubDate}
             </span><br/>
-            <a href={mainNew.url}>Читати повний текст статті...</a>
+            <a href={mainNew.link}>Читати повний текст статті...</a>
         </div>
         </>);
     } else {

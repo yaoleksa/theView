@@ -8,13 +8,6 @@ export default class Apis {
     static getGeoLocation(ip) {
         return axios.get(`https://ipinfo.io/${ip}/geo`);
     }
-    static getMainNew() {
-        return axios.get('https://free-news.p.rapidapi.com/v1/search?q=*&lang=uk', {
-            headers: {
-                'X-RapidAPI-Key': 'dc40d2b288msh88ced99c0191b37p144f83jsne853bb67a11f'
-            }
-        });
-    }
     static getNews() {
         return axios.get('https://newsdata.io/api/1/news', {
             params: {
