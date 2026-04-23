@@ -5,7 +5,7 @@ import DB from './db';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const week = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота', 'Неділя'];
-const year = [' Січеня ', ' Лютого ', ' Березня ', ' Квітня ', ' Травня ', ' Червня ', 
+const year = [' Січеня ', ' Лютого ', ' Березня ', ' Квітня ', ' Травня ', ' Червня ',
 ' Липня ', 'Серпня', 'Вересня', 'Жовтня', 'Листопада', 'Грудня'];
 
 document.getElementsByTagName('body')[0].addEventListener('keydown', event => {
@@ -30,9 +30,9 @@ function NavigationPanel({selected}) {
     const techSelected = selected === "tech" ? "selected_bar" : "";
     return (<>
         <span id="navigation">
-            <a href='#' className="topic" name={mainSelected} id="main" 
+            <a href='#' className="topic" name={mainSelected} id="main"
             onClick={RenderDefault}>Головна</a>
-            <a href='#' className="topic" name={warSelected} 
+            <a href='#' className="topic" name={warSelected}
             onClick={RerenderWithWar}>Новини з фронту</a>
             <a href='#' className="topic" name={healthSelected}
              onClick={RenderWithHealth}>Здоров'я</a>
@@ -81,10 +81,10 @@ function MainArticle() {
         return (<>
         <div className="main_article">
             <img className="main_image" src={mainNew.image_url}/>
-            <meta itemprop="image" content={mainNew.image_url} />
-            <h1 itemprop="headline">{mainNew.title}</h1>
+            <meta itemProp="image" content={mainNew.image_url} />
+            <h1 itemProp="headline">{mainNew.title}</h1>
             <p>{mainNew.description}</p>
-            <span itemprop="datePublished" content={mainNew.pubDate}>
+            <span itemProp="datePublished" content={mainNew.pubDate}>
                 Дата публікації: {mainNew.pubDate}
             </span><br/>
             <a href={mainNew.link}>Читати повний текст статті...</a>
@@ -103,7 +103,7 @@ function SideBarContainer() {
             Apis.getNews().then(response => {
                 if(response.data.results) {
                     const allArticles = response.data.results
-                    .filter(article => article.language === 'ukrainian' && 
+                    .filter(article => article.language === 'ukrainian' &&
                     article.image_url && article.image_url.length > 10);
                     allArticles.shift();
                     setArticles(allArticles);
@@ -136,10 +136,10 @@ function GetCurrentDate() {
                 date,
                 currentDay,
                 currentMonth,
-                tommorow, 
-                tommorowOne, 
-                tommorowTwo, 
-                tommorowThree, 
+                tommorow,
+                tommorowOne,
+                tommorowTwo,
+                tommorowThree,
                 tommorowFour,
                 tommorowFive,
                 currentYear,
@@ -208,11 +208,11 @@ function WeatherForecast() {
             date,
             currentDay,
             currentMonth,
-            tommorow, 
-            tommorowOne, 
-            tommorowTwo, 
-            tommorowThree, 
-            tommorowFour, 
+            tommorow,
+            tommorowOne,
+            tommorowTwo,
+            tommorowThree,
+            tommorowFour,
             tommorowFive,
             currentYear,
             currentHour,
@@ -360,10 +360,10 @@ function RerenderWithWar() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <meta itemprop="image" content={topicNew.image_url} />
-                    <h1 itemprop="headline">{topicNew.title}</h1>
+                    <meta itemProp="image" content={topicNew.image_url} />
+                    <h1 itemProp="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
-                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                    <span itemProp="datePublished" content={topicNew.publishedDate}>
                         Дата публікації: {topicNew.publishedDate}
                     </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
@@ -430,10 +430,10 @@ function RenderWithHealth() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <meta itemprop="image" content={topicNew.image_url} />
-                    <h1 itemprop="headline">{topicNew.title}</h1>
+                    <meta itemProp="image" content={topicNew.image_url} />
+                    <h1 itemProp="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
-                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                    <span itemProp="datePublished" content={topicNew.publishedDate}>
                         Дата публікації: {topicNew.publishedDate}
                     </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
@@ -501,10 +501,10 @@ function RenderWithSociety() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <meta itemprop="image" content={topicNew.image_url} />
-                    <h1 itemprop="headline">{topicNew.title}</h1>
+                    <meta itemProp="image" content={topicNew.image_url} />
+                    <h1 itemProp="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
-                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                    <span itemProp="datePublished" content={topicNew.publishedDate}>
                         Дата публікації: {topicNew.publishedDate}
                     </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
@@ -572,10 +572,10 @@ function RenderWithEconomy() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <meta itemprop="image" content={topicNew.image_url} />
-                    <h1 itemprop="headline">{topicNew.title}</h1>
+                    <meta itemProp="image" content={topicNew.image_url} />
+                    <h1 itemProp="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
-                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                    <span itemProp="datePublished" content={topicNew.publishedDate}>
                         Дата публікації: {topicNew.publishedDate}
                     </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
@@ -643,10 +643,10 @@ function RenderWithPolitic() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <meta itemprop="image" content={topicNew.image_url} />
-                    <h1 itemprop="headline">{topicNew.title}</h1>
+                    <meta itemProp="image" content={topicNew.image_url} />
+                    <h1 itemProp="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
-                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                    <span itemProp="datePublished" content={topicNew.publishedDate}>
                         Дата публікації: {topicNew.publishedDate}
                     </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
@@ -713,10 +713,10 @@ function RenderWithTech() {
                 <div className='content'>
                 <div className="main_article">
                     <img className="main_image" src={topicNew.image_url}/>
-                    <meta itemprop="image" content={topicNew.image_url} />
-                    <h1 itemprop="headline">{topicNew.title}</h1>
+                    <meta itemProp="image" content={topicNew.image_url} />
+                    <h1 itemProp="headline">{topicNew.title}</h1>
                     <p>{topicNew.content}</p>
-                    <span itemprop="datePublished" content={topicNew.publishedDate}>
+                    <span itemProp="datePublished" content={topicNew.publishedDate}>
                         Дата публікації: {topicNew.publishedDate}
                     </span><br/>
                     <a href={topicNew.link}>Читати повний текст статті...</a>
@@ -822,10 +822,10 @@ function dateProcessing() {
         date,
         currentDay,
         currentMonth,
-        tommorow, 
-        tommorowOne, 
-        tommorowTwo, 
-        tommorowThree, 
+        tommorow,
+        tommorowOne,
+        tommorowTwo,
+        tommorowThree,
         tommorowFour,
         tommorowFive,
         currentYear,

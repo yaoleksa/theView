@@ -1,0 +1,4 @@
+on: [push]
+
+env:
+  environment: env
