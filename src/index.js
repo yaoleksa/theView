@@ -63,7 +63,7 @@ function MainArticle() {
     useEffect(() => {
         if(!mainNew) {
             Apis.getNews().then(response => {
-                if(response.status == '429') {
+                if(response.status == 429) {
                     DB.getSavedArticles(null).then(resp => {
                         resp.json().then(data => {
                             setNew(data[0]);
@@ -114,19 +114,35 @@ function SideBarContainer() {
     useEffect(() => {
         if(articles.length === 0) {
             Apis.getNews().then(response => {
-                response.json().then(data => {
-                    if(data.results) {
-                        const allArticles = data.results.filter(article => article.image_url && article.image_url.length > 10);
-                        allArticles.shift();
-                        setArticles(allArticles);
-                    } else {
-                        setArticles(data);
-                    }
-                }).catch(error => {
-                    if(error) {
-                        console.error(`index.js.SideBarContainer.response.json(): ${error.message}`);
-                    }
-                });
+                if(response.status != 429) {
+                    response.json().then(data => {
+                        if(data.results) {
+                            const allArticles = data.results.filter(article => article.image_url && article.image_url.length > 10);
+                            allArticles.shift();
+                            setArticles(allArticles);
+                        } else {
+                            setArticles(data);
+                        }
+                    }).catch(error => {
+                        if(error) {
+                            console.error(`index.js.SideBarContainer.response.json(): ${error.message}`);
+                        }
+                    });
+                } else {
+                    DB.getSavedArticles(null).then(response => {
+                        response.json().then(data => {
+                            setArticles(data.slice(1));
+                        }).catch(error => {
+                            if(error) {
+                                console.error(`index.js.SideBarContainer.getNews.getSavedArticles.response.json: ${error.message}`)
+                            }
+                        })
+                    }).catch(error => {
+                        if(error) {
+                            console.error(`index.js.SideBarContainer.getNews.getSavedArticles: ${error.message}`);
+                        }
+                    })
+                }
             }).catch(err => {
                 console.error(err.message);
             });
@@ -365,35 +381,35 @@ function RerenderWithWar() {
             Apis.getNewsByTopic('війна').then(response => {
                 if(!topicNew) {
                     const allArticles = [];
-                    response.json().then(data => {
-                        allArticles.push(...data);
+                    if(response.status != 429) {
+                        response.json().then(data => {
+                            allArticles.push(...data);
+                            setNew(allArticles.shift());
+                            setNews(allArticles);
+                            const client = new DB();
+                            client.insertArticles(allArticles, 'війна');
+                        }).catch(error => {
+                            if(error) {
+                                console.error(`index.js.RenderWithWar.response.json(): ${error.message}`);
+                            }
+                        });
                         setNew(allArticles.shift());
                         setNews(allArticles);
                         const client = new DB();
                         client.insertArticles(allArticles, 'війна');
-                    }).catch(error => {
-                        if(error) {
-                            console.error(`index.js.RenderWithWar.response.json(): ${error.message}`);
-                        }
-                    })
-                    // const articleList = response.data.articles ? response.data.articles : response.data;
-                    // for(let article of articleList) {
-                    //     allArticles.push({
-                    //         article_id: Date.now(),
-                    //         title: article.title,
-                    //         link: article.url ? article.url : article.link,
-                    //         content: article.description ? article.description : article.content,
-                    //         image_url: article.image ? article.image : article.image_url,
-                    //         publishedDate: article.publishedAt.split('T')[0]
-                    //     });
-                    // }
-                    setNew(allArticles.shift());
-                    setNews(allArticles);
-                    const client = new DB();
-                    client.insertArticles(allArticles, 'війна');
+                    } else {
+                        DB.getSavedArticles('війна').then(response => {
+                            response.json().then(data => {
+                                setNew(data.shift());
+                                setNews(data.slice(1));
+                            }).catch(error => {
+                                console.error(`index.js.RenderWithWar.getSavedArticles.response.json: ${error.message}`);
+                            })
+                        })
+                    }
                 }
             }).catch(error => {
-                console.error(error.message);
+                console.error(`index.js.RenderWithWar.getNewsByTopic.catch: ${error.message}`);
             });
         });
         if(topicNew && topicNews) {

@@ -30,7 +30,6 @@ export default class Apis {
         });
     }
     static getNewsByTopic(topic) {
-        console.log(`apis.js.getNewsByTopic.topic: ${topic}`);
         return fetch(`https://newsdata.io/api/1/news?apikey=${process.env.APIKEY}&country=ua&language=uk&q=${topic}`);
     }
 }
