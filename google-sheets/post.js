@@ -1,4 +1,7 @@
 function doPost(e) {
+  if(!e.postData) {
+    throw new Error("Invalid API payload");
+  }
   const data = JSON.parse(e.postData.contents);
   if(e.parameter.entity === 'article') {
     const activeSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetById(0);
@@ -12,10 +15,10 @@ function doPost(e) {
       code: 201
     })).setMimeType(ContentService.MimeType.JSON);
   } else if(e.parameter.entity === 'rate') {
-    const activeSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetById(1);
+    const activeSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('rate');
     const lastRow = activeSheet.getLastRow() + 1;
     activeSheet.getRange(`A${lastRow}:D${lastRow}`).setValues([
-      [data.id, data.usd, data.eur, data.pln]
+      [lastRow, data.USD, data.EUR, data.PLN]
     ]);
     return ContentService.createTextOutput(JSON.stringify({
       status: 'OK',

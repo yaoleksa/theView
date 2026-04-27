@@ -51,7 +51,7 @@
     grid-template-columns: 75% 25%;
 }
 .main_article {
-    margin: 2%;
+    width: 75rem;
 }
 .main_image {
     width: 80%;

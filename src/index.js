@@ -63,20 +63,33 @@ function MainArticle() {
     useEffect(() => {
         if(!mainNew) {
             Apis.getNews().then(response => {
-                if(response.data.results) {
-                    const mainArticle = response.data.results.filter(article => article.language === 'ukrainian' && article.image_url && article.image_url.length > 10).shift();
-                    setNew(mainArticle);
-                    const DBclient = new DB();
-                    DBclient.insertArticles(mainArticle, null);
+                if(response.status == '429') {
+                    DB.getSavedArticles(null).then(resp => {
+                        resp.json().then(data => {
+                            setNew(data[0]);
+                        })
+                    });
                 } else {
-                    setNew(response.data);
+                    response.json().then(data => {
+                        if(data.results) {
+                            const mainArticle = data.results.filter(article => article.image_url && article.image_url.length > 10).shift();
+                            setNew(mainArticle);
+                            const DBclient = new DB();
+                            DBclient.insertArticles(mainArticle, 'все');
+                        } else {
+                            setNew(data);
+                        }
+                    }).catch(error => {
+                        if(error) {
+                            console.error(`index.js.MainArticle.response.json(): ${error.message}`);
+                        }
+                    });
                 }
             }).catch(error => {
                 console.error(error.message);
             });
         }
     });
-    console.log(mainNew);
     if(mainNew) {
         return (<>
         <div className="main_article">
@@ -101,15 +114,19 @@ function SideBarContainer() {
     useEffect(() => {
         if(articles.length === 0) {
             Apis.getNews().then(response => {
-                if(response.data.results) {
-                    const allArticles = response.data.results
-                    .filter(article => article.language === 'ukrainian' &&
-                    article.image_url && article.image_url.length > 10);
-                    allArticles.shift();
-                    setArticles(allArticles);
-                } else {
-                    setArticles(response.data);
-                }
+                response.json().then(data => {
+                    if(data.results) {
+                        const allArticles = data.results.filter(article => article.image_url && article.image_url.length > 10);
+                        allArticles.shift();
+                        setArticles(allArticles);
+                    } else {
+                        setArticles(data);
+                    }
+                }).catch(error => {
+                    if(error) {
+                        console.error(`index.js.SideBarContainer.response.json(): ${error.message}`);
+                    }
+                });
             }).catch(err => {
                 console.error(err.message);
             });
@@ -118,7 +135,9 @@ function SideBarContainer() {
     if(articles.length > 0) {
         const DBclient = new DB();
         for(let article of articles) {
-            news.push(createArticle(article.article_id, article.title, article.image_url, article.link));
+            const novetly = { ...createArticle(article.article_id, article.title, article.image_url, article.link) };
+            novetly.key = article.article_id;
+            news.push(novetly);
         }
         DBclient.insertArticles(articles, null);
         return news;
@@ -179,30 +198,45 @@ function WeatherForecast() {
     useEffect(() => {
         if(!IP) {
             Apis.getIPaddress().then(response => {
-                setIP(response.data.ip);
+                response.json().then(data => {
+                    if(data.ip) {
+                        setIP(data.ip);
+                    } else {
+                        setIP('127.0.0.1');
+                    }
+                }).catch(error => {
+                    console.error(`index.js.WeatherForecast.getIPaddress.response.json(): ${error.message}`);
+                });
             }).catch(error => {
-                console.log(error);
+                console.error(`index.js.WeatherForecast.getIPaddress: ${error.message}`);
             });
         }
         if(IP && !location) {
             Apis.getGeoLocation(IP).then(response => {
-                setLocation(response.data);
+                response.json().then(data => {
+                    setLocation(data);
+                }).catch(error => {
+                    console.error(`index.js.WeatherForecast.getGeolocation.response.json(): ${error.message}`);
+                });
             }).catch(error => {
-                console.log(error);
+                console.error(`index.js.WeatherForecast.getGeolocation(): ${error.message}`);
             });
         }
         if(location && !weatherInfo) {
-            console.log('Location');
-            console.log(location);
             Apis.getWeather(location).then(response => {
-                setWeather(response.data);
+                response.json().then(data => {
+                    setWeather(data);
+                }).catch(error => {
+                    if(error) {
+                        console.error(`index.js.WeatherForecast.getWeather.response.json(): ${error.message}`);
+                    }
+                });
             }).catch(error => {
-                console.log(error);
+                console.error(`index.js.WeatherForecast.getWeather(): ${error.message}`);
             });
         }
     });
     if(weatherInfo) {
-        console.log(weatherInfo);
         const [
             nameOfClass,
             date,
@@ -253,15 +287,19 @@ function ExchangeRate() {
     useEffect(() => {
         if(!currencyRate) {
             Apis.getExchangeRateCache().then(response => {
-                console.log('ABOUT CURRENCY');
-                console.log(response);
-                const rates = response.data.rates ? response.data.rates : response.data[0].resp_body.rates;
-                setRate(rates);
-                DB.insertRate({
-                    rates: rates
+                response.json().then(data => {
+                    const rates = data.rates ? data.rates : data[0].resp_body.rates;
+                    setRate(rates);
+                    DB.insertRate({
+                        rates: rates
+                    });
+                }).catch(error => {
+                    if(error) {
+                        console.error(`index.js.ExchangeRate.response.json(): ${error.message}`);
+                    }
                 });
             }).catch(err => {
-                console.log(err.message);
+                console.error(`index.js.ExchangeRate.getExchangeRateCache.catch: ${err.message}`);
             });
         }
     });
@@ -327,24 +365,35 @@ function RerenderWithWar() {
             Apis.getNewsByTopic('війна').then(response => {
                 if(!topicNew) {
                     const allArticles = [];
-                    const articleList = response.data.articles ? response.data.articles : response.data;
-                    for(let article of articleList) {
-                        allArticles.push({
-                            article_id: Date.now(),
-                            title: article.title,
-                            link: article.url ? article.url : article.link,
-                            content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url,
-                            publishedDate: article.publishedAt.split('T')[0]
-                        });
-                    }
+                    response.json().then(data => {
+                        allArticles.push(...data);
+                        setNew(allArticles.shift());
+                        setNews(allArticles);
+                        const client = new DB();
+                        client.insertArticles(allArticles, 'війна');
+                    }).catch(error => {
+                        if(error) {
+                            console.error(`index.js.RenderWithWar.response.json(): ${error.message}`);
+                        }
+                    })
+                    // const articleList = response.data.articles ? response.data.articles : response.data;
+                    // for(let article of articleList) {
+                    //     allArticles.push({
+                    //         article_id: Date.now(),
+                    //         title: article.title,
+                    //         link: article.url ? article.url : article.link,
+                    //         content: article.description ? article.description : article.content,
+                    //         image_url: article.image ? article.image : article.image_url,
+                    //         publishedDate: article.publishedAt.split('T')[0]
+                    //     });
+                    // }
                     setNew(allArticles.shift());
                     setNews(allArticles);
                     const client = new DB();
                     client.insertArticles(allArticles, 'війна');
                 }
             }).catch(error => {
-                console.log(error.message);
+                console.error(error.message);
             });
         });
         if(topicNew && topicNews) {
@@ -414,7 +463,7 @@ function RenderWithHealth() {
                     client.insertArticles(allArticles, 'здоров');
                 }
             }).catch(error => {
-                console.log(error.message);
+                console.error(error.message);
             });
         });
         if(topicNew && topicNews) {
@@ -485,7 +534,7 @@ function RenderWithSociety() {
                     client.insertArticles(allArticles, 'суспільство');
                 }
             }).catch(error => {
-                console.log(error.message);
+                console.error(error.message);
             });
         });
         if(topicNew && topicNews) {
@@ -556,7 +605,7 @@ function RenderWithEconomy() {
                     client.insertArticles(allArticles, 'економіка');
                 }
             }).catch(error => {
-                console.log(error.message);
+                console.error(error.message);
             });
         });
         if(topicNew && topicNews) {
@@ -627,7 +676,7 @@ function RenderWithPolitic() {
                     client.insertArticles(allArticles, 'політика');
                 }
             }).catch(error => {
-                console.log(error.message);
+                console.error(error.message);
             });
         });
         if(topicNew && topicNews) {
@@ -697,7 +746,7 @@ function RenderWithTech() {
                     client.insertArticles(allArticles, 'технології');
                 }
             }).catch(error => {
-                console.log(error.message);
+                console.error(error.message);
             });
         });
         if(topicNew && topicNews) {

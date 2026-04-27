@@ -1,22 +1,25 @@
+const { plugins } = require('@babel/preset-env/lib/plugins-compat-data');
+const Dotenv = require('dotenv-webpack');
 const path = require('path');
 
 module.exports = {
-mode: 'development',
-entry: './src/index.js',
-output: {
-  filename: 'main.js',
-  path: path.resolve(__dirname, 'dist'),
-},
-module: {
-    rules: [{
-      test: /.m?js$/,
-      exclude: /(node_modules|bower_components)/,
-      use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
-          }
-      }
-    }]
-}
+  mode: 'development',
+  entry: './src/index.js',
+  output: {
+    filename: 'main.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+  module: {
+      rules: [{
+        test: /.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+        }
+      }]
+  },
+  plugins: [new Dotenv()]
 };
