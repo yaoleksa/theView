@@ -22,12 +22,11 @@ export default {
         if (entity === "article") {
           // Clear DB
           const rslt = await env.DB.prepare(`SELECT COUNT(*) as size FROM articles`).run();
-          if(rslt.results[0].size > 20 && false) {
+          if(rslt.results[0].size > 20) {
             await env.DB.prepare(`
               DELETE FROM articles
               ORDER BY epoch LIMIT ${rslt.results[0].size - 20}`).run();
           }
-          await env.DB.prepare('DELETE FROM articles').run();
           await env.DB.prepare(`
             INSERT INTO articles
             (article_id, title, link, description, image_url, topic, pub_date, epoch)
@@ -50,7 +49,7 @@ export default {
         if (entity === "rate") {
           // Clear DB
           const rslt = await env.DB.prepare(`SELECT COUNT(*) as size FROM rate`).run();
-          if(rslt.results[0].size > 3 && false) {
+          if(rslt.results[0].size > 3) {
             await env.DB.prepare(`
               DELETE FROM rate
               ORDER BY id LIMIT ${rslt.results[0].size - 3}`).run();
