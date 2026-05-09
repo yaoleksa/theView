@@ -20,11 +20,18 @@ export default {
 
         // ARTICLE
         if (entity === "article") {
+          // Clear DB
+          const rslt = await env.DB.prepare(`SELECT COUNT(*) as size FROM articles`).run();
+          if(rslt.results[0].size > 20 && false) {
+            await env.DB.prepare(`
+              DELETE FROM articles
+              ORDER BY epoch LIMIT ${rslt.results[0].size - 20}`).run();
+          }
           await env.DB.prepare('DELETE FROM articles').run();
           await env.DB.prepare(`
             INSERT INTO articles
-            (article_id, title, link, description, image_url, topic, pub_date)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            (article_id, title, link, description, image_url, topic, pub_date, epoch)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
           `).bind(
             data.article_id,
             data.title,
@@ -32,7 +39,8 @@ export default {
             data.description,
             data.image_url,
             url.searchParams.get("q"),
-            data.pubDate
+            data.pubDate,
+            new Date().toISOString()
           ).run();
 
           return json({ status: "OK", message: "Article inserted" });
@@ -40,7 +48,13 @@ export default {
 
         // RATE
         if (entity === "rate") {
-          await env.DB.prepare('DELETE FROM rate').run();
+          // Clear DB
+          const rslt = await env.DB.prepare(`SELECT COUNT(*) as size FROM rate`).run();
+          if(rslt.results[0].size > 3 && false) {
+            await env.DB.prepare(`
+              DELETE FROM rate
+              ORDER BY id LIMIT ${rslt.results[0].size - 3}`).run();
+          }
           await env.DB.prepare(`
             INSERT INTO rate (id, USD, EUR, PLN)
             VALUES (?, ?, ?, ?)
