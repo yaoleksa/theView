@@ -8,8 +8,16 @@ export default class Apis {
     static getGeoLocation(ip) {
         return fetch(`https://ipinfo.io/${ip}/geo`);
     }
-    static getNews() {
-        return fetch(`https://newsdata.io/api/1/news?apikey=${process.env.APIKEY}&country=ua&language=uk&q=все`);
+    static async getNews(topic) {
+        const data = [];
+        const request = await fetch(`https://newsdata.io/api/1/news?apikey=${process.env.APIKEY}&country=ua&language=uk&q=${topic}`);
+        if(request.status != 200) {
+            const dbRequest = await fetch(`https://yellow-dream-c8c6.mryaremchyk.workers.dev/?entity=article&topic=${topic}`);
+            data.push(...await dbRequest.json());
+        } else {
+            data.push(...await request.json());
+        }
+        return data;
     }
     static getWeather(location) {
         const latLong = location.loc.split(',');
@@ -25,11 +33,7 @@ export default class Apis {
         }).catch(error => {
             if(error) {
                 console.error(error.message);
-                return DB.getSavedArticles();
             }
         });
-    }
-    static getNewsByTopic(topic) {
-        return fetch(`https://newsdata.io/api/1/news?apikey=${process.env.APIKEY}&country=ua&language=uk&q=${topic}`);
     }
 }

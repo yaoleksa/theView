@@ -71,26 +71,12 @@ function MainArticle() {
     const [mainNew, setNew] = useState(null);
     useEffect(() => {
         if(!mainNew) {
-            Apis.getNews().then(response => {
-                if(response.status == 429) {
-                    DB.getSavedArticles('все').then(resp => {
-                        resp.json().then(data => {
-                            setNew(data.shift());
-                        });
-                    });
-                } else {
-                    response.json().then(data => {
-                        if(data.results) {
-                            const mainArticle = data.results.filter(article => article.image_url && article.image_url.length > 10).shift();
-                            setNew(mainArticle);
-                            const DBclient = new DB();
-                            DBclient.insertArticles(mainArticle, 'все');
-                        } else {
-                            setNew(data);
-                        }
-                    }).catch(error => errorHandler('index.js.MainArticle.Apis.getNews()', error));
-                }
+            Apis.getNews('все').then(response => {
+                setNew(response.shift());
             }).catch(error => errorHandler('index.js.MainArticle.Apis.getNews()', error));
+        }
+        if(!mainNew) {
+            mainNew = { image_url: null, title: null, description: null, pubDate: null };
         }
     });
     if(mainNew) {
@@ -116,25 +102,12 @@ function SideBarContainer() {
     const news = [];
     useEffect(() => {
         if(articles.length === 0) {
-            Apis.getNews().then(response => {
-                if(response.status != 429) {
-                    response.json().then(data => {
-                        if(data.results) {
-                            const allArticles = data.results.filter(article => article.image_url && article.image_url.length > 10);
-                            allArticles.shift();
-                            setArticles(allArticles);
-                        } else {
-                            setArticles(data);
-                        }
-                    }).catch(error => errorHandler('index.js.SideBarContainer.response.json()', error));
-                } else {
-                    DB.getSavedArticles('все').then(response => {
-                        response.json().then(data => {
-                            setArticles(data.slice(1));
-                        }).catch(error => errorHandler('index.js.SideBarContainer.getNews.getSavedArticles.response.json', error));
-                    }).catch(error => errorHandler('index.js.SideBarContainer.getNews.getSavedArticles', error));
-                }
+            Apis.getNews('все').then(response => {
+                setArticles(response.length > 1 ? response.slice(1): response);
             }).catch(err => errorHandler('index.js.SideBarContainer.Apis.getNews()', err));
+        }
+        if(articles.length === 0) {
+            articles.push({ image_url: null, title: null, description: null, pubDate: null });
         }
     });
     if(articles.length > 0) {
@@ -278,13 +251,21 @@ function ExchangeRate() {
     useEffect(() => {
         if(!currencyRate) {
             Apis.getExchangeRateCache().then(response => {
-                response.json().then(data => {
-                    const rates = data.rates ? data.rates : data[0].resp_body.rates;
-                    setRate(rates);
-                    DB.insertRate({
-                        rates: rates
-                    });
-                }).catch(error => errorHandler('index.js.ExchangeRate.Apis.getExchangeRateCache.response.json()', error));
+                if(response.status != 429) {
+                    response.json().then(data => {
+                        const rates = data.rates ? data.rates : data[0].resp_body.rates;
+                        setRate(rates);
+                        DB.insertRate({
+                            rates: rates
+                        });
+                    }).catch(error => errorHandler('index.js.ExchangeRate.Apis.getExchangeRateCache.response.json()', error));
+                } else {
+                    DB.getSavedRates().then(response => {
+                        response.json().then(data => {
+                            setRate(data.shift());
+                        })
+                    })
+                }
             }).catch(err => errorHandler('index.js.ExchangeRate.Apis.getExchangeRateCache', err));
         }
     });
@@ -347,28 +328,16 @@ function RenderWithTopic(topic) {
         const [topicNew, setNew] = useState(null);
         const [topicNews, setNews] = useState(null);
         useEffect(() => {
-            Apis.getNewsByTopic(topic).then(response => {
-                if(!topicNew) {
-                    const allArticles = [];
-                    if(response.status != '429') {
-                        response.json().then(data => {
-                            allArticles.push(...data.results);
-                            setNew(allArticles.shift());
-                            setNews(allArticles);
-                            const client = new DB();
-                            client.insertArticles(allArticles, topic);
-                        }).catch(err => errorHandler('index.js.RenderWithTopic.Apis.getNewsByTopic.response.json()', err));
-                    } else {
-                        DB.getSavedArticles(topic).then(response => {
-                            response.json().then(data => {
-                                allArticles.push(...data);
-                                setNew(allArticles.shift());
-                                setNews(allArticles);
-                            }).catch(err => errorHandler('index.js.RenderWithTopic.getSavedArticles.response.json()', err));
-                        })
-                    }
-                }
-            }).catch(err => errorHandler('index.js.RenderWithTopic.Apis.getNewsByTopic', err));
+            if(!topicNew) {
+                Apis.getNews(topic).then(response => {
+                    setNew(response.shift());
+                    setNews(response);
+                });
+            }
+            if(!topicNew) {
+                setNew({ image_url: null, title: null, description: null, pubDate: null });
+                setNews({ image_url: null, title: null, description: null, pubDate: null });
+            }
         });
         if(topicNew && topicNews) {
             const news = [];

@@ -39,6 +39,6 @@ export default class DB {
         return fetch(`https://yellow-dream-c8c6.mryaremchyk.workers.dev/?entity=article&topic=${q}`);
     }
     static getSavedRates() {
-        return supabase.from('currency_info').select('*').limit(1);
+        return fetch('https://yellow-dream-c8c6.mryaremchyk.workers.dev/?entity=rate');
     }
 }
