@@ -75,9 +75,6 @@ function MainArticle() {
                 setNew(response.shift());
             }).catch(error => errorHandler('index.js.MainArticle.Apis.getNews()', error));
         }
-        if(!mainNew) {
-            mainNew = { image_url: null, title: null, description: null, pubDate: null };
-        }
     });
     if(mainNew) {
         return (<>
@@ -106,15 +103,13 @@ function SideBarContainer() {
                 setArticles(response.length > 1 ? response.slice(1): response);
             }).catch(err => errorHandler('index.js.SideBarContainer.Apis.getNews()', err));
         }
-        if(articles.length === 0) {
-            articles.push({ image_url: null, title: null, description: null, pubDate: null });
-        }
     });
     if(articles.length > 0) {
         const DBclient = new DB();
         for(let article of articles) {
             const novetly = { ...createArticle(article.article_id, article.title, article.image_url, article.link) };
-            novetly.key = article.article_id;
+            novetly.key = article.article_id ? article.article_id : Date.now();
+            console.log(novetly);
             news.push(novetly);
         }
         DBclient.insertArticles(articles, 'все');
@@ -330,13 +325,10 @@ function RenderWithTopic(topic) {
         useEffect(() => {
             if(!topicNew) {
                 Apis.getNews(topic).then(response => {
+                    console.log('ln335');
                     setNew(response.shift());
                     setNews(response);
                 });
-            }
-            if(!topicNew) {
-                setNew({ image_url: null, title: null, description: null, pubDate: null });
-                setNews({ image_url: null, title: null, description: null, pubDate: null });
             }
         });
         if(topicNew && topicNews) {

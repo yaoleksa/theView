@@ -17,6 +17,12 @@ export default class Apis {
         } else {
             data.push(...await request.json());
         }
+        if(data.length === 0) {
+            data.push([
+                { article_id: Date.now(), image_url: 'NO_URL', title: 'NO_TITLE', description: 'NO_DESCRIPTION', pubDate: 'NO_DATE' },
+                { article_id: Date.now(), image_url: 'NO_URL', title: 'NO_TITLE', description: 'NO_DESCRIPTION', pubDate: 'NO_DATE' }
+            ]);
+        }
         return data;
     }
     static getWeather(location) {

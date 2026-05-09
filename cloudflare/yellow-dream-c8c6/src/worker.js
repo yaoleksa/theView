@@ -22,10 +22,10 @@ export default {
         if (entity === "article") {
           // Clear DB
           const rslt = await env.DB.prepare(`SELECT COUNT(*) as size FROM articles`).run();
-          if(rslt.results[0].size > 20) {
+          if(rslt.results[0].size > 200) {
             await env.DB.prepare(`
               DELETE FROM articles
-              ORDER BY epoch LIMIT ${rslt.results[0].size - 20}`).run();
+              ORDER BY epoch LIMIT ${rslt.results[0].size - 200}`).run();
           }
           await env.DB.prepare(`
             INSERT INTO articles
