@@ -109,7 +109,6 @@ function SideBarContainer() {
         for(let article of articles) {
             const novetly = { ...createArticle(article.article_id, article.title, article.image_url, article.link) };
             novetly.key = article.article_id ? article.article_id : Date.now();
-            console.log(novetly);
             news.push(novetly);
         }
         DBclient.insertArticles(articles, 'все');
@@ -246,21 +245,7 @@ function ExchangeRate() {
     useEffect(() => {
         if(!currencyRate) {
             Apis.getExchangeRateCache().then(response => {
-                if(response.status != 429) {
-                    response.json().then(data => {
-                        const rates = data.rates ? data.rates : data[0].resp_body.rates;
-                        setRate(rates);
-                        DB.insertRate({
-                            rates: rates
-                        });
-                    }).catch(error => errorHandler('index.js.ExchangeRate.Apis.getExchangeRateCache.response.json()', error));
-                } else {
-                    DB.getSavedRates().then(response => {
-                        response.json().then(data => {
-                            setRate(data.shift());
-                        })
-                    })
-                }
+                setRate(response.shift());
             }).catch(err => errorHandler('index.js.ExchangeRate.Apis.getExchangeRateCache', err));
         }
     });
@@ -325,7 +310,6 @@ function RenderWithTopic(topic) {
         useEffect(() => {
             if(!topicNew) {
                 Apis.getNews(topic).then(response => {
-                    console.log('ln335');
                     setNew(response.shift());
                     setNews(response);
                 });

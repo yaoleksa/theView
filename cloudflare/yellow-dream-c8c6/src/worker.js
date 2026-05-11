@@ -27,21 +27,23 @@ export default {
               DELETE FROM articles
               ORDER BY epoch LIMIT ${rslt.results[0].size - 200}`).run();
           }
-          await env.DB.prepare(`
-            INSERT INTO articles
-            (article_id, title, link, description, image_url, topic, pub_date, epoch)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-          `).bind(
-            data.article_id,
-            data.title,
-            data.link,
-            data.description,
-            data.image_url,
-            url.searchParams.get("q"),
-            data.pubDate,
-            new Date().toISOString()
-          ).run();
-
+          const statement = data.map(article => {
+            return env.DB.prepare(`
+              INSERT INTO articles
+              (article_id, title, link, description, image_url, topic, pub_date, epoch)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            `).bind(
+              article.article_id,
+              article.title,
+              article.link,
+              article.description,
+              article.image_url,
+              url.searchParams.get("q"),
+              article.pubDate,
+              new Date().toISOString()
+            );
+          });
+          await env.DB.batch(statement);
           return json({ status: "OK", message: "Article inserted" });
         }
 
