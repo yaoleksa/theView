@@ -108,7 +108,7 @@ function SideBarContainer() {
         const DBclient = new DB();
         for(let article of articles) {
             const novetly = { ...createArticle(article.article_id, article.title, article.image_url, article.link) };
-            novetly.key = article.article_id ? article.article_id : Date.now();
+            novetly.key = `${Date.now()}_${article.article_id}`;
             news.push(novetly);
         }
         DBclient.insertArticles(articles, 'все');
@@ -310,6 +310,7 @@ function RenderWithTopic(topic) {
         useEffect(() => {
             if(!topicNew) {
                 Apis.getNews(topic).then(response => {
+                    console.log(topic);
                     setNew(response.shift());
                     setNews(response);
                 });
@@ -319,7 +320,7 @@ function RenderWithTopic(topic) {
             const news = [];
             for(let n of topicNews) {
                 const novetly = { ...createArticle(n.article_id, n.title, n.image_url, n.link) };
-                novetly.key = n.article_id;
+                novetly.key = `${Date.now}_${n.article_id}`;
                 news.push(novetly);
             }
             return (<>
