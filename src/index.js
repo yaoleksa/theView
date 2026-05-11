@@ -10,7 +10,7 @@ const year = [' Січеня ', ' Лютого ', ' Березня ', ' Квіт
 
 const navigationMapper = {
     'війна': 'war',
-    'здоров': 'health',
+    'самопочуття': 'health',
     'суспільство': 'society',
     'економіка': 'economy',
     'політика': 'politic',
@@ -44,7 +44,7 @@ function NavigationPanel({selected}) {
             <a href='#' className="topic" name={warSelected}
             onClick={() => RenderWithTopic('війна')}>Новини з фронту</a>
             <a href='#' className="topic" name={healthSelected}
-             onClick={() => RenderWithTopic('здоров')}>Здоров'я</a>
+             onClick={() => RenderWithTopic('самопочуття')}>Здоров'я</a>
             <a href='#' className="topic" name={societySelected}
              onClick={() => RenderWithTopic('суспільство')}>Суспільство</a>
             <a href='#' className="topic" name={politicSelected}
