@@ -8,6 +8,15 @@ const week = ['Понеділок', 'Вівторок', 'Середа', 'Чет�
 const year = [' Січеня ', ' Лютого ', ' Березня ', ' Квітня ', ' Травня ', ' Червня ',
 ' Липня ', 'Серпня', 'Вересня', 'Жовтня', 'Листопада', 'Грудня'];
 
+const navigationMapper = {
+    'війна': 'war',
+    'здоров': 'health',
+    'суспільство': 'society',
+    'економіка': 'economy',
+    'політика': 'politic',
+    'технології': 'tech'
+}
+
 document.getElementsByTagName('body')[0].addEventListener('keydown', event => {
     if(event.ctrlKey && event.shiftKey && event.key === 'E') {
         root.render(<>
@@ -33,17 +42,17 @@ function NavigationPanel({selected}) {
             <a href='#' className="topic" name={mainSelected} id="main"
             onClick={RenderDefault}>Головна</a>
             <a href='#' className="topic" name={warSelected}
-            onClick={RerenderWithWar}>Новини з фронту</a>
+            onClick={() => RenderWithTopic('війна')}>Новини з фронту</a>
             <a href='#' className="topic" name={healthSelected}
-             onClick={RenderWithHealth}>Здоров'я</a>
+             onClick={() => RenderWithTopic('здоров')}>Здоров'я</a>
             <a href='#' className="topic" name={societySelected}
-             onClick={RenderWithSociety}>Суспільство</a>
+             onClick={() => RenderWithTopic('суспільство')}>Суспільство</a>
             <a href='#' className="topic" name={politicSelected}
-             onClick={RenderWithPolitic}>Політика</a>
+             onClick={() => RenderWithTopic('політика')}>Політика</a>
             <a href='#' className="topic" name={economySelected}
-             onClick={RenderWithEconomy}>Економіка</a>
+             onClick={() => RenderWithTopic('економіка')}>Економіка</a>
             <a href='#' className="topic" name={techSelected}
-             onClick={RenderWithTech}>Технології</a>
+             onClick={() => RenderWithTopic('технології')}>Технології</a>
         </span>
     </>);
 }
@@ -62,21 +71,11 @@ function MainArticle() {
     const [mainNew, setNew] = useState(null);
     useEffect(() => {
         if(!mainNew) {
-            Apis.getNews().then(response => {
-                if(response.data.results) {
-                    const mainArticle = response.data.results.filter(article => article.language === 'ukrainian' && article.image_url && article.image_url.length > 10).shift();
-                    setNew(mainArticle);
-                    const DBclient = new DB();
-                    DBclient.insertArticles(mainArticle, null);
-                } else {
-                    setNew(response.data);
-                }
-            }).catch(error => {
-                console.error(error.message);
-            });
+            Apis.getNews('все').then(response => {
+                setNew(response.shift());
+            }).catch(error => errorHandler('index.js.MainArticle.Apis.getNews()', error));
         }
     });
-    console.log(mainNew);
     if(mainNew) {
         return (<>
         <div className="main_article">
@@ -100,27 +99,19 @@ function SideBarContainer() {
     const news = [];
     useEffect(() => {
         if(articles.length === 0) {
-            Apis.getNews().then(response => {
-                if(response.data.results) {
-                    const allArticles = response.data.results
-                    .filter(article => article.language === 'ukrainian' &&
-                    article.image_url && article.image_url.length > 10);
-                    allArticles.shift();
-                    setArticles(allArticles);
-                } else {
-                    setArticles(response.data);
-                }
-            }).catch(err => {
-                console.error(err.message);
-            });
+            Apis.getNews('все').then(response => {
+                setArticles(response.length > 1 ? response.slice(1): response);
+            }).catch(err => errorHandler('index.js.SideBarContainer.Apis.getNews()', err));
         }
     });
     if(articles.length > 0) {
         const DBclient = new DB();
         for(let article of articles) {
-            news.push(createArticle(article.article_id, article.title, article.image_url, article.link));
+            const novetly = { ...createArticle(article.article_id, article.title, article.image_url, article.link) };
+            novetly.key = article.article_id ? article.article_id : Date.now();
+            news.push(novetly);
         }
-        DBclient.insertArticles(articles, null);
+        DBclient.insertArticles(articles, 'все');
         return news;
     } else {
         return (<div></div>);
@@ -179,30 +170,31 @@ function WeatherForecast() {
     useEffect(() => {
         if(!IP) {
             Apis.getIPaddress().then(response => {
-                setIP(response.data.ip);
-            }).catch(error => {
-                console.log(error);
-            });
+                response.json().then(data => {
+                    if(data.ip) {
+                        setIP(data.ip);
+                    } else {
+                        setIP('127.0.0.1');
+                    }
+                }).catch(error => errorHandler('index.js.WeatherForecast.getIPaddress.response.json()', error));
+            }).catch(error => errorHandler('index.js.WeatherForecast.getIPaddress', error));
         }
         if(IP && !location) {
             Apis.getGeoLocation(IP).then(response => {
-                setLocation(response.data);
-            }).catch(error => {
-                console.log(error);
-            });
+                response.json().then(data => {
+                    setLocation(data);
+                }).catch(error => errorHandler('index.js.WeatherForecast.getGeolocation.response.json()', error));
+            }).catch(error => errorHandler('index.js.WeatherForecast.getGeolocation', error));
         }
         if(location && !weatherInfo) {
-            console.log('Location');
-            console.log(location);
             Apis.getWeather(location).then(response => {
-                setWeather(response.data);
-            }).catch(error => {
-                console.log(error);
-            });
+                response.json().then(data => {
+                    setWeather(data);
+                }).catch(error => errorHandler('index.js.Apis.getWeather.response.json()', error));
+            }).catch(error => errorHandler('index.js.Apis.getWeather', error));
         }
     });
     if(weatherInfo) {
-        console.log(weatherInfo);
         const [
             nameOfClass,
             date,
@@ -253,16 +245,8 @@ function ExchangeRate() {
     useEffect(() => {
         if(!currencyRate) {
             Apis.getExchangeRateCache().then(response => {
-                console.log('ABOUT CURRENCY');
-                console.log(response);
-                const rates = response.data.rates ? response.data.rates : response.data[0].resp_body.rates;
-                setRate(rates);
-                DB.insertRate({
-                    rates: rates
-                });
-            }).catch(err => {
-                console.log(err.message);
-            });
+                setRate(response.shift());
+            }).catch(err => errorHandler('index.js.ExchangeRate.Apis.getExchangeRateCache', err));
         }
     });
     if(currencyRate) {
@@ -319,41 +303,27 @@ function RenderDefault() {
     root.render(<DefaultPage/>);
 }
 
-function RerenderWithWar() {
-    function AboutWar() {
+function RenderWithTopic(topic) {
+    function AboutTopic() {
         const [topicNew, setNew] = useState(null);
         const [topicNews, setNews] = useState(null);
         useEffect(() => {
-            Apis.getNewsByTopic('війна').then(response => {
-                if(!topicNew) {
-                    const allArticles = [];
-                    const articleList = response.data.articles ? response.data.articles : response.data;
-                    for(let article of articleList) {
-                        allArticles.push({
-                            article_id: Date.now(),
-                            title: article.title,
-                            link: article.url ? article.url : article.link,
-                            content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url,
-                            publishedDate: article.publishedAt.split('T')[0]
-                        });
-                    }
-                    setNew(allArticles.shift());
-                    setNews(allArticles);
-                    const client = new DB();
-                    client.insertArticles(allArticles, 'війна');
-                }
-            }).catch(error => {
-                console.log(error.message);
-            });
+            if(!topicNew) {
+                Apis.getNews(topic).then(response => {
+                    setNew(response.shift());
+                    setNews(response);
+                });
+            }
         });
         if(topicNew && topicNews) {
             const news = [];
             for(let n of topicNews) {
-                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
+                const novetly = { ...createArticle(n.article_id, n.title, n.image_url, n.link) };
+                novetly.key = n.article_id;
+                news.push(novetly);
             }
             return (<>
-                <NavigationPanel selected={"war"}/>
+                <NavigationPanel selected={navigationMapper[topic]}/>
                 <GetCurrentDate/>
                 <WeatherForecast/>
                 <ExchangeRate/>
@@ -362,7 +332,7 @@ function RerenderWithWar() {
                     <img className="main_image" src={topicNew.image_url}/>
                     <meta itemProp="image" content={topicNew.image_url} />
                     <h1 itemProp="headline">{topicNew.title}</h1>
-                    <p>{topicNew.content}</p>
+                    <p>{topicNew.description}</p>
                     <span itemProp="datePublished" content={topicNew.publishedDate}>
                         Дата публікації: {topicNew.publishedDate}
                     </span><br/>
@@ -375,7 +345,7 @@ function RerenderWithWar() {
                 </>);
         }
         return (<>
-            <NavigationPanel selected={"war"}/>
+            <NavigationPanel selected={navigationMapper[topic]}/>
             <WeatherForecast/>
             <ExchangeRate/>
             <div className='content'>
@@ -386,360 +356,7 @@ function RerenderWithWar() {
             </div>
             </>);
     }
-    root.render(<AboutWar/>);
-}
-
-function RenderWithHealth() {
-    function AboutHealth() {
-        const [topicNew, setNew] = useState(null);
-        const [topicNews, setNews] = useState(null);
-        useEffect(() => {
-            Apis.getNewsByTopic('здоров').then(response => {
-                if(!topicNew) {
-                    const allArticles = [];
-                    const articleList = response.data.articles ? response.data.articles : response.data;
-                    for(let article of articleList) {
-                        allArticles.push({
-                            article_id: Date.now(),
-                            title: article.title,
-                            link: article.url ? article.url : article.link,
-                            content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url,
-                            publishedDate: article.publishedAt.split('T')[0]
-                        });
-                    }
-                    setNew(allArticles.shift());
-                    setNews(allArticles);
-                    const client = new DB();
-                    client.insertArticles(allArticles, 'здоров');
-                }
-            }).catch(error => {
-                console.log(error.message);
-            });
-        });
-        if(topicNew && topicNews) {
-            const news = [];
-            for(let n of topicNews) {
-                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
-            }
-            return (<>
-                <NavigationPanel selected={"health"}/>
-                <GetCurrentDate/>
-                <WeatherForecast/>
-                <ExchangeRate/>
-                <div className='content'>
-                <div className="main_article">
-                    <img className="main_image" src={topicNew.image_url}/>
-                    <meta itemProp="image" content={topicNew.image_url} />
-                    <h1 itemProp="headline">{topicNew.title}</h1>
-                    <p>{topicNew.content}</p>
-                    <span itemProp="datePublished" content={topicNew.publishedDate}>
-                        Дата публікації: {topicNew.publishedDate}
-                    </span><br/>
-                    <a href={topicNew.link}>Читати повний текст статті...</a>
-                </div>
-                    <div>
-                        {news}
-                    </div>
-                </div>
-                </>);
-        }
-        return (<>
-            <NavigationPanel selected={"health"}/>
-            <GetCurrentDate/>
-            <WeatherForecast/>
-            <ExchangeRate/>
-            <div className='content'>
-                <MainArticle />
-                <div>
-                    <SideBarContainer/>
-                </div>
-            </div>
-            </>);
-    }
-    root.render(<AboutHealth/>);
-}
-
-function RenderWithSociety() {
-    function AboutSociety() {
-        const [topicNew, setNew] = useState(null);
-        const [topicNews, setNews] = useState(null);
-        useEffect(() => {
-            Apis.getNewsByTopic('суспільство').then(response => {
-                if(!topicNew) {
-                    const allArticles = [];
-                    const articleList = response.data.articles ? response.data.articles : response.data;
-                    for(let article of articleList) {
-                        allArticles.push({
-                            article_id: Date.now(),
-                            title: article.title,
-                            link: article.url ? article.url : article.link,
-                            content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url,
-                            publishedDate: article.publishedAt.split('T')[0]
-                        });
-                    }
-                    setNew(allArticles.shift());
-                    setNews(allArticles);
-                    const client = new DB();
-                    client.insertArticles(allArticles, 'суспільство');
-                }
-            }).catch(error => {
-                console.log(error.message);
-            });
-        });
-        if(topicNew && topicNews) {
-            const news = [];
-            for(let n of topicNews) {
-                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
-            }
-            return (<>
-                <NavigationPanel selected={"society"}/>
-                <GetCurrentDate/>
-                <WeatherForecast/>
-                <ExchangeRate/>
-                <div className='content'>
-                <div className="main_article">
-                    <img className="main_image" src={topicNew.image_url}/>
-                    <meta itemProp="image" content={topicNew.image_url} />
-                    <h1 itemProp="headline">{topicNew.title}</h1>
-                    <p>{topicNew.content}</p>
-                    <span itemProp="datePublished" content={topicNew.publishedDate}>
-                        Дата публікації: {topicNew.publishedDate}
-                    </span><br/>
-                    <a href={topicNew.link}>Читати повний текст статті...</a>
-                </div>
-                    <div>
-                        {news}
-                    </div>
-                </div>
-                </>);
-        }
-        return (<>
-            <NavigationPanel selected={"society"}/>
-            <GetCurrentDate/>
-            <WeatherForecast/>
-            <ExchangeRate/>
-            <div className='content'>
-                <MainArticle />
-                <div>
-                    <SideBarContainer/>
-                </div>
-            </div>
-            </>);
-    }
-    root.render(<AboutSociety/>);
-}
-
-function RenderWithEconomy() {
-    function AboutEconomy() {
-        const [topicNew, setNew] = useState(null);
-        const [topicNews, setNews] = useState(null);
-        useEffect(() => {
-            Apis.getNewsByTopic('економіка').then(response => {
-                if(!topicNew) {
-                    const allArticles = [];
-                    const articleList = response.data.articles ? response.data.articles : response.data;
-                    for(let article of articleList) {
-                        allArticles.push({
-                            article_id: Date.now(),
-                            title: article.title,
-                            link: article.url ? article.url : article.link,
-                            content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url,
-                            publishedDate: article.publishedAt.split('T')[0]
-                        });
-                    }
-                    setNew(allArticles.shift());
-                    setNews(allArticles);
-                    const client = new DB();
-                    client.insertArticles(allArticles, 'економіка');
-                }
-            }).catch(error => {
-                console.log(error.message);
-            });
-        });
-        if(topicNew && topicNews) {
-            const news = [];
-            for(let n of topicNews) {
-                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
-            }
-            return (<>
-                <NavigationPanel selected={"economy"}/>
-                <GetCurrentDate/>
-                <WeatherForecast/>
-                <ExchangeRate/>
-                <div className='content'>
-                <div className="main_article">
-                    <img className="main_image" src={topicNew.image_url}/>
-                    <meta itemProp="image" content={topicNew.image_url} />
-                    <h1 itemProp="headline">{topicNew.title}</h1>
-                    <p>{topicNew.content}</p>
-                    <span itemProp="datePublished" content={topicNew.publishedDate}>
-                        Дата публікації: {topicNew.publishedDate}
-                    </span><br/>
-                    <a href={topicNew.link}>Читати повний текст статті...</a>
-                </div>
-                    <div>
-                        {news}
-                    </div>
-                </div>
-                </>);
-        }
-        return (<>
-            <NavigationPanel selected={"economy"}/>
-            <GetCurrentDate/>
-            <WeatherForecast/>
-            <ExchangeRate/>
-            <div className='content'>
-                <MainArticle />
-                <div>
-                    <SideBarContainer/>
-                </div>
-            </div>
-            </>);
-    }
-    root.render(<AboutEconomy/>);
-}
-
-function RenderWithPolitic() {
-    function AboutPolitic() {
-        const [topicNew, setNew] = useState(null);
-        const [topicNews, setNews] = useState(null);
-        useEffect(() => {
-            Apis.getNewsByTopic('політика').then(response => {
-                if(!topicNew) {
-                    const allArticles = [];
-                    const articleList = response.data.articles ? response.data.articles : response.data;
-                    for(let article of articleList) {
-                        allArticles.push({
-                            article_id: Date.now(),
-                            title: article.title,
-                            link: article.url ? article.url : article.link,
-                            content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url,
-                            publishedDate: article.publishedAt.split('T')[0]
-                        });
-                    }
-                    setNew(allArticles.shift());
-                    setNews(allArticles);
-                    const client = new DB();
-                    client.insertArticles(allArticles, 'політика');
-                }
-            }).catch(error => {
-                console.log(error.message);
-            });
-        });
-        if(topicNew && topicNews) {
-            const news = [];
-            for(let n of topicNews) {
-                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
-            }
-            return (<>
-                <NavigationPanel selected={"politic"}/>
-                <GetCurrentDate/>
-                <WeatherForecast/>
-                <ExchangeRate/>
-                <div className='content'>
-                <div className="main_article">
-                    <img className="main_image" src={topicNew.image_url}/>
-                    <meta itemProp="image" content={topicNew.image_url} />
-                    <h1 itemProp="headline">{topicNew.title}</h1>
-                    <p>{topicNew.content}</p>
-                    <span itemProp="datePublished" content={topicNew.publishedDate}>
-                        Дата публікації: {topicNew.publishedDate}
-                    </span><br/>
-                    <a href={topicNew.link}>Читати повний текст статті...</a>
-                </div>
-                    <div>
-                        {news}
-                    </div>
-                </div>
-                </>);
-        }
-        return (<>
-            <NavigationPanel selected={"politic"}/>
-            <WeatherForecast/>
-            <ExchangeRate/>
-            <div className='content'>
-                <MainArticle />
-                <div>
-                    <SideBarContainer/>
-                </div>
-            </div>
-            </>);
-    }
-    root.render(<AboutPolitic/>);
-}
-
-function RenderWithTech() {
-    function AboutTech() {
-        const [topicNew, setNew] = useState(null);
-        const [topicNews, setNews] = useState(null);
-        useEffect(() => {
-            Apis.getNewsByTopic('технології').then(response => {
-                if(!topicNew) {
-                    const allArticles = [];
-                    const articleList = response.data.articles ? response.data.articles : response.data;
-                    for(let article of articleList) {
-                        allArticles.push({
-                            article_id: Date.now(),
-                            title: article.title,
-                            link: article.url ? article.url : article.link,
-                            content: article.description ? article.description : article.content,
-                            image_url: article.image ? article.image : article.image_url,
-                            publishedDate: article.publishedAt.split('T')[0]
-                        });
-                    }
-                    setNew(allArticles.shift());
-                    setNews(allArticles);
-                    const client = new DB();
-                    client.insertArticles(allArticles, 'технології');
-                }
-            }).catch(error => {
-                console.log(error.message);
-            });
-        });
-        if(topicNew && topicNews) {
-            const news = [];
-            for(let n of topicNews) {
-                news.push(createArticle(n.article_id, n.title, n.image_url, n.link));
-            }
-            return (<>
-                <NavigationPanel selected={"tech"}/>
-                <GetCurrentDate/>
-                <WeatherForecast/>
-                <ExchangeRate/>
-                <div className='content'>
-                <div className="main_article">
-                    <img className="main_image" src={topicNew.image_url}/>
-                    <meta itemProp="image" content={topicNew.image_url} />
-                    <h1 itemProp="headline">{topicNew.title}</h1>
-                    <p>{topicNew.content}</p>
-                    <span itemProp="datePublished" content={topicNew.publishedDate}>
-                        Дата публікації: {topicNew.publishedDate}
-                    </span><br/>
-                    <a href={topicNew.link}>Читати повний текст статті...</a>
-                </div>
-                    <div>
-                        {news}
-                    </div>
-                </div>
-                </>);
-        }
-        return (<>
-            <NavigationPanel selected={"tech"}/>
-            <WeatherForecast/>
-            <ExchangeRate/>
-            <div className='content'>
-                <MainArticle />
-                <div>
-                    <SideBarContainer/>
-                </div>
-            </div>
-            </>);
-    }
-    root.render(<AboutTech/>);
+    root.render(<AboutTopic />);
 }
 
 function auth() {
@@ -833,6 +450,12 @@ function dateProcessing() {
         currentMinute,
         currentSecond
     ];
+}
+
+function errorHandler(ctx, err) {
+    if(err) {
+        console.error(`${ctx}: ${err.message}`);
+    }
 }
 
 root.render(<Page/>);
