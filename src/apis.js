@@ -16,7 +16,10 @@ export default class Apis {
             data.push(...await dbRequest.json());
         } else {
             const articlesData = await request.json();
-            data.push(...articlesData.results.filter(article => article.image_url.length > 0 && article.description.length > 0));
+            data.push(...articlesData.results.filter(article => article.image_url
+                && article.image_url.length > 0
+                && article.description
+                && article.description.length > 0));
             const client = new DB();
             client.insertArticles(data);
         }
