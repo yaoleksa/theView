@@ -10,8 +10,8 @@ export default class DB {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                articles: Articles,
-                topic: q
+                "articles": Articles,
+                "topic": `"${q}"`
             }),
         }).then(response => {
             if(response.status == 200) {

@@ -36,7 +36,6 @@ export default {
             ids.push(item.article_id);
             titles.push(item.title);
           });
-          console.log(url.searchParams.get("q"));
           const statement = data.articles.map(article => {
             if(!titles.includes(article.title) && !ids.includes(article.article_id)) {
               return env.DB.prepare(`

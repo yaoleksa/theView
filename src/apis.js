@@ -21,7 +21,7 @@ export default class Apis {
                 && article.description
                 && article.description.length > 0));
             const client = new DB();
-            client.insertArticles(data);
+            client.insertArticles(data, topic);
         }
         if(data.length === 0) {
             data.push([
