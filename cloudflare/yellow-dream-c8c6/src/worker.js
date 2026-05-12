@@ -27,38 +27,25 @@ export default {
               DELETE FROM articles
               ORDER BY epoch LIMIT ${rslt.results[0].size - 200}`).run();
           }
-          // Find duplicates
-          const IdsAndTitles = await env.DB.prepare('SELECT article_id, title FROM articles').run();
-          const articles = Object.values(IdsAndTitles);
-          const ids = [];
-          const titles = [];
-          articles.forEach(item => {
-            ids.push(item.article_id);
-            titles.push(item.title);
-          });
           const statement = data.articles.map(article => {
-            if(!titles.includes(article.title) && !ids.includes(article.article_id)) {
-              return env.DB.prepare(`
-                INSERT OR IGNORE INTO articles
-                (article_id, title, link, description, image_url, topic, pub_date, epoch)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-              `).bind(
-                article.article_id,
-                article.title,
-                article.link,
-                article.description,
-                article.image_url,
-                data.topic,
-                article.pubDate,
-                new Date().toISOString()
-              );
-            }
-            ids.push(article.article_id);
-            titles.push(article.title);
+            return env.DB.prepare(`
+                    INSERT OR IGNORE INTO articles
+                    (article_id, title, link, description, image_url, topic, pub_date, epoch)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                  `).bind(
+                    article.article_id,
+                    article.title,
+                    article.link,
+                    article.description,
+                    article.image_url,
+                    data.topic,
+                    article.pubDate,
+                    new Date().toISOString()
+                  );
           });
           try {
             await env.DB.batch(statement);
-            return json({ status: "OK", message: "Article inserted" });
+            return json({ status: "OK", message: "Article were inserted" });
           } catch(err) {
             return json({ status: "FAIL", message: err.message });
           }
@@ -94,8 +81,9 @@ export default {
       if (request.method === "GET") {
 
         if (entity === "article") {
+          const topic = url.searchParams.get("topic");
           const result = await env.DB.prepare(`
-            SELECT * FROM articles ORDER BY article_id DESC LIMIT 10
+            SELECT * FROM articles WHERE topic=${topic} ORDER BY article_id DESC LIMIT 10
           `).all();
 
           return json(result.results);

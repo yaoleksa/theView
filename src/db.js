@@ -11,7 +11,7 @@ export default class DB {
             },
             body: JSON.stringify({
                 "articles": Articles,
-                "topic": `"${q}"`
+                "topic": q
             }),
         }).then(response => {
             if(response.status == 200) {
