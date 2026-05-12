@@ -310,7 +310,6 @@ function RenderWithTopic(topic) {
         useEffect(() => {
             if(!topicNew) {
                 Apis.getNews(topic).then(response => {
-                    console.log(topic);
                     setNew(response.shift());
                     setNews(response);
                 });

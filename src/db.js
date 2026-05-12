@@ -4,15 +4,22 @@ export default class DB {
         if(!Array.isArray(Articles)) {
             Articles = [ Articles ];
         }
-        fetch(`https://yellow-dream-c8c6.mryaremchyk.workers.dev?entity=article&q=${q}`, {
+        fetch('https://yellow-dream-c8c6.mryaremchyk.workers.dev?entity=article', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(Articles),
+            body: JSON.stringify({
+                articles: Articles,
+                topic: q
+            }),
         }).then(response => {
             if(response.status == 200) {
-                console.log('Articles were successfuly inserted');
+                response.json().then(msg => {
+                    console.log(msg);
+                }).catch(err => {
+                    console.error(err.message);
+                })
             }
         }).catch(err => console.error(err.message));
     }

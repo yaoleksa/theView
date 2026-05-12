@@ -27,24 +27,42 @@ export default {
               DELETE FROM articles
               ORDER BY epoch LIMIT ${rslt.results[0].size - 200}`).run();
           }
-          const statement = data.map(article => {
-            return env.DB.prepare(`
-              INSERT INTO articles
-              (article_id, title, link, description, image_url, topic, pub_date, epoch)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            `).bind(
-              article.article_id,
-              article.title,
-              article.link,
-              article.description,
-              article.image_url,
-              url.searchParams.get("q"),
-              article.pubDate,
-              new Date().toISOString()
-            );
+          // Find duplicates
+          const IdsAndTitles = await env.DB.prepare('SELECT article_id, title FROM articles').run();
+          const articles = Object.values(IdsAndTitles);
+          const ids = [];
+          const titles = [];
+          articles.forEach(item => {
+            ids.push(item.article_id);
+            titles.push(item.title);
           });
-          await env.DB.batch(statement);
-          return json({ status: "OK", message: "Article inserted" });
+          console.log(url.searchParams.get("q"));
+          const statement = data.articles.map(article => {
+            if(!titles.includes(article.title) && !ids.includes(article.article_id)) {
+              return env.DB.prepare(`
+                INSERT OR IGNORE INTO articles
+                (article_id, title, link, description, image_url, topic, pub_date, epoch)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+              `).bind(
+                article.article_id,
+                article.title,
+                article.link,
+                article.description,
+                article.image_url,
+                data.topic,
+                article.pubDate,
+                new Date().toISOString()
+              );
+            }
+            ids.push(article.article_id);
+            titles.push(article.title);
+          });
+          try {
+            await env.DB.batch(statement);
+            return json({ status: "OK", message: "Article inserted" });
+          } catch(err) {
+            return json({ status: "FAIL", message: err.message });
+          }
         }
 
         // RATE
